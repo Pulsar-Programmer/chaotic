@@ -1,6 +1,6 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.imageio.ImageIO;
 
@@ -43,12 +43,8 @@ public class Player extends Entity {
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
             spriteCounter += 1;
             if(spriteCounter > 10){
-                if(spriteNum == 1){
-                    spriteNum = 2;
-                }
-                else if(spriteNum == 2){
-                    spriteNum = 1;
-                }
+                spriteNum += 1;
+                spriteNum %= 2;
                 spriteCounter = 0;
             }
         }
@@ -56,7 +52,7 @@ public class Player extends Entity {
     public void draw(Graphics2D g2){
         // g2.setColor(Color.white);
         // g2.fillRect(x, y, gp.tileSize, gp.tileSize);
-        BufferedImage image = e_sprites.get(direction + spriteNum - 1);
+        BufferedImage image = e_sprites.get(direction + spriteNum);
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
     }
 
@@ -64,14 +60,14 @@ public class Player extends Entity {
         try {
             // String classpath = System.getProperty("java.class.path");
             // System.out.println(classpath);
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_up_1.png")));
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_up_2.png")));
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_down_1.png")));
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_down_2.png")));
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_left_1.png")));
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_left_2.png")));
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_right_1.png")));
-            e_sprites.add(ImageIO.read(getClass().getResourceAsStream("/res/player/boy_right_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_up_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_up_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_down_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_down_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_left_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_left_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_right_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/boy_right_2.png")));
 
         } catch (Exception e) {
             e.printStackTrace();
