@@ -60,14 +60,14 @@ public class Player extends Entity {
         try {
             // String classpath = System.getProperty("java.class.path");
             // System.out.println(classpath);
-            e_sprites.add(ImageIO.read(new File("res/player/boy_up_1.png")));
-            e_sprites.add(ImageIO.read(new File("res/player/boy_up_2.png")));
-            e_sprites.add(ImageIO.read(new File("res/player/boy_down_1.png")));
-            e_sprites.add(ImageIO.read(new File("res/player/boy_down_2.png")));
-            e_sprites.add(ImageIO.read(new File("res/player/boy_left_1.png")));
-            e_sprites.add(ImageIO.read(new File("res/player/boy_left_2.png")));
-            e_sprites.add(ImageIO.read(new File("res/player/boy_right_1.png")));
-            e_sprites.add(ImageIO.read(new File("res/player/boy_right_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
+            e_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
 
         } catch (Exception e) {
             e.printStackTrace();
