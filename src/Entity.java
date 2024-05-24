@@ -2,10 +2,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Entity {
-    public int x, y;
+    public int world_x, world_y;
     public int speed;
 
-    public ArrayList<BufferedImage> e_sprites = new ArrayList<>();
+    public ArrayList<BufferedImage> entity_sprites = new ArrayList<>();
     public final static int up = 0;
     public final static int down = 2; 
     public final static int left = 4;

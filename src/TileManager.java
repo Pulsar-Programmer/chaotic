@@ -20,7 +20,17 @@ public class TileManager {
     }
     public void draw(Graphics2D g2d){
         for(var elem : tiles){
-            elem.draw(g2d, gp.tileSize, tile_sprites);
+            int world_x = elem.x;
+            int world_y = elem.y;
+            int x = world_x - gp.player.world_x + gp.player.screen_x;
+            int y = world_y - gp.player.world_y + gp.player.screen_y;
+            if(world_x + gp.tileSize > gp.player.world_x - gp.player.screen_x &&
+                world_x - gp.tileSize < gp.player.world_x + gp.player.screen_x &&
+                world_y + gp.tileSize > gp.player.world_y - gp.player.screen_y &&
+                world_y - gp.tileSize < gp.player.world_y + gp.player.screen_y
+            ){
+                elem.draw(g2d, gp.tileSize, tile_sprites, x, y);
+            }
         }
     }
     public void getTileImage(){

@@ -14,6 +14,10 @@ public class Tile {
         g2d.drawImage(tiles[sprite], x, y, tileSize, tileSize, null);
     }
 
+    public void draw(Graphics2D g2d, int tileSize, BufferedImage[] tiles, int x, int y){
+        g2d.drawImage(tiles[sprite], x, y, tileSize, tileSize, null);
+    }
+
     public Tile(int sprite, int x, int y){
         this.x = x;
         this.y = y;
