@@ -1,9 +1,11 @@
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Entity {
     public int world_x, world_y;
     public int speed;
+    public Rectangle solidArea;
 
     public ArrayList<BufferedImage> entity_sprites = new ArrayList<>();
     public final static int up = 0;

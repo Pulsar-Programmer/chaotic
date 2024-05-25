@@ -1,4 +1,5 @@
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -16,6 +17,11 @@ public class Player extends Entity {
         screen_x = gp.screenWidth / 2 - (gp.tileSize / 2);
         screen_y = gp.screenHeight / 2 - (gp.tileSize / 2);
 
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
         setDefaultValues();
         getPlayerImage();
     }
@@ -63,13 +69,13 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
-        // var l = Math.sqrt(Math.pow(x, 2) + Math.pow(x, 2));
-        // vel_x = vel_x / l;
-        // vel_y = vel_y / l;
-        // 
+        if(gp.collisionChecker.checkTile(this)){
+            return;
+        }
         if(timesKeyPressed<=1){
-        world_x += vel_x;
-        world_y += vel_y;}
+            world_x += vel_x;
+            world_y += vel_y;
+        }
         else if(timesKeyPressed>1)
         {
             world_x += (vel_x*Math.sqrt(2)/2);
@@ -86,8 +92,6 @@ public class Player extends Entity {
 
     public void getPlayerImage(){
         try {
-            // String classpath = System.getProperty("java.class.path");
-            // System.out.println(classpath);
             entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
             entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
             entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));

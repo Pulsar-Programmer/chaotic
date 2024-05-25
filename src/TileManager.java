@@ -17,6 +17,8 @@ public class TileManager {
         tiles = new ArrayList<Tile>();
         getTileImage();
         loadMap();
+        tiles.get(1).has_collision = true;
+        System.out.println(tiles.get(1).x);
     }
     public void draw(Graphics2D g2d){
         for(var elem : tiles){
@@ -36,9 +38,9 @@ public class TileManager {
     public void getTileImage(){
         tile_sprites = new BufferedImage[5];//variable to change depending on number tile sprites added.
         try {
-            tile_sprites[2] = ImageIO.read(new File("res/tiles/Black.png"));
+            tile_sprites[0] = ImageIO.read(new File("res/tiles/Black.png"));
             tile_sprites[1] = ImageIO.read(new File("res/tiles/blue_bricks.jpg"));
-            tile_sprites[0] = ImageIO.read(new File("res/tiles/brown_bricks.jpg"));
+            tile_sprites[2] = ImageIO.read(new File("res/tiles/brown_bricks.jpg"));
             tile_sprites[3] = ImageIO.read(new File("res/tiles/GrassWF.png"));
             tile_sprites[4] = ImageIO.read(new File("res/tiles/Light.png"));
         } catch (Exception e) {
@@ -70,5 +72,13 @@ public class TileManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public Tile find(int x, int y){
+        for (Tile elem : tiles) {
+            if(elem.x == x && elem.y == y) {
+                return elem;
+            }
+        }
+        return new Tile(0, 0, 0);
     }
 }

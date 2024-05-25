@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 public class Tile {
     
     int sprite;
-    public boolean collision = false;
+    public boolean has_collision = false;
     int x, y;
 
     public void draw(Graphics2D g2d, int tileSize, BufferedImage[] tiles){
