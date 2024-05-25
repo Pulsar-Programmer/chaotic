@@ -61,6 +61,9 @@ public class Player extends Entity {
             timesKeyPressed++;
 
         }
+        if(gp.collisionChecker.checkTile(this)){
+            return;
+        }
         if(vel_x != 0 || vel_y != 0){
             spriteCounter += 1;
             if(spriteCounter > 10){
@@ -68,9 +71,6 @@ public class Player extends Entity {
                 spriteNum %= 2;
                 spriteCounter = 0;
             }
-        }
-        if(gp.collisionChecker.checkTile(this)){
-            return;
         }
         if(timesKeyPressed<=1){
             world_x += vel_x;

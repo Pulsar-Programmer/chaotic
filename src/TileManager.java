@@ -18,7 +18,7 @@ public class TileManager {
         getTileImage();
         loadMap();
         tiles.get(1).has_collision = true;
-        System.out.println(tiles.get(1).x);
+        tiles.get(2).has_collision = true;
     }
     public void draw(Graphics2D g2d){
         for(var elem : tiles){
@@ -75,7 +75,7 @@ public class TileManager {
     }
     public Tile find(int x, int y){
         for (Tile elem : tiles) {
-            if(elem.x == x && elem.y == y) {
+            if(elem.x/gp.tileSize == x && elem.y/gp.tileSize == y) {
                 return elem;
             }
         }
