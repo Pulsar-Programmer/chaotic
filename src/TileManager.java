@@ -36,15 +36,21 @@ public class TileManager {
         }
     }
     public void getTileImage(){
-        tile_sprites = new BufferedImage[6];//variable to change depending on number tile sprites added.
+        tile_sprites = new BufferedImage[13]; //variable to change depending on number tile sprites added.
         try {
             tile_sprites[0] = ImageIO.read(new File("res/tiles/Black.png"));
             tile_sprites[1] = ImageIO.read(new File("res/tiles/blue_bricks.png"));
             tile_sprites[2] = ImageIO.read(new File("res/tiles/brown_bricks.jpg"));
-            tile_sprites[3] = ImageIO.read(new File("res/tiles/GrassWF.png"));
-            tile_sprites[4] = ImageIO.read(new File("res/tiles/Light.png"));
+            tile_sprites[3] = ImageIO.read(new File("res/tiles/wall-east.png"));
+            tile_sprites[4] = ImageIO.read(new File("res/tiles/wall-west.png"));
             tile_sprites[5] = ImageIO.read(new File("res/tiles/blue_paver.png"));
-            // tile_sprites[5] = ImageIO.read(new File("res/tiles/brick-norm.png"));
+            tile_sprites[6] = ImageIO.read(new File("res/tiles/wall-south.png"));
+            tile_sprites[7] = ImageIO.read(new File("res/tiles/wall-north.png"));
+            tile_sprites[8] = ImageIO.read(new File("res/tiles/wall-so-ea.png"));
+            tile_sprites[9] = ImageIO.read(new File("res/tiles/wall-so-we.png"));
+            tile_sprites[10] = ImageIO.read(new File("res/tiles/wall-no-ea.png"));
+            tile_sprites[11] = ImageIO.read(new File("res/tiles/wall-no-we.png"));
+            tile_sprites[12] = ImageIO.read(new File("res/tiles/no-door-open.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

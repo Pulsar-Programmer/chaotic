@@ -38,31 +38,28 @@ public class Player extends Entity {
         int timesKeyPressed = 0;
         double vel_x = 0;
         double vel_y = 0;
-        if(keyH.upPressed){
+        if(keyH.upPressed && !gp.collisionChecker.checkUp(this)){
             direction = up;
             vel_y -= speed;
             timesKeyPressed++;
         }
-        if(keyH.downPressed){
+        if(keyH.downPressed && !gp.collisionChecker.checkDown(this)){
             direction = down;
             vel_y += speed;
             timesKeyPressed++;
 
         }
-        if(keyH.leftPressed){
+        if(keyH.leftPressed && !gp.collisionChecker.checkLeft(this)){
             direction = left;
             vel_x -= speed;
             timesKeyPressed++;
 
         }
-        if(keyH.rightPressed){
+        if(keyH.rightPressed && !gp.collisionChecker.checkRight(this)){
             direction = right;
             vel_x += speed;
             timesKeyPressed++;
 
-        }
-        if(gp.collisionChecker.checkTile(this)){
-            return;
         }
         if(vel_x != 0 || vel_y != 0){
             spriteCounter += 1;
