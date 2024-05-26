@@ -87,7 +87,6 @@ public class Player extends Entity {
         BufferedImage image = entity_sprites.get(direction + spriteNum);
         g2.drawImage(image, screen_x, screen_y, gp.tileSize, gp.tileSize, null);
         g2.setColor(Color.blue);
-        g2.fillRect((screen_x + solidArea.x - speed), (screen_y + solidArea.y - speed), (solidArea.x + solidArea.width + speed), (solidArea.y + solidArea.height + speed));
     }
 
     public void getPlayerImage(){
