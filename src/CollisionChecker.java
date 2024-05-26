@@ -8,8 +8,8 @@ public class CollisionChecker {
     }
 
     public boolean checkUp(Entity entity){
-        int left_x = entity.world_x + entity.solidArea.x - entity.speed;
-        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width + entity.speed;
+        int left_x = entity.world_x + entity.solidArea.x;
+        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
         int top_y = entity.world_y + entity.solidArea.y - entity.speed;
         
         int left_tile = left_x/gp.tileSize;
@@ -23,8 +23,8 @@ public class CollisionChecker {
     }
 
     public boolean checkDown(Entity entity){
-        int left_x = entity.world_x + entity.solidArea.x - entity.speed;
-        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width + entity.speed;
+        int left_x = entity.world_x + entity.solidArea.x;
+        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
         int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height + entity.speed;
         
         int left_tile = left_x/gp.tileSize;
@@ -39,8 +39,8 @@ public class CollisionChecker {
 
     public boolean checkLeft(Entity entity){
         int left_x = entity.world_x + entity.solidArea.x - entity.speed;
-        int top_y = entity.world_y + entity.solidArea.y - entity.speed;
-        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height + entity.speed;
+        int top_y = entity.world_y + entity.solidArea.y;
+        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
         
         int left_tile = left_x/gp.tileSize;
         int top_tile = top_y/gp.tileSize;
@@ -54,8 +54,8 @@ public class CollisionChecker {
 
     public boolean checkRight(Entity entity){
         int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width + entity.speed;
-        int top_y = entity.world_y + entity.solidArea.y - entity.speed;
-        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height + entity.speed;
+        int top_y = entity.world_y + entity.solidArea.y;
+        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
         
         int right_tile = right_x/gp.tileSize;
         int top_tile = top_y/gp.tileSize;
