@@ -36,21 +36,19 @@ public class TileManager {
         }
     }
     public void getTileImage(){
-        tile_sprites = new BufferedImage[13]; //variable to change depending on number tile sprites added.
+        tile_sprites = new BufferedImage[11]; //variable to change depending on number tile sprites added.
         try {
-            tile_sprites[0] = ImageIO.read(new File("res/tiles/Black.png"));
-            tile_sprites[1] = ImageIO.read(new File("res/tiles/blue_bricks.png"));
-            tile_sprites[2] = ImageIO.read(new File("res/tiles/brown_bricks.jpg"));
-            tile_sprites[3] = ImageIO.read(new File("res/tiles/wall-east.png"));
-            tile_sprites[4] = ImageIO.read(new File("res/tiles/wall-west.png"));
-            tile_sprites[5] = ImageIO.read(new File("res/tiles/blue_paver.png"));
-            tile_sprites[6] = ImageIO.read(new File("res/tiles/wall-south.png"));
-            tile_sprites[7] = ImageIO.read(new File("res/tiles/wall-north.png"));
-            tile_sprites[8] = ImageIO.read(new File("res/tiles/wall-so-ea.png"));
-            tile_sprites[9] = ImageIO.read(new File("res/tiles/wall-so-we.png"));
-            tile_sprites[10] = ImageIO.read(new File("res/tiles/wall-no-ea.png"));
-            tile_sprites[11] = ImageIO.read(new File("res/tiles/wall-no-we.png"));
-            tile_sprites[12] = ImageIO.read(new File("res/tiles/no-door-open.png"));
+            tile_sprites[0] = ImageIO.read(new File("res/tiles/blue/bricks.png"));
+            tile_sprites[1] = ImageIO.read(new File("res/tiles/blue/paver.png"));
+            tile_sprites[2] = ImageIO.read(new File("res/tiles/blue/wall/west.png"));
+            tile_sprites[3] = ImageIO.read(new File("res/tiles/blue/wall/east.png"));
+            tile_sprites[4] = ImageIO.read(new File("res/tiles/blue/wall/south.png"));
+            tile_sprites[5] = ImageIO.read(new File("res/tiles/blue/wall/north.png"));
+            tile_sprites[6] = ImageIO.read(new File("res/tiles/blue/wall/southeast.png"));
+            tile_sprites[7] = ImageIO.read(new File("res/tiles/blue/wall/southwest.png"));
+            tile_sprites[8] = ImageIO.read(new File("res/tiles/blue/wall/northeast.png"));
+            tile_sprites[9] = ImageIO.read(new File("res/tiles/blue/wall/northwest.png"));
+            tile_sprites[10] = ImageIO.read(new File("res/tiles/blue/door/north_closed.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +66,7 @@ public class TileManager {
         
                 for (String part : parts) {
                     var num = Integer.parseInt(part);
-                    if(num == 1){
+                    if(num >= 2){
                         tiles.add(Tile.with_collision(num, gp.tileSize * x, gp.tileSize * y));
                     } else {
                         tiles.add(new Tile(num, gp.tileSize * x, gp.tileSize * y));
