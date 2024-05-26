@@ -1,7 +1,4 @@
 import java.awt.Graphics2D;
-import java.io.File;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 public class Tile {
@@ -22,5 +19,10 @@ public class Tile {
         this.x = x;
         this.y = y;
         this.sprite = sprite;
+    }
+    public static Tile with_collision(int sprite, int x, int y){
+        var tile = new Tile(sprite, x, y);
+        tile.has_collision = true;
+        return tile;
     }
 }
