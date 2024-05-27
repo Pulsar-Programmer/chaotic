@@ -6,14 +6,14 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
-    final int originalTileSize = 16;
-    final int scale = 3;
+    static final int originalTileSize = 16;
+    static final int scale = 3;
 
-    public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol;
-    public final int screenHeight = tileSize * maxScreenRow;
+    public static final int TILE_SIZE = originalTileSize * scale;
+    public static final int maxScreenCol = 16;
+    public static final int maxScreenRow = 12;
+    public static final int screenWidth = TILE_SIZE * maxScreenCol;
+    public static final int screenHeight = TILE_SIZE * maxScreenRow;
 
     final static int FPS = 60;
 

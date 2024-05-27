@@ -26,12 +26,12 @@ public class TileManager {
             int world_y = elem.y;
             int x = world_x - gp.player.world_x + gp.player.screen_x;
             int y = world_y - gp.player.world_y + gp.player.screen_y;
-            if(world_x + gp.tileSize > gp.player.world_x - gp.player.screen_x &&
-                world_x - gp.tileSize < gp.player.world_x + gp.player.screen_x &&
-                world_y + gp.tileSize > gp.player.world_y - gp.player.screen_y &&
-                world_y - gp.tileSize < gp.player.world_y + gp.player.screen_y
+            if(world_x + GamePanel.TILE_SIZE > gp.player.world_x - gp.player.screen_x &&
+                world_x - GamePanel.TILE_SIZE < gp.player.world_x + gp.player.screen_x &&
+                world_y + GamePanel.TILE_SIZE > gp.player.world_y - gp.player.screen_y &&
+                world_y - GamePanel.TILE_SIZE < gp.player.world_y + gp.player.screen_y
             ){
-                elem.draw(g2d, gp.tileSize, tile_sprites, x, y);
+                elem.draw(g2d, GamePanel.TILE_SIZE, tile_sprites, x, y);
             }
         }
     }
@@ -67,9 +67,9 @@ public class TileManager {
                 for (String part : parts) {
                     var num = Integer.parseInt(part);
                     if(num >= 2){
-                        tiles.add(Tile.with_collision(num, gp.tileSize * x, gp.tileSize * y));
+                        tiles.add(Tile.with_collision(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
                     } else {
-                        tiles.add(new Tile(num, gp.tileSize * x, gp.tileSize * y));
+                        tiles.add(new Tile(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
                     }
                     
                     x += 1;
@@ -86,7 +86,7 @@ public class TileManager {
     }
     public Tile find(int x, int y){
         for (Tile elem : tiles) {
-            if(elem.x/gp.tileSize == x && elem.y/gp.tileSize == y) {
+            if(elem.x/GamePanel.TILE_SIZE == x && elem.y/GamePanel.TILE_SIZE == y) {
                 return elem;
             }
         }

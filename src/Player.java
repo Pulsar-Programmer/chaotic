@@ -15,14 +15,14 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler kh){
         this.gp = gp;
         keyH = kh;
-        screen_x = gp.screenWidth / 2 - (gp.tileSize / 2);
-        screen_y = gp.screenHeight / 2 - (gp.tileSize / 2);
+        screen_x = GamePanel.screenWidth / 2 - (GamePanel.TILE_SIZE / 2);
+        screen_y = GamePanel.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
 
-        solidArea = new Rectangle();
-        solidArea.x = 8;
-        solidArea.y = 16;
-        solidArea.width = 32;
-        solidArea.height = 32;
+        solidArea = new Rectangle(8, 16, 32, 32);
+
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+
         setDefaultValues();
         getPlayerImage();
     }
@@ -62,6 +62,17 @@ public class Player extends Entity {
             timesKeyPressed++;
 
         }
+
+        int obj_index = gp.collisionChecker.checkObject(this, true);
+        if(obj_index != -1){
+            var obj = gp.objectManager.objects.get(obj_index);
+            if(obj.has_collision){
+                return;
+            }
+            evaluate_object(obj);
+        }
+
+
         if(vel_x != 0 || vel_y != 0){
             spriteCounter += 1;
             if(spriteCounter > 10){
@@ -85,7 +96,7 @@ public class Player extends Entity {
         // g2.setColor(Color.white);
         // g2.fillRect(x, y, gp.tileSize, gp.tileSize);
         BufferedImage image = entity_sprites.get(direction + spriteNum);
-        g2.drawImage(image, screen_x, screen_y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
         g2.setColor(Color.blue);
     }
 
@@ -102,6 +113,12 @@ public class Player extends Entity {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void evaluate_object(Object obj){
+        if(obj.name == "Key"){
+            gp.objectManager.objects.remove(obj);
         }
     }
 }

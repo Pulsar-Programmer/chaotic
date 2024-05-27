@@ -12,9 +12,9 @@ public class CollisionChecker {
         int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
         int top_y = entity.world_y + entity.solidArea.y - entity.speed;
         
-        int left_tile = left_x/gp.tileSize;
-        int right_tile = right_x/gp.tileSize;
-        int top_tile = top_y/gp.tileSize;
+        int left_tile = left_x/GamePanel.TILE_SIZE;
+        int right_tile = right_x/GamePanel.TILE_SIZE;
+        int top_tile = top_y/GamePanel.TILE_SIZE;
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile2 = gp.tileManager.find(right_tile, top_tile);
@@ -27,9 +27,9 @@ public class CollisionChecker {
         int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
         int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height + entity.speed;
         
-        int left_tile = left_x/gp.tileSize;
-        int right_tile = right_x/gp.tileSize;
-        int bottom_tile = bottom_y/gp.tileSize;
+        int left_tile = left_x/GamePanel.TILE_SIZE;
+        int right_tile = right_x/GamePanel.TILE_SIZE;
+        int bottom_tile = bottom_y/GamePanel.TILE_SIZE;
 
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
@@ -42,9 +42,9 @@ public class CollisionChecker {
         int top_y = entity.world_y + entity.solidArea.y;
         int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
         
-        int left_tile = left_x/gp.tileSize;
-        int top_tile = top_y/gp.tileSize;
-        int bottom_tile = bottom_y/gp.tileSize;
+        int left_tile = left_x/GamePanel.TILE_SIZE;
+        int top_tile = top_y/GamePanel.TILE_SIZE;
+        int bottom_tile = bottom_y/GamePanel.TILE_SIZE;
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
@@ -57,9 +57,9 @@ public class CollisionChecker {
         int top_y = entity.world_y + entity.solidArea.y;
         int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
         
-        int right_tile = right_x/gp.tileSize;
-        int top_tile = top_y/gp.tileSize;
-        int bottom_tile = bottom_y/gp.tileSize;
+        int right_tile = right_x/GamePanel.TILE_SIZE;
+        int top_tile = top_y/GamePanel.TILE_SIZE;
+        int bottom_tile = bottom_y/GamePanel.TILE_SIZE;
 
         var tile2 = gp.tileManager.find(right_tile, top_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
@@ -76,4 +76,32 @@ public class CollisionChecker {
     //     rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y + rect2.height)
     //     ;
     // }
+
+    public int checkObject(Entity entity, boolean is_player){
+        int index = -1;
+
+        for(var i = 0; i < gp.objectManager.objects.size(); i++){
+
+            var entity_rect = new Rectangle();
+            var object_rect = new Rectangle();
+
+            entity_rect.x = entity.world_x + entity.solidArea.x;
+            entity_rect.y = entity.world_y + entity.solidArea.y;
+            entity_rect.width = entity.solidArea.width;
+            entity_rect.height = entity.solidArea.height;
+
+            var object = gp.objectManager.objects.get(i);
+            object_rect.x = object.world_x + object.solidArea.x;
+            object_rect.y = object.world_y + object.solidArea.y;
+            object_rect.width = object.solidArea.width;
+            object_rect.height = object.solidArea.height;
+
+            if(entity_rect.intersects(object_rect)){
+                index = i;
+            }
+
+        }
+
+        return index;
+    }
 }
