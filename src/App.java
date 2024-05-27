@@ -17,7 +17,4 @@ public class App {
 
         gamePanel.startGameThread();
     }
-    // public static BufferedImage read_image(){
-
-    // }
 }
