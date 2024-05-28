@@ -114,17 +114,17 @@ public class GamePanel extends JPanel implements Runnable {
                     gameState = PLAY;
                     guiManager.commandNum=0;
                 }
-                  if(guiManager.commandNum==1){
+                if(guiManager.commandNum==1){
+                    gameState = PLAY;
+                    guiManager.commandNum=0;
+                }
+                if(guiManager.commandNum==2){
                     gameState = PLAY;
                     guiManager.commandNum=0;
                 }
                 if(guiManager.commandNum==3){
                     gameState = PLAY;
-                    guiManager.commandNum=4;
-                }
-
-                else if(guiManager.commandNum==1){
-                    System.exit(0);
+                    guiManager.commandNum=0;
                 }
                 keyH.startHit = false;
             }
@@ -144,8 +144,6 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        guiManager.draw(g2);
-
         if(gameState == PLAY){
             tileManager.draw(g2);
             objectManager.draw(g2, this);
@@ -157,6 +155,7 @@ public class GamePanel extends JPanel implements Runnable {
         else if(gameState == TITLE){
             // guiManager.drawTitleScreen(g2);
         }
+        guiManager.draw(g2);
         g2.dispose();
     }
 

@@ -12,7 +12,7 @@ public class Player extends Entity {
     
     // private int defense;
     // private int offense;
-    // private double health;
+    // public int health;
 
     public final int screen_x, screen_y;
 
@@ -37,12 +37,14 @@ public class Player extends Entity {
         speed = 4;
         // speed = 20;
         direction = down;
+        health = 5;
     }
 
     public void update(){
         int timesKeyPressed = 0;
         double vel_x = 0;
         double vel_y = 0;
+
         if(keyH.upPressed && !gp.collisionChecker.checkUp(this)){
             direction = up;
             vel_y -= speed;

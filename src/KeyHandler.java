@@ -4,6 +4,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener{
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean pausePressed;
     
     public boolean upHit, downHit;
     public boolean pauseHit, startHit;
@@ -34,7 +35,10 @@ public class KeyHandler implements KeyListener{
             rightPressed = true;
         }
         if(code == KeyEvent.VK_P || code == KeyEvent.VK_ESCAPE){
-            pauseHit = true;
+            if(!pausePressed){
+                pauseHit = true;
+            }
+            pausePressed = true;
         }
         if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE){
             startHit = true;
@@ -57,7 +61,7 @@ public class KeyHandler implements KeyListener{
             rightPressed = false;
         }
         if(code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_P){
-            pauseHit = false;
+            pausePressed = false;
         }
     }
 

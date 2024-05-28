@@ -63,8 +63,16 @@ public class TileManager {
                 String line = scanner.nextLine();
 
                 String[] parts = line.split(" ");
-        
+                // var xx = 0;
                 for (String part : parts) {
+                    // if(part.isEmpty() || part.equals(" ")){
+                    //     xx += 1;
+                    //     xx %= 2;
+                    //     if(xx == 1){
+                    //         x += 1;
+                    //     }
+                    //     continue;
+                    // }
                     var num = Integer.parseInt(part);
                     if(num >= 2){
                         tiles.add(Tile.with_collision(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
