@@ -45,15 +45,7 @@ public class Object {
 
     public void draw(Graphics2D g2d, GamePanel gp){
         
-        int screen_x = world_x - gp.player.world_x + gp.player.screen_x;
-        int screen_y = world_y - gp.player.world_y + gp.player.screen_y;
+        gp.screen_draw(gp.objectManager.sprites[image], world_x, world_y, g2d);
         
-        if(world_x + GamePanel.TILE_SIZE > gp.player.world_x - gp.player.screen_x &&
-            world_x - GamePanel.TILE_SIZE < gp.player.world_x + gp.player.screen_x &&
-            world_y + GamePanel.TILE_SIZE > gp.player.world_y - gp.player.screen_y &&
-            world_y - GamePanel.TILE_SIZE < gp.player.world_y + gp.player.screen_y
-        ){
-            g2d.drawImage(gp.objectManager.sprites[image], screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
-        }
     }
 }

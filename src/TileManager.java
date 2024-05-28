@@ -25,6 +25,7 @@ public class TileManager {
         tiles.forEach((Point p, Tile elem) -> {
             int world_x = p.x * GamePanel.TILE_SIZE;
             int world_y = p.y * GamePanel.TILE_SIZE;
+            
             int x = world_x - gp.player.world_x + gp.player.screen_x;
             int y = world_y - gp.player.world_y + gp.player.screen_y;
             if(world_x + GamePanel.TILE_SIZE > gp.player.world_x - gp.player.screen_x &&

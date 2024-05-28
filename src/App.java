@@ -1,3 +1,8 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class App {
@@ -16,5 +21,9 @@ public class App {
         window.setVisible(true);
 
         gamePanel.startGameThread();
+    }
+
+    public static BufferedImage res(String filepath) throws IOException{
+        return ImageIO.read(new File(filepath));
     }
 }

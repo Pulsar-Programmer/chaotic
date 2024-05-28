@@ -3,12 +3,15 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
+    
+    public ArrayList<BufferedImage> entity_sprites = new ArrayList<>();
     
     // private int defense;
     // private int offense;
@@ -103,7 +106,7 @@ public class Player extends Entity {
         // g2.fillRect(x, y, gp.tileSize, gp.tileSize);
         BufferedImage image = entity_sprites.get(direction + spriteNum);
         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
-        g2.setColor(Color.blue);
+        // g2.setColor(Color.blue);
     }
 
     public void getPlayerImage(){

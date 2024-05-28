@@ -8,7 +8,6 @@ public class Entity {
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
 
-    public ArrayList<BufferedImage> entity_sprites = new ArrayList<>();
     public final static int up = 0;
     public final static int down = 2; 
     public final static int left = 4;
@@ -19,5 +18,6 @@ public class Entity {
     public int spriteCounter = 0;
     public int spriteNum = 0;
 
+    public int maxHealth = 0;
     public int health = 0;
 }

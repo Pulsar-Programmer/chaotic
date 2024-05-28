@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
     CollisionChecker collisionChecker = new CollisionChecker(this);
     GUIManager guiManager = new GUIManager(this);
     ObjectManager objectManager = new ObjectManager();
-    ArrayList<Entity> entities = new ArrayList<Entity>();
+    MonsterManager monsterManager = new MonsterManager();
     
     public int gameState = TITLE;
     public final static int TITLE = -1;
@@ -79,6 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         if(gameState == PLAY){
             player.update();
+            monsterManager.update();
         }
         else if(gameState == PAUSE){
             
@@ -147,10 +148,10 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
 
         if(gameState == PLAY){
+            monsterManager.draw(g2, this);
             tileManager.draw(g2);
             objectManager.draw(g2, this);
             player.draw(g2);
-
         }
         else if(gameState == PAUSE){
             // guiManager.drawPauseScreen(g2);
@@ -160,6 +161,19 @@ public class GamePanel extends JPanel implements Runnable {
         }
         guiManager.draw(g2);
         g2.dispose();
+    }
+
+    public void screen_draw(BufferedImage sprite, int world_x, int world_y, Graphics2D g2d){
+        int screen_x = world_x - player.world_x + player.screen_x;
+        int screen_y = world_y - player.world_y + player.screen_y;
+        
+        if(world_x + GamePanel.TILE_SIZE > player.world_x - player.screen_x &&
+            world_x - GamePanel.TILE_SIZE < player.world_x + player.screen_x &&
+            world_y + GamePanel.TILE_SIZE > player.world_y - player.screen_y &&
+            world_y - GamePanel.TILE_SIZE < player.world_y + player.screen_y
+        ){
+            g2d.drawImage(sprite, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+        }
     }
 
 }
