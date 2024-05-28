@@ -25,7 +25,6 @@ public class GamePanel extends JPanel implements Runnable {
     CollisionChecker collisionChecker = new CollisionChecker(this);
     GUIManager guiManager = new GUIManager(this);
     ObjectManager objectManager = new ObjectManager();
-    AssetSetter assetSetter = new AssetSetter(this);
     ArrayList<Entity> entities = new ArrayList<Entity>();
     
     public int gameState = TITLE;
@@ -34,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final static int PAUSE = 1;
     public final static int CLASS_SELECTION = -2;
 
+    public int mapNum = 0;
 
     public GamePanel() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame(){
-        assetSetter.setObject();
+        objectManager.setupObjects();
     }
 
     @Override
