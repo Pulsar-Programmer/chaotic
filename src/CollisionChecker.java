@@ -1,7 +1,5 @@
 import java.awt.Rectangle;
-//Arkin??
-//Ok thats good but do you understand what I'm doing ? 
-//
+
 public class CollisionChecker {
     GamePanel gp;
 
@@ -20,7 +18,7 @@ public class CollisionChecker {
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile2 = gp.tileManager.find(right_tile, top_tile);
-        // System.out.println("Up: " + tile1.has_collision + " " + tile2.has_collision);
+
         check_teleporter(tile1);
         check_teleporter(tile2);
     
@@ -38,7 +36,6 @@ public class CollisionChecker {
 
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
-        // System.out.println("Down: " + tile3.has_collision + " " + tile4.has_collision);
 
         check_teleporter(tile3);
         check_teleporter(tile4);
@@ -57,13 +54,10 @@ public class CollisionChecker {
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
-        // System.out.println("Left: " + tile1.has_collision + " " + tile3.has_collision);
 
         check_teleporter(tile1);
         check_teleporter(tile3);
-        //Arkin are you here? ??? What is happening you just disappeared for like 30m
-        //Arkin I am commiting rn
-        //here you can commit but i think just start following me imma set up where the entities need to exist.
+
         return tile1.has_collision || tile3.has_collision;
     }
 
@@ -78,23 +72,12 @@ public class CollisionChecker {
 
         var tile2 = gp.tileManager.find(right_tile, top_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
-        // System.out.println("Right: " + tile2.has_collision + " " + tile4.has_collision);
 
         check_teleporter(tile2);
         check_teleporter(tile4);
 
         return tile4.has_collision || tile2.has_collision;
     }
-
-    // public static boolean aabb_collision(Rectangle rect1, Rectangle rect2){
-    //     return
-    //     (rect1.x < rect2.x && rect1.x + rect1.width > rect2.x ||
-    //     rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x + rect2.width)
-    //     &&
-    //     (rect1.y < rect2.y && rect1.y + rect1.height > rect2.y ||
-    //     rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y + rect2.height)
-    //     ;
-    // }
 
     public int checkObject(Entity entity, boolean is_player){
         int index = -1;
@@ -125,13 +108,7 @@ public class CollisionChecker {
     }
 
     private void check_teleporter(Tile tile){
-        // System.out.println(tile.teleporter);
-        if(tile.sprite == 11){
-            // System.out.println("hlelo");
-            // System.out.println(tile.teleporter);
-        }
         if(tile.teleporter.isPresent()){
-            // System.out.println("Found!!");
             var p = tile.teleporter.get();
             gp.player.teleport_player(p.x, p.y);
         }

@@ -47,13 +47,12 @@ public class Object {
         
         int screen_x = world_x - gp.player.world_x + gp.player.screen_x;
         int screen_y = world_y - gp.player.world_y + gp.player.screen_y;
-        // System.out.println(screen_x + "" + screen_y);
+        
         if(world_x + GamePanel.TILE_SIZE > gp.player.world_x - gp.player.screen_x &&
             world_x - GamePanel.TILE_SIZE < gp.player.world_x + gp.player.screen_x &&
             world_y + GamePanel.TILE_SIZE > gp.player.world_y - gp.player.screen_y &&
             world_y - GamePanel.TILE_SIZE < gp.player.world_y + gp.player.screen_y
         ){
-            // System.out.println("Yay!");
             g2d.drawImage(gp.objectManager.sprites[image], screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
         }
     }

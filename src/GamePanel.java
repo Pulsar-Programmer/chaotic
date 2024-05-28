@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -25,14 +26,8 @@ public class GamePanel extends JPanel implements Runnable {
     GUIManager guiManager = new GUIManager(this);
     ObjectManager objectManager = new ObjectManager();
     AssetSetter assetSetter = new AssetSetter(this);
+    ArrayList<Entity> entities = new ArrayList<Entity>();
     
-    //WAnna VC?
-    //
-    //alright that's good but just watch me do
-    //hwerte i call.
-    //hwerte?
-    //google call is so easy wynaut that 
-    //i cannot hear you cutting out 
     public int gameState = TITLE;
     public final static int TITLE = -1;
     public final static int PLAY = 0;
@@ -155,6 +150,7 @@ public class GamePanel extends JPanel implements Runnable {
             tileManager.draw(g2);
             objectManager.draw(g2, this);
             player.draw(g2);
+
         }
         else if(gameState == PAUSE){
             // guiManager.drawPauseScreen(g2);

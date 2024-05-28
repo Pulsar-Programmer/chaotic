@@ -19,8 +19,6 @@ public class TileManager {
         tiles = new ArrayList<Tile>();
         getTileImage();
         loadMap();
-        // tiles.get(2).has_collision = true;
-        // tiles.get(15).has_collision = true;
     }
     public void draw(Graphics2D g2d){
         for(var elem : tiles){
@@ -81,9 +79,9 @@ public class TileManager {
                         tiles.add(Tile.with_collision(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
                     } else if(num==11){
                         var tile = new Tile(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y);
-                        // System.out.println("Setting!!");
+
                         tile.teleporter = Optional.of(new Point(10, 10));
-                        // System.out.println(tile.teleporter);
+
                         tiles.add(tile);
                     }
                     else {
