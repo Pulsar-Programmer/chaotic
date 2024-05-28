@@ -1,6 +1,4 @@
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Entity {
     public int world_x, world_y;

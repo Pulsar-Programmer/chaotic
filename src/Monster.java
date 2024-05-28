@@ -1,9 +1,9 @@
-import java.awt.Graphics2D;
 
 public class Monster extends Entity {
     
     public String name;
     public int sprite;
+    public int maxSpriteNum = 0;
     // public int behavior = 0;
 
     public Monster(){
@@ -21,7 +21,7 @@ public class Monster extends Entity {
         mon.speed = 1;
         mon.maxHealth = 4;
         mon.health = mon.maxHealth;
-
+        mon.maxSpriteNum = 1;
         return mon;
     }
 
@@ -32,7 +32,7 @@ public class Monster extends Entity {
             spriteCounter += 1;
             if(spriteCounter > 10){
                 spriteNum += 1;
-                spriteNum %= 2;
+                spriteNum %= (maxSpriteNum + 1);
                 spriteCounter = 0;
             }
         }
