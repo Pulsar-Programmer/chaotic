@@ -18,7 +18,7 @@ public class CollisionChecker {
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile2 = gp.tileManager.find(right_tile, top_tile);
-        System.out.println("Up: " + tile1.has_collision + " " + tile2.has_collision);
+        // System.out.println("Up: " + tile1.has_collision + " " + tile2.has_collision);
         return tile1.has_collision || tile2.has_collision;
     }
 
@@ -33,7 +33,7 @@ public class CollisionChecker {
 
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
-        System.out.println("Down: " + tile3.has_collision + " " + tile4.has_collision);
+        // System.out.println("Down: " + tile3.has_collision + " " + tile4.has_collision);
         return tile3.has_collision || tile4.has_collision;
     }
 
@@ -48,7 +48,7 @@ public class CollisionChecker {
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
-        System.out.println("Left: " + tile1.has_collision + " " + tile3.has_collision);
+        // System.out.println("Left: " + tile1.has_collision + " " + tile3.has_collision);
         return tile1.has_collision || tile3.has_collision;
     }
 
@@ -63,7 +63,7 @@ public class CollisionChecker {
 
         var tile2 = gp.tileManager.find(right_tile, top_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
-        System.out.println("Right: " + tile2.has_collision + " " + tile4.has_collision);
+        // System.out.println("Right: " + tile2.has_collision + " " + tile4.has_collision);
         return tile4.has_collision || tile2.has_collision;
     }
 

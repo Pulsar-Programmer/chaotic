@@ -4,6 +4,12 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener{
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    
+    public boolean upHit, downHit;
+    public boolean pauseHit, startHit;
+    
+
+    public KeyHandler() {}
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -14,9 +20,11 @@ public class KeyHandler implements KeyListener{
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
+            upHit = true;
             upPressed = true;
         }
         if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
+            downHit = true;
             downPressed = true;
         }
         if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
@@ -24,6 +32,12 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
             rightPressed = true;
+        }
+        if(code == KeyEvent.VK_P || code == KeyEvent.VK_ESCAPE){
+            pauseHit = true;
+        }
+        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE){
+            startHit = true;
         }
     }
 
@@ -41,6 +55,9 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
             rightPressed = false;
+        }
+        if(code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_P){
+            pauseHit = false;
         }
     }
 

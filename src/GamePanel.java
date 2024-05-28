@@ -26,7 +26,12 @@ public class GamePanel extends JPanel implements Runnable {
     ObjectManager objectManager = new ObjectManager();
     AssetSetter assetSetter = new AssetSetter(this);
 
-    public int gameState = 0;
+    public int gameState = TITLE;
+    public final static int TITLE = -1;
+    public final static int PLAY = 0;
+    public final static int PAUSE = 1;
+    public final static int CLASS_SELECTION = -2;
+
 
     public GamePanel() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -69,23 +74,90 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-        player.update();
+
+        if(gameState == PLAY){
+            player.update();
+        }
+        else if(gameState == PAUSE){
+            
+        } else if(gameState == TITLE){
+            if(keyH.upHit){
+                guiManager.commandNum = (guiManager.commandNum + 1) % 2;
+                keyH.upHit = false;
+            }
+            if(keyH.downHit){
+                guiManager.commandNum = (guiManager.commandNum + 1) % 2;
+                keyH.downHit = false;
+            }
+            if(keyH.startHit){
+                if(guiManager.commandNum==0){
+                    gameState = CLASS_SELECTION;
+                    guiManager.commandNum=0;
+                }
+                else if(guiManager.commandNum==1){
+                    System.exit(0);
+                }
+                keyH.startHit = false;
+            }
+        }
+        else if(gameState == CLASS_SELECTION){
+            if(keyH.upHit){
+                guiManager.commandNum = (guiManager.commandNum + 3) % 4;
+                keyH.upHit = false;
+            }
+            if(keyH.downHit){
+                guiManager.commandNum = (guiManager.commandNum + 1) % 4;
+                keyH.downHit = false;
+            }
+            if(keyH.startHit){
+                if(guiManager.commandNum==0){
+                    gameState = PLAY;
+                    guiManager.commandNum=0;
+                }
+                  if(guiManager.commandNum==1){
+                    gameState = PLAY;
+                    guiManager.commandNum=0;
+                }
+                if(guiManager.commandNum==3){
+                    gameState = PLAY;
+                    guiManager.commandNum=4;
+                }
+
+                else if(guiManager.commandNum==1){
+                    System.exit(0);
+                }
+                keyH.startHit = false;
+            }
+        }
+
+        if((gameState == PAUSE || gameState == PLAY) && keyH.pauseHit){
+            gameState = (gameState + 1) % 2;
+            System.out.println("State!");
+            keyH.pauseHit = false;
+        }
+
+
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
-        if(gameState == 0){
-            
-        }
-        else if(gameState == 2){
+
+        guiManager.draw(g2);
+
+        if(gameState == PLAY){
             tileManager.draw(g2);
             objectManager.draw(g2, this);
             player.draw(g2);
-            g2.dispose();
         }
-
+        else if(gameState == PAUSE){
+            // guiManager.drawPauseScreen(g2);
+        }
+        else if(gameState == TITLE){
+            // guiManager.drawTitleScreen(g2);
+        }
+        g2.dispose();
     }
 
 }
