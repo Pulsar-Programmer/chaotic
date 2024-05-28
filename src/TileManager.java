@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -12,18 +13,18 @@ import java.awt.Point;
 public class TileManager {
     GamePanel gp;
     BufferedImage[] tile_sprites;
-    ArrayList<Tile> tiles;
+    HashMap<Point, Tile> tiles;
 
     public TileManager(GamePanel gp){
         this.gp = gp;
-        tiles = new ArrayList<Tile>();
+        tiles = new HashMap<Point, Tile>();
         getTileImage();
         loadMap();
     }
     public void draw(Graphics2D g2d){
-        for(var elem : tiles){
-            int world_x = elem.x;
-            int world_y = elem.y;
+        tiles.forEach((Point p, Tile elem) -> {
+            int world_x = p.x * GamePanel.TILE_SIZE;
+            int world_y = p.y * GamePanel.TILE_SIZE;
             int x = world_x - gp.player.world_x + gp.player.screen_x;
             int y = world_y - gp.player.world_y + gp.player.screen_y;
             if(world_x + GamePanel.TILE_SIZE > gp.player.world_x - gp.player.screen_x &&
@@ -33,7 +34,7 @@ public class TileManager {
             ){
                 elem.draw(g2d, GamePanel.TILE_SIZE, tile_sprites, x, y);
             }
-        }
+        });
     }
     public void getTileImage(){
         tile_sprites = new BufferedImage[12]; //variable to change depending on number tile sprites added.
@@ -75,17 +76,18 @@ public class TileManager {
                         continue;
                     }
                     var num = Integer.parseInt(part);
+                    var p = new Point(x, y);
                     if(num >= 2 && num != 11){
-                        tiles.add(Tile.with_collision(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
+                        tiles.put(p, Tile.with_collision(num));
                     } else if(num==11){
-                        var tile = new Tile(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y);
+                        var tile = new Tile(num);
 
                         tile.teleporter = Optional.of(new Point(10, 10));
 
-                        tiles.add(tile);
+                        tiles.put(p, tile);
                     }
                     else {
-                        tiles.add(new Tile(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
+                        tiles.put(p, new Tile(num));
                     }   
 
                     
@@ -104,11 +106,10 @@ public class TileManager {
         }
     }
     public Tile find(int x, int y){
-        for (Tile elem : tiles) {
-            if(elem.x/GamePanel.TILE_SIZE == x && elem.y/GamePanel.TILE_SIZE == y) {
-                return elem;
-            }
+        var val = tiles.get(new Point(x, y));
+        if(val == null){
+            return new Tile(0);
         }
-        return new Tile(0, 0, 0);
+        return val;
     }
 }

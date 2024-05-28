@@ -30,12 +30,12 @@ public class GUIManager {
     public void setupSprites(){
         sprites = new ArrayList<BufferedImage>();
         try {
-            sprites.add(ImageIO.read(new File("res/gui/health/zero.png")));
-            sprites.add(ImageIO.read(new File("res/gui/health/one.png")));
-            sprites.add(ImageIO.read(new File("res/gui/health/two.png")));
-            sprites.add(ImageIO.read(new File("res/gui/health/three.png")));
-            sprites.add(ImageIO.read(new File("res/gui/health/four.png")));
-            sprites.add(ImageIO.read(new File("res/gui/health/five.png")));
+            // sprites.add(ImageIO.read(new File("res/gui/health/zero.png")));
+            // sprites.add(ImageIO.read(new File("res/gui/health/one.png")));
+            // sprites.add(ImageIO.read(new File("res/gui/health/two.png")));
+            // sprites.add(ImageIO.read(new File("res/gui/health/three.png")));
+            // sprites.add(ImageIO.read(new File("res/gui/health/four.png")));
+            // sprites.add(ImageIO.read(new File("res/gui/health/five.png")));
         } catch(Exception e){
             e.printStackTrace();
         }
