@@ -127,4 +127,9 @@ public class Player extends Entity {
             gp.objectManager.objects.remove(obj);
         }
     }
+
+    public void teleport_player(int to_x, int to_y){
+        world_x = to_x * GamePanel.TILE_SIZE;
+        world_y = to_y * GamePanel.TILE_SIZE;
+    }
 }

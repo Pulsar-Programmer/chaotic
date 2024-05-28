@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int maxScreenRow = 12;
     public static final int screenWidth = TILE_SIZE * maxScreenCol;
     public static final int screenHeight = TILE_SIZE * maxScreenRow;
-
+    
     final static int FPS = 60;
 
     TileManager tileManager = new TileManager(this);
@@ -25,7 +25,14 @@ public class GamePanel extends JPanel implements Runnable {
     GUIManager guiManager = new GUIManager(this);
     ObjectManager objectManager = new ObjectManager();
     AssetSetter assetSetter = new AssetSetter(this);
-
+    
+    //WAnna VC?
+    //
+    //alright that's good but just watch me do
+    //hwerte i call.
+    //hwerte?
+    //google call is so easy wynaut that 
+    //i cannot hear you cutting out 
     public int gameState = TITLE;
     public final static int TITLE = -1;
     public final static int PLAY = 0;
@@ -132,7 +139,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         if((gameState == PAUSE || gameState == PLAY) && keyH.pauseHit){
             gameState = (gameState + 1) % 2;
-            System.out.println("State!");
+            // System.out.println("State!");
             keyH.pauseHit = false;
         }
 

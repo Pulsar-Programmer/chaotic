@@ -1,11 +1,13 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 public class TileManager {
     GamePanel gp;
@@ -36,7 +38,7 @@ public class TileManager {
         }
     }
     public void getTileImage(){
-        tile_sprites = new BufferedImage[11]; //variable to change depending on number tile sprites added.
+        tile_sprites = new BufferedImage[12]; //variable to change depending on number tile sprites added.
         try {
             tile_sprites[0] = ImageIO.read(new File("res/tiles/blue/bricks.png"));
             tile_sprites[1] = ImageIO.read(new File("res/tiles/blue/paver.png"));
@@ -49,6 +51,7 @@ public class TileManager {
             tile_sprites[8] = ImageIO.read(new File("res/tiles/blue/wall/northeast.png"));
             tile_sprites[9] = ImageIO.read(new File("res/tiles/blue/wall/northwest.png"));
             tile_sprites[10] = ImageIO.read(new File("res/tiles/blue/door/north_closed.png"));
+            tile_sprites[11] = ImageIO.read(new File("res/tiles/blue/door/north_open.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,22 +66,32 @@ public class TileManager {
                 String line = scanner.nextLine();
 
                 String[] parts = line.split(" ");
-                // var xx = 0;
+                var xx = 0;
                 for (String part : parts) {
-                    // if(part.isEmpty() || part.equals(" ")){
-                    //     xx += 1;
-                    //     xx %= 2;
-                    //     if(xx == 1){
-                    //         x += 1;
-                    //     }
-                    //     continue;
-                    // }
-                    var num = Integer.parseInt(part);
-                    if(num >= 2){
-                        tiles.add(Tile.with_collision(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
-                    } else {
-                        tiles.add(new Tile(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
+                    if(part.isEmpty()){
+                        xx += 1;
+                        xx %= 2;
+                        if(xx == 1){
+                            x += 1;
+                        }
+                        continue;
                     }
+                    var num = Integer.parseInt(part);
+                    if(num >= 2 && num != 11){
+                        tiles.add(Tile.with_collision(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
+                    } else if(num==11){
+                        var tile = new Tile(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y);
+                        // System.out.println("Setting!!");
+                        tile.teleporter = Optional.of(new Point(10, 10));
+                        // System.out.println(tile.teleporter);
+                        tiles.add(tile);
+                    }
+                    else {
+                        tiles.add(new Tile(num, GamePanel.TILE_SIZE * x, GamePanel.TILE_SIZE * y));
+                    }   
+
+                    
+                    
                     
                     x += 1;
                 }
