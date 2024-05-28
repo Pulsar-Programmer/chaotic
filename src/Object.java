@@ -3,7 +3,7 @@ import java.awt.Rectangle;
 
 public class Object {
     public int image;
-    public String name;
+    public String name;b
     public boolean has_collision = false;
     public int world_x, world_y;
     public Rectangle solidArea = new Rectangle(0, 0, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);

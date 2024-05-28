@@ -9,6 +9,10 @@ import javax.imageio.ImageIO;
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
+    
+    // private int defense;
+    // private int offense;
+    // private double health;
 
     public final int screen_x, screen_y;
 
