@@ -28,6 +28,9 @@ public class Monster extends Entity {
     public void update(){
         var vel_x = 0;
         var vel_y = 0;
+
+        
+
         if(vel_x != 0 || vel_y != 0){
             spriteCounter += 1;
             if(spriteCounter > 10){

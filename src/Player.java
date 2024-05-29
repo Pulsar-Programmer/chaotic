@@ -26,9 +26,6 @@ public class Player extends Entity {
 
         solidArea = new Rectangle(8, 16, 32, 32);
 
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
-
         setDefaultValues();
         getPlayerImage();
     }
@@ -37,9 +34,9 @@ public class Player extends Entity {
         world_x = 100;
         world_y = 100;
         speed = 4;
-        // speed = 20;
-        direction = down;
-        health = 5;
+        direction = DOWN;
+        maxHealth = 10;
+        health = maxHealth;
     }
 
     public void update(){
@@ -48,24 +45,24 @@ public class Player extends Entity {
         double vel_y = 0;
 
         if(keyH.upPressed && !gp.collisionChecker.checkUp(this)){
-            direction = up;
+            direction = UP;
             vel_y -= speed;
             timesKeyPressed++;
         }
         if(keyH.downPressed && !gp.collisionChecker.checkDown(this)){
-            direction = down;
+            direction = DOWN;
             vel_y += speed;
             timesKeyPressed++;
 
         }
         if(keyH.leftPressed && !gp.collisionChecker.checkLeft(this)){
-            direction = left;
+            direction = LEFT;
             vel_x -= speed;
             timesKeyPressed++;
 
         }
         if(keyH.rightPressed && !gp.collisionChecker.checkRight(this)){
-            direction = right;
+            direction = RIGHT;
             vel_x += speed;
             timesKeyPressed++;
 
@@ -101,11 +98,8 @@ public class Player extends Entity {
         
     }
     public void draw(Graphics2D g2){
-        // g2.setColor(Color.white);
-        // g2.fillRect(x, y, gp.tileSize, gp.tileSize);
         BufferedImage image = entity_sprites.get(direction + spriteNum);
         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
-        // g2.setColor(Color.blue);
     }
 
     public void getPlayerImage(){
@@ -118,7 +112,6 @@ public class Player extends Entity {
             entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
             entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
             entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
-
         } catch (Exception e) {
             e.printStackTrace();
         }

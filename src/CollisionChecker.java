@@ -1,4 +1,5 @@
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -112,5 +113,33 @@ public class CollisionChecker {
             var p = tile.teleporter.get();
             gp.player.teleport_player(p.x, p.y);
         }
+    }
+
+    public static int check_entities(Entity entity, ArrayList<Entity> entities){
+        int index = -1;
+
+        for(var i = 0; i < entities.size(); i++){
+
+            var entity_rect = new Rectangle();
+            var creature_rect = new Rectangle();
+
+            entity_rect.x = entity.world_x + entity.solidArea.x;
+            entity_rect.y = entity.world_y + entity.solidArea.y;
+            entity_rect.width = entity.solidArea.width;
+            entity_rect.height = entity.solidArea.height;
+
+            var creature = entities.get(i);
+            creature_rect.x = creature.world_x + creature.solidArea.x;
+            creature_rect.y = creature.world_y + creature.solidArea.y;
+            creature_rect.width = creature.solidArea.width;
+            creature_rect.height = creature.solidArea.height;
+
+            if(entity_rect.intersects(creature_rect)){
+                index = i;
+            }
+
+        }
+
+        return index;
     }
 }
