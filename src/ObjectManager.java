@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class ObjectManager {
-    BufferedImage[] sprites;
+    BufferedImage[][] sprites;
     ArrayList<Object> objects;
 
     public ObjectManager(){
@@ -15,11 +15,11 @@ public class ObjectManager {
     }
 
     public void setupSprites(){
-        sprites = new BufferedImage[3];
+        sprites = new BufferedImage[3][3];
         try {
-            sprites[0] = ImageIO.read(new File("res/player/walk/boy_down_1.png"));
-            sprites[1] = ImageIO.read(new File("res/tiles/blue/door/north_closed.png"));
-            sprites[2] = ImageIO.read(new File("res/tiles/placeholder/Light.png"));
+            //key
+            sprites[0][0] = ImageIO.read(new File("res/player/walk/boy_down_1.png"));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,7 +32,7 @@ public class ObjectManager {
     }
 
     public void setupObjects(){
-        objects.add(Object.key(32*5, 32*12));
-        objects.add(Object.door(32*10, 32*10));
+        // objects.add(Object.key(32*5, 32*12));
+        // objects.add(Object.door(32*10, 32*10));
     }
 }

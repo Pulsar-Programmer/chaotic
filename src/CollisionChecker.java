@@ -80,7 +80,7 @@ public class CollisionChecker {
         return tile4.has_collision || tile2.has_collision;
     }
 
-    public int checkObject(Entity entity, boolean is_player){
+    public int checkObject(Entity entity){
         int index = -1;
 
         for(var i = 0; i < gp.objectManager.objects.size(); i++){
@@ -115,7 +115,7 @@ public class CollisionChecker {
         }
     }
 
-    public static int check_entities(Entity entity, ArrayList<Entity> entities){
+    public static int check_monsters(Entity entity, ArrayList<Monster> entities){
         int index = -1;
 
         for(var i = 0; i < entities.size(); i++){

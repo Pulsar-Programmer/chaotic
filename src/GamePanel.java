@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         objectManager.setupObjects();
+        monsterManager.setup_monsters();
     }
 
     @Override
@@ -148,9 +149,9 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
 
         if(gameState == PLAY){
-            monsterManager.draw(g2, this);
             tileManager.draw(g2);
             objectManager.draw(g2, this);
+            monsterManager.draw(g2, this);
             player.draw(g2);
         }
         else if(gameState == PAUSE){

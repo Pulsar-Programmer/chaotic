@@ -1,3 +1,4 @@
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -17,6 +18,8 @@ public class Player extends Entity {
     // public int health;
 
     public final int screen_x, screen_y;
+    public int invicibility_counter = 60;
+    public boolean invincible = false;
 
     public Player(GamePanel gp, KeyHandler kh){
         this.gp = gp;
@@ -68,13 +71,16 @@ public class Player extends Entity {
 
         }
 
-        int obj_index = gp.collisionChecker.checkObject(this, true);
+        int obj_index = gp.collisionChecker.checkObject(this);
         if(obj_index != -1){
             var obj = gp.objectManager.objects.get(obj_index);
-            if(obj.has_collision){
-                return;
-            }
             evaluate_object(obj);
+        }
+
+        int ent_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
+        if(ent_index != -1){
+            var ent = gp.monsterManager.monsters.get(ent_index);
+            evaluate_monster(ent);
         }
 
 
@@ -95,11 +101,23 @@ public class Player extends Entity {
             world_x += (vel_x*Math.sqrt(2)/2);
             world_y += vel_y*Math.sqrt(2)/2;
         }
+
+        if(invincible){
+            invicibility_counter -= 1;
+            if(invicibility_counter <= 0){
+                invincible = false;
+                invicibility_counter = 60;
+            }
+        }
         
     }
     public void draw(Graphics2D g2){
         BufferedImage image = entity_sprites.get(direction + spriteNum);
+        if(invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+        }
         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
     public void getPlayerImage(){
@@ -118,7 +136,7 @@ public class Player extends Entity {
     }
 
     public void evaluate_object(Object obj){
-        if(obj.name == "Key"){
+        if(obj.name.equals("Key")){
             gp.objectManager.objects.remove(obj);
         }
     }
@@ -126,5 +144,12 @@ public class Player extends Entity {
     public void teleport_player(int to_x, int to_y){
         world_x = to_x * GamePanel.TILE_SIZE;
         world_y = to_y * GamePanel.TILE_SIZE;
+    }
+
+    public void evaluate_monster(Monster monster){
+        if(monster.name.equals("Skeleton") && !invincible){
+            health = Math.max(0, health - 1);
+            invincible = true;
+        }
     }
 }
