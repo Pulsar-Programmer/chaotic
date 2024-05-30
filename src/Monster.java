@@ -76,12 +76,16 @@ public class Monster extends Entity {
         }
     }
 
-    public void update(){
+    public void update(GamePanel gp){
         vel_x = 0;
         vel_y = 0;
 
         if(name.equals("Skeleton")){
             patrol_behavior(100, 100, 400, 200, 20);
+        }
+        if(name.equals("Turret")){
+            patrol_behavior(200, 200, 300, 300, 60);
+            shoot_projectile(gp);
         }
 
         world_x += vel_x;
@@ -132,6 +136,11 @@ public class Monster extends Entity {
     public void damage_reaction(int player_direction){
         // speed += 2;
         direction = player_direction;
+    }
+
+    public void shoot_projectile(GamePanel gp){
+        var fireball = Projectile.fireball(world_x, world_y, direction);
+        gp.projectileManager.projectiles.add(fireball);
     }
 
 }

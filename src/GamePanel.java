@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     MonsterManager monsterManager = new MonsterManager();
     ProjectileManager projectileManager = new ProjectileManager();
     
-    public int gameState = DEATH;
+    public int gameState = TITLE;
     public final static int TITLE = -1;
     public final static int PLAY = 0;
     public final static int PAUSE = 1;
@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         if(gameState == PLAY){
             player.update();
-            monsterManager.update();
+            monsterManager.update(this);
             projectileManager.update(this);
         }
         else if(gameState == PAUSE){

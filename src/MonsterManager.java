@@ -42,11 +42,11 @@ public class MonsterManager {
         }
     }
 
-    public void update(){
+    public void update(GamePanel gp){
         Monster dead = null;
         for(var elem : monsters){
             if(!elem.alive) dead = elem;
-            elem.update();
+            elem.update(gp);
         }
         monsters.remove(dead);
     }
