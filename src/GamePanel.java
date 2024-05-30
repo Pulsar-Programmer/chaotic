@@ -7,19 +7,19 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
-    static final int originalTileSize = 16;
-    static final int scale = 3;
-
-    public static final int TILE_SIZE = originalTileSize * scale;
+    public static final int ORIGINAL_TILE_SIZE = 16;
+    public static final int SCALE = 3;
+    public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
     public static final int maxScreenCol = 16;
     public static final int maxScreenRow = 12;
     public static final int screenWidth = TILE_SIZE * maxScreenCol;
     public static final int screenHeight = TILE_SIZE * maxScreenRow;
     
-    final static int FPS = 60;
+    public final static int FPS = 60;
 
     TileManager tileManager = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
+    MouseHandler mouseHandler = new MouseHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
     CollisionChecker collisionChecker = new CollisionChecker(this);

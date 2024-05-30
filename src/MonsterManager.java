@@ -1,3 +1,4 @@
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -41,8 +42,15 @@ public class MonsterManager {
     }
 
     public void update(){
+        Monster dead = null;
         for(var elem : monsters){
+            if(elem.health == 0){
+                dead = elem;
+            }
             elem.update();
+        }
+        if(dead != null){
+            monsters.remove(dead);
         }
     }
 
@@ -50,7 +58,11 @@ public class MonsterManager {
         for(var monsta : monsters){
             // System.out.println(monsta.world_x);
             // System.out.println(monsta.direction + monsta.spriteNum);
+            if(monsta.invincible){
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+            }
             gp.screen_draw(monster_sprites.get(monsta.sprite).get(monsta.direction + monsta.spriteNum), monsta.world_x, monsta.world_y, g2d);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
 

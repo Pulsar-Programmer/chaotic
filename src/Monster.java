@@ -5,6 +5,8 @@ public class Monster extends Entity {
     public int sprite;
     public int maxSpriteNum = 0;
     public int vel_x, vel_y;
+    public int invicibility_counter = 60;
+    public boolean invincible = false;
     // public int behavior = 0;
 
     public Monster(){
@@ -64,6 +66,21 @@ public class Monster extends Entity {
                 spriteNum %= (maxSpriteNum + 1);
                 spriteCounter = 0;
             }
+        }
+
+        if(invincible){
+            invicibility_counter -= 1;
+            if(invicibility_counter <= 0){
+                invincible = false;
+                invicibility_counter = 60;
+            }
+        }
+    }
+
+    public void damageMonster(){
+        if(!invincible){
+            health -= 1;
+            invincible = true;
         }
     }
 

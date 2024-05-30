@@ -11,7 +11,7 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
     
-    public ArrayList<BufferedImage> entity_sprites = new ArrayList<>();
+    public ArrayList<BufferedImage> player_sprites = new ArrayList<>();
     
     // private int defense;
     // private int offense;
@@ -20,6 +20,9 @@ public class Player extends Entity {
     public final int screen_x, screen_y;
     public int invicibility_counter = 60;
     public boolean invincible = false;
+    public boolean attacking = false;
+    public int attackCounter = 0;
+    public int attackSpriteNum = 0;
 
     public Player(GamePanel gp, KeyHandler kh){
         this.gp = gp;
@@ -28,6 +31,8 @@ public class Player extends Entity {
         screen_y = GamePanel.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
 
         solidArea = new Rectangle(8, 16, 32, 32);
+        attackArea.width = 36;
+        attackArea.height = 36;
 
         setDefaultValues();
         getPlayerImage();
@@ -46,6 +51,14 @@ public class Player extends Entity {
         int timesKeyPressed = 0;
         double vel_x = 0;
         double vel_y = 0;
+
+        if(keyH.attackHit){
+            attacking = true;
+            keyH.attackHit = false;
+            return;
+        }
+        if(attacking) attack();
+
 
         if(keyH.upPressed && !gp.collisionChecker.checkUp(this)){
             direction = UP;
@@ -112,24 +125,51 @@ public class Player extends Entity {
         
     }
     public void draw(Graphics2D g2){
-        BufferedImage image = entity_sprites.get(direction + spriteNum);
+        int atk = attacking ? 8 + attackSpriteNum : spriteNum;
+        BufferedImage image = player_sprites.get(direction + atk);
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }
-        g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+        if(attacking){
+            if(direction == UP){
+                g2.drawImage(image, screen_x, screen_y - GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
+            }
+            if(direction == LEFT){
+                g2.drawImage(image, screen_x - GamePanel.TILE_SIZE, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
+            }
+            if(direction == RIGHT){
+                g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
+            }
+            if(direction == DOWN){
+                g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
+            }
+        }
+        else{
+            g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+        }
+        
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
     public void getPlayerImage(){
         try {
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_2.png")));
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_1.png")));
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
-            entity_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
+
+            player_sprites.add(App.res("res/player/attack/up_1.png"));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/up_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/down_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/down_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/left_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/left_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/right_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/right_2.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,6 +190,58 @@ public class Player extends Entity {
         if(monster.name.equals("Skeleton") && !invincible){
             health = Math.max(0, health - 1);
             invincible = true;
+        }
+    }
+    
+    public void attack(){
+        attackCounter += 1;
+        if(attackCounter <= 10){
+            attackSpriteNum = 0;
+        }
+        else if(attackCounter <= 25){
+            attackSpriteNum = 1;
+
+            int current_world_x = world_x;
+            int current_world_y = world_y;
+            int current_solid_area_width = solidArea.width;
+            int current_solid_area_height = solidArea.height;
+
+            if(direction == UP){
+                world_y -= attackArea.height;
+            } else if(direction == DOWN){
+                world_y += attackArea.height;
+            } else if(direction == LEFT){
+                world_y -= attackArea.width;
+            } else if(direction == RIGHT){
+                world_y += attackArea.width;
+            }
+
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            int m_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
+            if(m_index != -1){
+                gp.monsterManager.monsters.get(m_index).damageMonster();
+            }
+
+            world_x = current_world_x;
+            world_y = current_world_y;
+            solidArea.width = current_solid_area_width;
+            solidArea.height = current_solid_area_height;
+            
+
+
+
+
+
+
+
+
+        }
+        if(attackCounter > 25){
+            attackSpriteNum = 0;
+            attackCounter = 0;
+            attacking = false;
         }
     }
 }
