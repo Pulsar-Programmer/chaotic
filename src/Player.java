@@ -79,7 +79,7 @@ public class Player extends Entity {
             keyH.attackHit = false;
             return;
         }
-        if(attacking) attack();
+        if(attacking) attack_animation();
 
 
         if(keyH.upPressed && !gp.collisionChecker.checkUp(this)){
@@ -191,7 +191,7 @@ public class Player extends Entity {
         }
     }
     
-    public void attack(){
+    public void attack_animation(){
         attack_animation.frame_counter += 1;
         if(attack_animation.frame_counter <= 10){
             attack_animation.sprite_num = 0;
@@ -209,9 +209,9 @@ public class Player extends Entity {
             } else if(direction == DOWN){
                 world_y += attackArea.height;
             } else if(direction == LEFT){
-                world_y -= attackArea.width;
+                world_x -= attackArea.width;
             } else if(direction == RIGHT){
-                world_y += attackArea.width;
+                world_x += attackArea.width;
             }
 
             solidArea.width = attackArea.width;
@@ -219,7 +219,7 @@ public class Player extends Entity {
 
             int m_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
             if(m_index != -1){
-                gp.monsterManager.monsters.get(m_index).damageMonster();
+                gp.monsterManager.monsters.get(m_index).damage_monster(direction);
             }
 
             world_x = current_world_x;

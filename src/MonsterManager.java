@@ -1,4 +1,5 @@
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -44,14 +45,10 @@ public class MonsterManager {
     public void update(){
         Monster dead = null;
         for(var elem : monsters){
-            if(elem.health == 0){
-                dead = elem;
-            }
+            if(!elem.alive) dead = elem;
             elem.update();
         }
-        if(dead != null){
-            monsters.remove(dead);
-        }
+        monsters.remove(dead);
     }
 
     public void draw(Graphics2D g2d, GamePanel gp){
@@ -61,7 +58,45 @@ public class MonsterManager {
             if(monsta.invincible){
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
             }
-            gp.screen_draw(monster_sprites.get(monsta.sprite).get(monsta.direction + monsta.walking.sprite_num), monsta.world_x, monsta.world_y, g2d);
+
+            //DRAW MONSTA
+            var sprite = monster_sprites.get(monsta.sprite).get(monsta.direction + monsta.walking.sprite_num);
+
+            var world_x = monsta.world_x;
+            var world_y = monsta.world_y;
+
+            int screen_x = world_x - gp.player.world_x + gp.player.screen_x;
+            int screen_y = world_y - gp.player.world_y + gp.player.screen_y;
+            
+            if(world_x + GamePanel.TILE_SIZE > gp.player.world_x - gp.player.screen_x &&
+                world_x - GamePanel.TILE_SIZE < gp.player.world_x + gp.player.screen_x &&
+                world_y + GamePanel.TILE_SIZE > gp.player.world_y - gp.player.screen_y &&
+                world_y - GamePanel.TILE_SIZE < gp.player.world_y + gp.player.screen_y
+            ){
+                g2d.drawImage(sprite, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+            }
+            
+
+
+            //DRAW HEALTHBAR
+            if(monsta.hp_bar_on){
+                var progression = monsta.health * (GamePanel.TILE_SIZE) / (double)(monsta.maxHealth);
+    
+                g2d.setColor(new Color(35, 35, 35));
+                g2d.fillRect(screen_x, screen_y - 15, GamePanel.TILE_SIZE, 6);
+                g2d.setColor(new Color(255, 0, 30));
+                g2d.fillRect(screen_x, screen_y - 15, (int)progression, 6);
+
+                monsta.hp_counter += 1;
+                if(monsta.hp_counter >= 300){
+                    monsta.hp_bar_on = false;
+                    monsta.hp_counter = 0;
+                }
+            }
+
+            if(monsta.dying){
+                monsta.dying_animation(g2d);
+            }
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }

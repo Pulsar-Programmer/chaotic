@@ -1,3 +1,4 @@
+import java.awt.Graphics2D;
 
 public class Monster extends Entity {
     
@@ -11,6 +12,9 @@ public class Monster extends Entity {
     public boolean is_waiting = false;
     // public int behavior = 0;
 
+    public boolean hp_bar_on = false;
+    public int hp_counter = 0;
+
     public Monster(){
         world_x = 100;
         world_y = 100;
@@ -23,7 +27,7 @@ public class Monster extends Entity {
         var mon = new Monster();
         mon.name = "Skeleton";
         mon.sprite = 0;
-        mon.speed = 1;
+        mon.speed = 4;
         mon.maxHealth = 4;
         mon.health = mon.maxHealth;
         mon.maxSpriteNum = 1;
@@ -77,7 +81,7 @@ public class Monster extends Entity {
         vel_y = 0;
 
         if(name.equals("Skeleton")){
-            patrol_behavior(100, 100, 200, 200, 60);
+            patrol_behavior(100, 100, 400, 200, 20);
         }
 
         world_x += vel_x;
@@ -102,11 +106,32 @@ public class Monster extends Entity {
         }
     }
 
-    public void damageMonster(){
+    public void damage_monster(int player_direction){
         if(!invincible){
             health -= 1;
             invincible = true;
+            hp_bar_on = true;
+            hp_counter = 0;
+            if(health == 0){
+                dying = true;
+            }
+            damage_reaction(player_direction);
         }
+    }
+
+    public void dying_animation(Graphics2D g2d){
+        dyingCounter += 1;
+        // g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - (dyingCounter)/100f));
+        //enter implementation here
+        if(dyingCounter == 100){
+            dying = false;
+            alive = false;
+        }
+    }
+
+    public void damage_reaction(int player_direction){
+        // speed += 2;
+        direction = player_direction;
     }
 
 }
