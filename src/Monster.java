@@ -7,11 +7,13 @@ public class Monster extends Entity {
     public int vel_x, vel_y;
     public int invicibility_counter = 60;
     public boolean invincible = false;
+    public int waiting = 0;
+    public boolean is_waiting = false;
     // public int behavior = 0;
 
     public Monster(){
-        world_x = 0;
-        world_y = 0;
+        world_x = 100;
+        world_y = 100;
         sprite = 0;
         name = "";
         walking = new Animation();
@@ -28,31 +30,54 @@ public class Monster extends Entity {
         return mon;
     }
     //we need a patrol behavior
-    public void skeleton_behavior(){
-        if(world_x >= 100){
-            vel_x -= speed;
-            // vel_y -= speed;
-            direction = LEFT;
+    public void patrol_behavior(int low_x, int low_y, int high_x, int high_y, int wait_time){
+        
+        if(is_waiting){
+            waiting -= 1;
+            if(waiting <= 0){
+                waiting = wait_time;
+                is_waiting = false;
+            }
+            return;
         }
-        else if(world_x <= 0){
-            vel_x += speed;
-            // vel_y += speed;
-            direction = RIGHT;
-        }
-        else if(world_y >= 100){
+
+        if(direction == UP){
             vel_y -= speed;
-            direction = UP;
         }
-        else if(world_y <= 0){
+        if(direction == DOWN){
             vel_y += speed;
+        }
+        if(direction == LEFT){
+            vel_x -= speed;
+        }
+        if(direction == RIGHT){
+            vel_x += speed;
+        }
+
+        if(direction == UP && world_y <= low_y){
+            direction = RIGHT;
+            is_waiting = true;
+        }
+        if(direction == RIGHT && world_x >= high_x){
             direction = DOWN;
+            is_waiting = true;
+        }
+        if(direction == DOWN && world_y >= high_y){
+            direction = LEFT;
+            is_waiting = true;
+        }
+        if(direction == LEFT && world_x <= low_x){
+            direction = UP;
+            is_waiting = true;
         }
     }
 
     public void update(){
+        vel_x = 0;
+        vel_y = 0;
 
         if(name.equals("Skeleton")){
-            skeleton_behavior();
+            patrol_behavior(100, 100, 200, 200, 60);
         }
 
         world_x += vel_x;
