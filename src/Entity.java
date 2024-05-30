@@ -12,8 +12,7 @@ public abstract class Entity {
     public final static int LEFT = 4;
     public final static int RIGHT = 6;
 
-    public int spriteCounter = 0;
-    public int spriteNum = 0;
+    public Animation walking;
 
     public int maxHealth = 10;
     public int health = 0;

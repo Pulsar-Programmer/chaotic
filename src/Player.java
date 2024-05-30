@@ -21,8 +21,7 @@ public class Player extends Entity {
     public int invicibility_counter = 60;
     public boolean invincible = false;
     public boolean attacking = false;
-    public int attackCounter = 0;
-    public int attackSpriteNum = 0;
+    public Animation attack_animation = new Animation();
 
     public Player(GamePanel gp, KeyHandler kh){
         this.gp = gp;
@@ -34,17 +33,40 @@ public class Player extends Entity {
         attackArea.width = 36;
         attackArea.height = 36;
 
-        setDefaultValues();
-        getPlayerImage();
-    }
+        walking = new Animation();
 
-    public void setDefaultValues(){
         world_x = 100;
         world_y = 100;
         speed = 4;
         direction = DOWN;
         maxHealth = 10;
         health = maxHealth;
+
+        getPlayerImage();
+    }
+
+    public void getPlayerImage(){
+        try {
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
+
+            player_sprites.add(App.res("res/player/attack/up_1.png"));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/up_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/down_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/down_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/left_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/left_2.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/right_1.png")));
+            player_sprites.add(ImageIO.read(new File("res/player/attack/right_2.png")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void update(){
@@ -98,11 +120,11 @@ public class Player extends Entity {
 
 
         if(vel_x != 0 || vel_y != 0){
-            spriteCounter += 1;
-            if(spriteCounter > 10){
-                spriteNum += 1;
-                spriteNum %= 2;
-                spriteCounter = 0;
+            walking.frame_counter += 1;
+            if(walking.frame_counter > 10){
+                walking.sprite_num += 1;
+                walking.sprite_num %= 2;
+                walking.frame_counter = 0;
             }
         }
         if(timesKeyPressed<=1){
@@ -125,8 +147,8 @@ public class Player extends Entity {
         
     }
     public void draw(Graphics2D g2){
-        int atk = attacking ? 8 + attackSpriteNum : spriteNum;
-        BufferedImage image = player_sprites.get(direction + atk);
+        int num = attacking ? 8 + attack_animation.sprite_num : walking.sprite_num;
+        BufferedImage image = player_sprites.get(direction + num);
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }
@@ -151,30 +173,6 @@ public class Player extends Entity {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
-    public void getPlayerImage(){
-        try {
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
-
-            player_sprites.add(App.res("res/player/attack/up_1.png"));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/up_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/down_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/down_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/left_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/left_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/right_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/right_2.png")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void evaluate_object(Object obj){
         if(obj.name.equals("Key")){
             gp.objectManager.objects.remove(obj);
@@ -194,12 +192,12 @@ public class Player extends Entity {
     }
     
     public void attack(){
-        attackCounter += 1;
-        if(attackCounter <= 10){
-            attackSpriteNum = 0;
+        attack_animation.frame_counter += 1;
+        if(attack_animation.frame_counter <= 10){
+            attack_animation.sprite_num = 0;
         }
-        else if(attackCounter <= 25){
-            attackSpriteNum = 1;
+        else if(attack_animation.frame_counter <= 25){
+            attack_animation.sprite_num = 1;
 
             int current_world_x = world_x;
             int current_world_y = world_y;
@@ -228,19 +226,10 @@ public class Player extends Entity {
             world_y = current_world_y;
             solidArea.width = current_solid_area_width;
             solidArea.height = current_solid_area_height;
-            
-
-
-
-
-
-
-
-
         }
-        if(attackCounter > 25){
-            attackSpriteNum = 0;
-            attackCounter = 0;
+        if(attack_animation.frame_counter > 25){
+            attack_animation.sprite_num = 0;
+            attack_animation.frame_counter = 0;
             attacking = false;
         }
     }

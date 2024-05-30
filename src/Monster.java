@@ -12,9 +12,9 @@ public class Monster extends Entity {
     public Monster(){
         world_x = 0;
         world_y = 0;
-        spriteNum = 0;
         sprite = 0;
         name = "";
+        walking = new Animation();
     }
 
     public static Monster skeleton(){
@@ -60,11 +60,11 @@ public class Monster extends Entity {
         
 
         if(vel_x != 0 || vel_y != 0){
-            spriteCounter += 1;
-            if(spriteCounter > 10){
-                spriteNum += 1;
-                spriteNum %= (maxSpriteNum + 1);
-                spriteCounter = 0;
+            walking.frame_counter += 1;
+            if(walking.frame_counter > 10){
+                walking.sprite_num += 1;
+                walking.sprite_num %= (maxSpriteNum + 1);
+                walking.frame_counter = 0;
             }
         }
 

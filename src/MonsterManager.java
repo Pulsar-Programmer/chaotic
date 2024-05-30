@@ -61,7 +61,7 @@ public class MonsterManager {
             if(monsta.invincible){
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
             }
-            gp.screen_draw(monster_sprites.get(monsta.sprite).get(monsta.direction + monsta.spriteNum), monsta.world_x, monsta.world_y, g2d);
+            gp.screen_draw(monster_sprites.get(monsta.sprite).get(monsta.direction + monsta.walking.sprite_num), monsta.world_x, monsta.world_y, g2d);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
