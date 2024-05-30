@@ -10,6 +10,7 @@ public class Monster extends Entity {
     public boolean invincible = false;
     public int waiting = 0;
     public boolean is_waiting = false;
+    // public 
     // public int behavior = 0;
 
     public boolean hp_bar_on = false;
@@ -85,7 +86,10 @@ public class Monster extends Entity {
         }
         if(name.equals("Turret")){
             patrol_behavior(200, 200, 300, 300, 60);
-            shoot_projectile(gp);
+            if(is_waiting){
+                shoot_projectile(gp);
+            }
+            // shoot_projectile(gp);
         }
 
         world_x += vel_x;

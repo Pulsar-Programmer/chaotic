@@ -103,6 +103,9 @@ public class MonsterManager {
 
     public void setup_monsters(){
         monsters.add(Monster.skeleton());
+        var monsta = Monster.skeleton();
+        monsta.name = "Turret";
+        monsters.add(monsta);
     }
 
 }

@@ -142,4 +142,21 @@ public class CollisionChecker {
 
         return index;
     }
+
+    public static boolean check_collision(Entity entity, Entity creature){
+        var entity_rect = new Rectangle();
+        var creature_rect = new Rectangle();
+
+        entity_rect.x = entity.world_x + entity.solidArea.x;
+        entity_rect.y = entity.world_y + entity.solidArea.y;
+        entity_rect.width = entity.solidArea.width;
+        entity_rect.height = entity.solidArea.height;
+
+        creature_rect.x = creature.world_x + creature.solidArea.x;
+        creature_rect.y = creature.world_y + creature.solidArea.y;
+        creature_rect.width = creature.solidArea.width;
+        creature_rect.height = creature.solidArea.height;
+
+        return entity_rect.intersects(creature_rect);
+    }
 }

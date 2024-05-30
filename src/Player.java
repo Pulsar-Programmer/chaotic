@@ -154,7 +154,10 @@ public class Player extends Entity {
 
         if(shot_counter < 30){
             shot_counter += 1;
-            
+        }
+
+        if(health<=0){
+            gp.gameState = GamePanel.DEATH;
         }
     }
     public void draw(Graphics2D g2){
@@ -198,12 +201,17 @@ public class Player extends Entity {
     public void evaluate_monster(Monster monster){
         if(monster.name.equals("Skeleton") && !invincible){
             health = Math.max(0, health - 1);
-            if(health<=0){
-         gp.gameState = GamePanel.DEATH;
-            }
             invincible = true;
         }
     }
+
+    public void hurt_player(){
+        if(!invincible){
+            health = Math.max(health - 1, 0);
+            invincible = true;
+        }
+    }
+    
     
     public void attack_animation(){
         attack_animation.frame_counter += 1;

@@ -185,9 +185,9 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == PLAY){
             tileManager.draw(g2, player);
             objectManager.draw(g2, this);
+            projectileManager.draw(g2, this);
             monsterManager.draw(g2, this);
             player.draw(g2);
-            projectileManager.draw(g2, this);
         }
         else if(gameState == PAUSE){
             // guiManager.drawPauseScreen(g2);
