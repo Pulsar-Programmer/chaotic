@@ -11,7 +11,7 @@ public class GUIManager {
 
     ArrayList<BufferedImage> sprites;
     private Font font;
-    private GamePanel gp;
+    public GamePanel gp;
     public int commandNum = 0;
 
     public GUIManager(GamePanel gp){
@@ -43,7 +43,12 @@ public class GUIManager {
     public void draw(Graphics2D g2){
 
         g2.setFont(font);
-        
+        if(gp.gameState==GamePanel.DEATH){
+            deathScreen(g2);
+        }
+        else if(gp.gameState==GamePanel.END){
+            drawEndScreen(g2);
+        }
         if(gp.gameState == GamePanel.TITLE){
             drawTitleScreen(g2);
             // System.out.println("gagins");
@@ -117,6 +122,49 @@ public class GUIManager {
             g2d.drawString("->",x-50,y);
         }
     }
+public void drawEndScreen(Graphics2D g2d){
+    g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 192F));
+    String text = "Chaotic";
+      g2d.setColor(Color.BLUE);
+    int x = getXforCT(text, g2d);
+    int y = GamePanel.TILE_SIZE * 5;
+    g2d.drawString(text, x+10,y+10);
+    g2d.setColor(Color.WHITE);
+    g2d.drawString(text,x,y);
+    
+
+    
+}
+public void deathScreen(Graphics2D g2d){
+    g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 96F));
+    String text = "Death Unto Soul.";
+      g2d.setColor(Color.BLUE);
+    int x = getXforCT(text, g2d);
+    int y = GamePanel.TILE_SIZE * 5;
+    g2d.drawString(text, x+10,y+10);
+    g2d.setColor(Color.WHITE);
+    g2d.drawString(text,x,y);
+    g2d.drawString(text, x+10,y+10);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString(text,x,y);
+        g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 48F));
+        text = "A Voice Calls Out...";
+        y += GamePanel.TILE_SIZE*4;
+        g2d.drawString(text,x,y);
+
+        if(commandNum==0){
+            g2d.drawString("->",x-50,y);
+        }
+
+        text = "Give Up.";
+        y += GamePanel.TILE_SIZE;
+        g2d.drawString(text,x,y);
+
+        if(commandNum==1){
+            g2d.drawString("->",x-50,y);
+        }
+    }
+    
 
     public void drawTitleScreen(Graphics2D g2d){
         g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 96F));

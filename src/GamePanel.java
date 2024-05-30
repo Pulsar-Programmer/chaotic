@@ -27,11 +27,13 @@ public class GamePanel extends JPanel implements Runnable {
     ObjectManager objectManager = new ObjectManager();
     MonsterManager monsterManager = new MonsterManager();
     
-    public int gameState = TITLE;
+    public int gameState = DEATH;
     public final static int TITLE = -1;
     public final static int PLAY = 0;
     public final static int PAUSE = 1;
     public final static int CLASS_SELECTION = -2;
+    public final static int DEATH = 2;
+    public final static int END = 3;
 
     public int mapNum = 0;
 
@@ -84,7 +86,37 @@ public class GamePanel extends JPanel implements Runnable {
         }
         else if(gameState == PAUSE){
             
-        } else if(gameState == TITLE){
+        } 
+        else if (gameState == END){
+        }
+        else if(gameState==DEATH){
+            if(keyH.upHit){
+                guiManager.commandNum = (guiManager.commandNum + 1) % 2;
+                keyH.upHit = false;
+            }
+            if(keyH.downHit){
+                guiManager.commandNum = (guiManager.commandNum + 1) % 2;
+                keyH.downHit = false;
+            }
+            if(keyH.startHit){
+                if(guiManager.commandNum==0){
+                    gameState = PLAY;
+                    player.health=player.maxHealth;
+                  
+
+
+                  // guiManager = new GUIManager(a);
+                   //player = new Player(a, new KeyHandler());
+                    guiManager.commandNum=0;
+                    GamePanel a = new GamePanel();
+                }
+                else if(guiManager.commandNum==1){
+                    System.exit(0);
+                }
+                keyH.startHit = false;
+            }
+        }
+        else if(gameState == TITLE){
             if(keyH.upHit){
                 guiManager.commandNum = (guiManager.commandNum + 1) % 2;
                 keyH.upHit = false;
