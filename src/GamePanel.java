@@ -17,7 +17,7 @@ public class GamePanel extends JPanel implements Runnable {
     
     public final static int FPS = 60;
 
-    TileManager tileManager = new TileManager(this);
+    TileManager tileManager = new TileManager();
     KeyHandler keyH = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler();
     Thread gameThread;
@@ -149,7 +149,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
 
         if(gameState == PLAY){
-            tileManager.draw(g2);
+            tileManager.draw(g2, player);
             objectManager.draw(g2, this);
             monsterManager.draw(g2, this);
             player.draw(g2);
