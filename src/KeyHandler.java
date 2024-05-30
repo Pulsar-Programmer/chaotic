@@ -7,7 +7,7 @@ public class KeyHandler implements KeyListener{
     public boolean pausePressed, attackPressed, specialPressed;
     
     public boolean upHit, downHit;
-    public boolean pauseHit, startHit, attackHit;
+    public boolean pauseHit, startHit, attackHit, specialHit;
     
 
     public KeyHandler() {}
@@ -50,6 +50,9 @@ public class KeyHandler implements KeyListener{
             attackPressed = true;
         }
         if(code == KeyEvent.VK_E){
+            if(!specialPressed){
+                specialHit = true;
+            }
             specialPressed = true;
         }
     }

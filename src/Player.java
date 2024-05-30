@@ -23,6 +23,8 @@ public class Player extends Entity {
     public boolean attacking = false;
     public Animation attack_animation = new Animation();
 
+    public int shot_counter = 0;
+
     public Player(GamePanel gp, KeyHandler kh){
         this.gp = gp;
         keyH = kh;
@@ -118,6 +120,11 @@ public class Player extends Entity {
             evaluate_monster(ent);
         }
 
+        if(keyH.specialHit){
+            shoot_projectile();
+            keyH.specialHit = false;
+        }
+
 
         if(vel_x != 0 || vel_y != 0){
             walking.frame_counter += 1;
@@ -144,7 +151,11 @@ public class Player extends Entity {
                 invicibility_counter = 60;
             }
         }
-        
+
+        if(shot_counter < 30){
+            shot_counter += 1;
+            
+        }
     }
     public void draw(Graphics2D g2){
         int num = attacking ? 8 + attack_animation.sprite_num : walking.sprite_num;
@@ -231,6 +242,15 @@ public class Player extends Entity {
             attack_animation.sprite_num = 0;
             attack_animation.frame_counter = 0;
             attacking = false;
+        }
+    }
+
+    public void shoot_projectile(){
+        if(shot_counter >= 30){
+            var fire = Projectile.fireball(world_x, world_y, direction);
+            fire.origin_player = true;
+            gp.projectileManager.projectiles.add(fire);
+            shot_counter = 0;
         }
     }
 }

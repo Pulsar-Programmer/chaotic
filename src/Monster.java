@@ -108,7 +108,7 @@ public class Monster extends Entity {
 
     public void damage_monster(int player_direction){
         if(!invincible){
-            health -= 1;
+            health = Math.max(health - 1, 0);
             invincible = true;
             hp_bar_on = true;
             hp_counter = 0;
