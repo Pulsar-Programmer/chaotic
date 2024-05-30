@@ -55,7 +55,7 @@ public class TileManager {
     }
     public void loadMap(){
         try {
-            var scanner = new Scanner(new File("res/map.txt"));
+            var scanner = new Scanner(new File("res/arkinmap.txt"));
             int x = 0;
             int y = 0;
 

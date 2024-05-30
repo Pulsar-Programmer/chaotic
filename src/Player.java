@@ -198,6 +198,9 @@ public class Player extends Entity {
     public void evaluate_monster(Monster monster){
         if(monster.name.equals("Skeleton") && !invincible){
             health = Math.max(0, health - 1);
+            if(health<=0){
+         gp.gameState = GamePanel.DEATH;
+            }
             invincible = true;
         }
     }
