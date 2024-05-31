@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame(){
+        tileManager.generate();
         objectManager.setupObjects();
         monsterManager.setup_monsters();
     }

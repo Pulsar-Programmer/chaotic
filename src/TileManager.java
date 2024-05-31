@@ -110,4 +110,7 @@ public class TileManager {
         }
         return val;
     }
+    public void generate(){
+        tiles = MapGenerator.standard_corridor(100, false, 20).getTiles();
+    }
 }

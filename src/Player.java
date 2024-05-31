@@ -24,6 +24,7 @@ public class Player extends Entity {
     public Animation attack_animation = new Animation();
 
     public int shot_counter = 0;
+    public int shot_counter_max = 30;
 
     public Player(GamePanel gp, KeyHandler kh){
         this.gp = gp;
@@ -84,28 +85,33 @@ public class Player extends Entity {
         if(attacking) attack_animation();
 
 
-        if(keyH.upPressed && !gp.collisionChecker.checkUp(this)){
+        if(keyH.upPressed){
             direction = UP;
-            vel_y -= speed;
-            timesKeyPressed++;
+            if(!gp.collisionChecker.checkUp(this)){
+                vel_y -= speed;
+                timesKeyPressed++;
+            }
         }
-        if(keyH.downPressed && !gp.collisionChecker.checkDown(this)){
+        if(keyH.downPressed){
             direction = DOWN;
-            vel_y += speed;
-            timesKeyPressed++;
-
+            if(!gp.collisionChecker.checkDown(this)){
+                vel_y += speed;
+                timesKeyPressed++;
+            }
         }
-        if(keyH.leftPressed && !gp.collisionChecker.checkLeft(this)){
+        if(keyH.leftPressed){
             direction = LEFT;
-            vel_x -= speed;
-            timesKeyPressed++;
-
+            if(!gp.collisionChecker.checkLeft(this)){
+                vel_x -= speed;
+                timesKeyPressed++;
+            }
         }
-        if(keyH.rightPressed && !gp.collisionChecker.checkRight(this)){
+        if(keyH.rightPressed){
             direction = RIGHT;
-            vel_x += speed;
-            timesKeyPressed++;
-
+            if(!gp.collisionChecker.checkRight(this)){
+                vel_x += speed;
+                timesKeyPressed++;
+            }
         }
 
         int obj_index = gp.collisionChecker.checkObject(this);
@@ -152,7 +158,7 @@ public class Player extends Entity {
             }
         }
 
-        if(shot_counter < 30){
+        if(shot_counter < shot_counter_max){
             shot_counter += 1;
         }
 

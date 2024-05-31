@@ -70,6 +70,11 @@ public class GUIManager {
     public void drawGameUI(Graphics2D g2d, Player entity){
         g2d.setColor(Color.red);
         g2d.fillRect(0, 0, 32 * entity.health, 48);
+
+        g2d.setColor(Color.gray);
+        g2d.fillRect(0, 48, 5 * entity.shot_counter_max, 16);
+        g2d.setColor(Color.white);
+        g2d.fillRect(0, 48, 5 * entity.shot_counter, 16);
     }
     
     public void drawPauseScreen(Graphics2D g2d){
@@ -185,7 +190,7 @@ public void deathScreen(Graphics2D g2d){
             g2d.drawString("->",x-50,y);
         }
 
-        text = "Give Up";
+        text = "Quit Game";
         y += GamePanel.TILE_SIZE;
         g2d.drawString(text,x,y);
 
