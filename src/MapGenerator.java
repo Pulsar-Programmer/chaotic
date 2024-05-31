@@ -54,45 +54,43 @@ final class MapGenerator {
         return Map.from_tiles(map);
     }
 
-    public static HashMap<Point, Tile> add_branch(HashMap<Point, Tile> original, HashMap<Point,Tile> branch, Point cut){
-        var translated = new HashMap<Point, Tile>();
-        branch.forEach((p, t)->{
-            var p_2 = new Point(p.x + cut.x, p.y + cut.y);
-            translated.put(p_2, t);
-        });
-        return translated;
+    public static Map generic_room(int dim_x, int dim_y){
+        //TODO
+        return Map.new_map();
     }
 
-    public static HashMap<Point, Tile> generic_room(int dim_x, int dim_y){
+    public static Map puzzle_room(int dim_x, int dim_y){
+        var room = generic_room(dim_x, dim_y);
         //TODO
-        return new HashMap<>();
+        return Map.new_map();
     }
 
-    public static HashMap<Point, Tile> puzzle_room(){
+    public static Map enemy_room(){
         //TODO
-        return new HashMap<>();
+        return Map.new_map();
     }
 
-    public static HashMap<Point, Tile> enemy_room(){
+    public static Map boss_room(){
         //TODO
-        return new HashMap<>();
+        return Map.new_map();
     }
 
-    public static HashMap<Point, Tile> boss_room(){
+    public static Map procedure(){
+
+        boolean placement = gen_range(2) == 1 ? true : false;
+        var first_corridor = MapGenerator.standard_corridor(gen_range(100, 200), placement, gen_range(3, 20));
+        var second_corridor = MapGenerator.standard_corridor(gen_range(30, 70), !placement, gen_range(3, 10));
+        first_corridor.branch(second_corridor, new Point(4, 0));
         //TODO
-        return new HashMap<>();
+        return first_corridor;
     }
-    //* This function was gonna make sure the whole starts at 0, 0, but that is unnecessary with our new tile system.
-    //  */
-    // public static HashMap<Point, Tile> rebase(HashMap<Point, Tile> original){
-    //     var rebased = new HashMap<Point, Tile>();
-    //     //TODO
 
-    //     return rebased;
-    // }
 
-    public static HashMap<Point, Tile> procedure(){
-        //TODO
-        return new HashMap();
+
+    public static int gen_range(int max){
+        return (int)(Math.random() * max);
+    }
+    public static int gen_range(int low, int high){
+        return (int)(Math.random() * (high - low)) + low;
     }
 }
