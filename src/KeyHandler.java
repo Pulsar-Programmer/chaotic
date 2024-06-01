@@ -62,9 +62,11 @@ public class KeyHandler implements KeyListener{
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
             upPressed = false;
+            upHit = false;
         }
         if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
             downPressed = false;
+            downHit = false;
         }
         if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
             leftPressed = false;
@@ -74,12 +76,15 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_P){
             pausePressed = false;
+            pauseHit = false;
         }
         if(code == KeyEvent.VK_Q){
             attackPressed = false;
+            attackHit = false;
         }
         if(code == KeyEvent.VK_E){
             specialPressed = false;
+            specialHit = false;
         }
     }
 

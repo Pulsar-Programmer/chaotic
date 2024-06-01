@@ -110,8 +110,4 @@ public class TileManager {
         }
         return val;
     }
-    public void generate(){
-        // tiles = MapGenerator.procedure().getTiles();
-        tiles = MapGenerator.puzzle_room(20, 20).getTiles();
-    }
 }

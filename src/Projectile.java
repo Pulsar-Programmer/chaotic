@@ -63,6 +63,10 @@ public class Projectile extends Entity {
             alive = false;
         }
 
+        if(gp.collisionChecker.checkUp(this) || gp.collisionChecker.checkDown(this) || gp.collisionChecker.checkLeft(this) || gp.collisionChecker.checkRight(this) ){
+            alive = false;
+        }
+
         // int player = gp.collisionChecker.check_monsters(null, null);
 
         walking.frame_counter += 1;

@@ -30,9 +30,4 @@ public class ObjectManager {
             elem.draw(g2d, gp);
         }
     }
-
-    public void setupObjects(){
-        // objects.add(Object.key(32*5, 32*12));
-        // objects.add(Object.door(32*10, 32*10));
-    }
 }

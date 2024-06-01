@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -27,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     ObjectManager objectManager = new ObjectManager();
     MonsterManager monsterManager = new MonsterManager();
     ProjectileManager projectileManager = new ProjectileManager();
+    Map[] maps = {Map.new_map(), Map.new_map(), Map.new_map()};
     
     public int gameState = TITLE;
     public final static int TITLE = -1;
@@ -53,9 +55,39 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame(){
-        tileManager.generate();
-        objectManager.setupObjects();
-        monsterManager.setup_monsters();
+        // tiles = MapGenerator.procedure().getTiles();
+        var map = Map.new_map();
+        // map.layer(MapGenerator.boss_room(10, 10, 0));
+        // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
+        map = MapGenerator.procedure();
+
+
+        var monsters = map.getMonsters();
+        monsters.add(Monster.skeleton());
+        var monsta = Monster.skeleton();
+        monsta.name = "Turret";
+        monsta.offense = 10;
+        monsta.maxHealth = 20;
+        monsta.health = 20;
+        monsters.add(monsta);
+        var othermonsta = Monster.skeleton();
+        othermonsta.name = "LeSpooké";
+        monsters.add(othermonsta);
+
+        // objects.add(Object.key(32*5, 32*12));
+        // objects.add(Object.door(32*10, 32*10));
+
+        maps[0] = map;
+        // tiles = MapGenerator.puzzle_room(20, 20).getTiles();
+        
+        load_map(0);
+    }
+
+    public void load_map(int map){
+        Map tempMap = maps[map];
+        tileManager.tiles = tempMap.getTiles();
+        objectManager.objects = tempMap.getObjects();
+        monsterManager.monsters = tempMap.getMonsters();
     }
 
     @Override
@@ -104,14 +136,17 @@ public class GamePanel extends JPanel implements Runnable {
             if(keyH.startHit){
                 if(guiManager.commandNum==0){
                     gameState = PLAY;
-                    player.health=player.maxHealth;
-                  
-
-
-                  // guiManager = new GUIManager(a);
-                   //player = new Player(a, new KeyHandler());
-                    guiManager.commandNum=0;
-                    // GamePanel a = new GamePanel();
+                    
+                    if(player.class_type == Player.WIZARD){
+                        player = Player.wizard(this);
+                    } else if(player.class_type == Player.KNIGHT){
+                        player = Player.knight(this);
+                    } else if(player.class_type == Player.ARCHER){
+                        player = Player.archer(this);
+                    } else if(player.class_type == Player.HEALER){
+                        player = Player.healer(this);
+                    }
+                    setupGame();             
                 }
                 else if(guiManager.commandNum==1){
                     System.exit(0);

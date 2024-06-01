@@ -78,6 +78,7 @@ public class Monster extends Entity {
     }
 
     public void update(GamePanel gp){
+        if(dying) return;
         vel_x = 0;
         vel_y = 0;
 

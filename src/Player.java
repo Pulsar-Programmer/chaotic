@@ -24,6 +24,13 @@ public class Player extends Entity {
 
     public int shot_counter = 0;
     public int shot_counter_max = 30;
+
+    public int class_type = 0;
+    public static final int WIZARD = 1;
+    public static final int KNIGHT = 2;
+    public static final int ARCHER = 3;
+    public static final int HEALER = 4;
+
     //TODO: make sure you assign all default values in here and not initially allocated
     public Player(GamePanel gp){
         this.gp = gp;
@@ -73,36 +80,44 @@ public class Player extends Entity {
 
     public static Player wizard(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 10;
-        player.offense = 1;
-        player.defense = 1;
+        player.maxHealth = 500; //used to be 10
+        player.health = player.maxHealth;
+        player.offense = 30;
+        player.defense = 100; //used to be 5
+        player.shot_counter_max = 300;
         //TODO
+        player.class_type = WIZARD;
         return player;
     }
 
     public static Player knight(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 10;
-        player.offense = 1;
-        player.defense = 1;
+        player.maxHealth = 15;
+        player.offense = 6;
+        player.defense = 10;
+        player.class_type = KNIGHT;
         //TODO
         return player;
     }
 
     public static Player archer(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 10;
-        player.offense = 200;
+        player.maxHealth = 12;
+        player.offense = 1;
         player.defense = 1;
+        player.shot_counter_max = 300;
+        player.class_type = ARCHER;
         //TODO
         return player;
     }
 
     public static Player healer(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 10;
+        player.maxHealth = 20;
         player.offense = 1;
-        player.defense = 1;
+        player.defense = 5;
+        player.class_type = HEALER;
+        player.shot_counter_max = 200;
         //TODO
         return player;
     }
@@ -178,10 +193,22 @@ public class Player extends Entity {
         }
 
         if(gp.keyH.specialHit){
-            shoot_projectile();
+            if(class_type == WIZARD){ //potential code to use, if we wanted to do custom bullets per class
+                shootSpecialProjectile();  
+            } else
+            if (class_type == KNIGHT) {
+                knight_projectile();
+            } else
+            if (class_type == ARCHER) {
+                archer_projectile();
+            } else
+            if (class_type == HEALER) {
+                health_projectile();
+            }
+            
+            
             gp.keyH.specialHit = false;
         }
-
 
         if(vel_x != 0 || vel_y != 0){
             walking.frame_counter += 1;
@@ -313,7 +340,7 @@ public class Player extends Entity {
     }
 
     public void shoot_projectile(){
-        if(shot_counter >= 30){
+        if(shot_counter >= shot_counter_max){
             var fire = Projectile.fireball(world_x, world_y, direction);
             fire.origin_player = true;
             fire.offense = offense;
@@ -321,4 +348,43 @@ public class Player extends Entity {
             shot_counter = 0;
         }
     }
+        
+    public void shootSpecialProjectile(){
+        if(shot_counter >= shot_counter_max){
+            for(var i = 0; i < 4; i++){
+                var fire = Projectile.fireball(world_x, world_y, i * 2);
+                fire.origin_player = true;
+                fire.offense = offense;
+                gp.projectileManager.projectiles.add(fire);
+            }
+            shot_counter = 0;
+        }
+    }
+    public void health_projectile(){
+        if(shot_counter >= shot_counter_max){
+            health = Math.min(health + 3, maxHealth);
+            shot_counter = 0;
+        }
+    }
+    public void knight_projectile(){
+        if(shot_counter >= shot_counter_max){
+            
+            //stuff in here
+//what should we do for the knight?
+
+            shot_counter = 0;
+        }
+    }
+    public void archer_projectile(){
+        if(shot_counter >= shot_counter_max){
+            
+            var fire = Projectile.fireball(world_x, world_y, direction);
+            fire.origin_player = true;
+            fire.offense = 5000;
+            gp.projectileManager.projectiles.add(fire);
+
+            shot_counter = 0;
+        }
+    }
+    
 }

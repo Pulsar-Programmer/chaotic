@@ -178,15 +178,37 @@ final class MapGenerator {
 
     public static Map procedure(){
 
-        boolean placement = gen_range(2) == 1 ? true : false;
-        var first_corridor = MapGenerator.standard_corridor(gen_range(100, 200), placement, gen_range(3, 20));
-        var second_corridor = MapGenerator.tight_corridor(gen_range(30, 70), !placement, gen_range(3, 10));
-        first_corridor.branch(second_corridor, new Point(4, 0));
-        //TODO
-        return first_corridor;
-    }
+        // boolean orientation = gen_range(2) == 1 ? true : false; //determines if the first chorodor is up or down
+        // var first_corridor = MapGenerator.standard_corridor(gen_range(100, 200), orientation, gen_range(3, 20));
+        // var second_corridor = MapGenerator.tight_corridor(gen_range(30, 70), !orientation, gen_range(3, 10));
+        // second_corridor.rebase_x();
+        // first_corridor.branch(second_corridor, new Point(0, 0)); //bramch connects two sections, based on a point
+        // first_corridor.rebase_origin(); //reseting
 
-    //puzzles: escape room, tic tac toe, baba is you
+        //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------
+        var room = MapGenerator.generic_room(10, 10); //spawn room
+
+        var top = MapGenerator.standard_corridor(20, false, 3); //top cut premath
+        top.rebase_y();
+
+        var bottom = MapGenerator.standard_corridor(20, false, 3); //bottom cut premath
+        
+        var left = MapGenerator.standard_corridor(20, true, 3); //left cut premath
+        left.rebase_x();
+
+        var right = MapGenerator.standard_corridor(20, true, 3); //right cut premath
+        
+        
+        room.branch(top, new Point(5, 0)); //creating the top cut
+        room.branch(bottom, new Point(5, 10)); //creating the bottom cut
+        room.branch(left, new Point(0, 5)); //creating the left cut
+        room.branch(right, new Point(10, 5)); //creating the right cut
+        room.rebase_origin();
+
+        //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------
+        //ToDo
+        return room;
+    }
 
 
 
