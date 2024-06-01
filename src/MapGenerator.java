@@ -4,10 +4,11 @@ import java.util.HashMap;
 final class MapGenerator {
 
     /** An escape room puzzle. */
-    public static final int ESCAPE_ROOM = 0;
-    public static final int BABA_IS_YOU = 1;
-    public static final int TIC_TAC_TOE = 2;
-    public static final int LOGIC = 3;
+    public static final int ESCAPE_ROOM = 0; //has a key and some other stuff
+    public static final int BABA_IS_YOU = 1; //baba words to move around
+    public static final int TIC_TAC_TOE = 2; //tic tac toe against computer
+    public static final int LOGIC = 3; //electrical components, maybe redstone
+    //some of these rooms will be mandatory
 
 
     // public static Map generate(){
@@ -130,8 +131,15 @@ final class MapGenerator {
 
     public static Map puzzle_room(int dim_x, int dim_y){
         var room = generic_room(dim_x, dim_y);
+        var tiles = room.getTiles();
+        for(var i = 2; i < dim_x - 1; i++){
+            for(var j = 2; j < dim_y - 1; j++){
+                var p = new Point(i, j);
+                tiles.put(p, new Tile(1));
+            }
+        }
         //TODO
-        return Map.new_map();
+        return room;
     }
 
     public static Map enemy_room(Point patrol_start, Point patrol_end, int enemy, int dim_x, int dim_y){
@@ -153,9 +161,19 @@ final class MapGenerator {
         return room;
     }
 
-    public static Map boss_room(){
+    public static Map boss_room(int dim_x, int dim_y, int boss){
+        var room = generic_room(dim_x, dim_y);
+        var tiles = room.getTiles();
+        for(var i = 1; i < dim_x; i++){
+            for(var j = 1; j < dim_y; j++){
+                if(gen_range(100) >= 5){
+                    continue;
+                }
+                tiles.put(new Point(i, j), new Tile(1));
+            }
+        }
         //TODO
-        return Map.new_map();
+        return room;
     }
 
     public static Map procedure(){
