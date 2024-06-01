@@ -111,6 +111,7 @@ public class TileManager {
         return val;
     }
     public void generate(){
-        tiles = MapGenerator.procedure().getTiles();
+        // tiles = MapGenerator.procedure().getTiles();
+        tiles = MapGenerator.enemy_room(new Point(5, 5), new Point(12, 12), 0, 20, 20).getTiles();
     }
 }

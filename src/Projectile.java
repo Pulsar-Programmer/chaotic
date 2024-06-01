@@ -1,6 +1,3 @@
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 public class Projectile extends Entity {
     String name;
     int sprite;

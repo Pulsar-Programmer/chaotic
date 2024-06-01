@@ -141,8 +141,8 @@ public void drawEndScreen(Graphics2D g2d){
     
 }
 public void deathScreen(Graphics2D g2d){
-    g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 96F));
-    String text = "Death Unto Soul.";
+    g2d.setFont(g2d.getFont().deriveFont(Font.ITALIC, 96F));
+    String text = "Death Unto Soul";
       g2d.setColor(Color.BLUE);
     int x = getXforCT(text, g2d);
     int y = GamePanel.TILE_SIZE * 5;

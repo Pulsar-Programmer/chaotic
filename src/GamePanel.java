@@ -111,7 +111,7 @@ public class GamePanel extends JPanel implements Runnable {
                   // guiManager = new GUIManager(a);
                    //player = new Player(a, new KeyHandler());
                     guiManager.commandNum=0;
-                    GamePanel a = new GamePanel();
+                    // GamePanel a = new GamePanel();
                 }
                 else if(guiManager.commandNum==1){
                     System.exit(0);
