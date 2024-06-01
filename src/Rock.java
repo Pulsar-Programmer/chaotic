@@ -25,6 +25,6 @@ world_y-=speed;
     }
 }
 public void detectPlate(){
-    
+    if()
 }
 }

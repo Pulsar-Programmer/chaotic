@@ -1,10 +1,18 @@
+import java.util.ArrayList;
+
 public class  openingDoor extends Entity{
 boolean openOrClosed;
 Tile door;
-MetalPlate a; MetalPlate b;MetalPlate c;
-Rock one; Rock two; Rock three;
+ArrayList<MetalPlate> metalPlates;
+ArrayList<Rock> rocks;
 
 public openingDoor(){
+    metalPlates.add(new MetalPlate());
+     metalPlates.add(new MetalPlate());
+      metalPlates.add(new MetalPlate());
+      rocks.add(new Rock());
+        rocks.add(new Rock());
+          rocks.add(new Rock());
     openOrClosed = false;
     door.has_collision = true;
 }

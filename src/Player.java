@@ -271,7 +271,7 @@ public class Player extends Entity {
     }
     public void draw(Graphics2D g2){
         int num = attacking ? 8 + attack_animation.sprite_num : walking.sprite_num;
-        BufferedImage image = player_sprites.get(class_type - 1).get(direction + num);
+        BufferedImage image = player_sprites.get(class_type - 1).get(direction * 2 + num);
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }

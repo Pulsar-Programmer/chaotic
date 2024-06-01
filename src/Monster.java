@@ -5,7 +5,7 @@ public class Monster extends Entity {
     
     public String name;
     public int sprite;
-    public int maxSpriteNum = 0;
+    public int maxSpriteNum = 2;
     public int vel_x, vel_y;
     public int invicibility_counter = 60;
     public boolean invincible = false;
@@ -31,7 +31,6 @@ public class Monster extends Entity {
         mon.sprite = 0;
         mon.speed = 4;
         mon.health = mon.maxHealth;
-        mon.maxSpriteNum = 1;
         return mon;
     }
 
@@ -41,7 +40,6 @@ public class Monster extends Entity {
         mon.sprite = 1;
         mon.speed = 4;
         mon.health = mon.maxHealth;
-        mon.maxSpriteNum = 1;
         return mon;
     }
 
@@ -122,7 +120,7 @@ public class Monster extends Entity {
             walking.frame_counter += 1;
             if(walking.frame_counter > 10){
                 walking.sprite_num += 1;
-                walking.sprite_num %= (maxSpriteNum + 1);
+                walking.sprite_num %= maxSpriteNum;
                 walking.frame_counter = 0;
             }
         }

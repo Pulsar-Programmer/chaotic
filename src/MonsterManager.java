@@ -73,7 +73,7 @@ public class MonsterManager {
             }
 
             //DRAW MONSTA
-            var sprite = monster_sprites.get(monsta.sprite).get(monsta.direction + monsta.walking.sprite_num);
+            var sprite = monster_sprites.get(monsta.sprite).get(monsta.direction * monsta.maxSpriteNum + monsta.walking.sprite_num);
 
             var world_x = monsta.world_x;
             var world_y = monsta.world_y;
