@@ -88,6 +88,8 @@ public class GamePanel extends JPanel implements Runnable {
         tileManager.tiles = tempMap.getTiles();
         objectManager.objects = tempMap.getObjects();
         monsterManager.monsters = tempMap.getMonsters();
+        player.world_x = tempMap.getPlayer_spawn().x;
+        player.world_y = tempMap.getPlayer_spawn().y;
     }
 
     @Override
