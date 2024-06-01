@@ -17,8 +17,15 @@ public abstract class Entity {
     public int maxHealth = 10;
     public int health = 0;
 
+    public int defense = 0;
+    public int offense = 1;
+
     public boolean alive = true;
     public boolean dying = false;
     public int dyingCounter = 0;
+
+    // public Entity(){
+    //     // assign default values in here TODO
+    // }
 
 }

@@ -105,7 +105,13 @@ public class MonsterManager {
         monsters.add(Monster.skeleton());
         var monsta = Monster.skeleton();
         monsta.name = "Turret";
+        monsta.offense = 10;
+        monsta.maxHealth = 20;
+        monsta.health = 20;
         monsters.add(monsta);
+        var othermonsta = Monster.skeleton();
+        othermonsta.name = "LeSpooké";
+        monsters.add(othermonsta);
     }
 
 }

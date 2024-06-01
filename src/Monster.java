@@ -1,4 +1,5 @@
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 public class Monster extends Entity {
     
@@ -29,7 +30,6 @@ public class Monster extends Entity {
         mon.name = "Skeleton";
         mon.sprite = 0;
         mon.speed = 4;
-        mon.maxHealth = 4;
         mon.health = mon.maxHealth;
         mon.maxSpriteNum = 1;
         return mon;
@@ -91,6 +91,15 @@ public class Monster extends Entity {
             }
             // shoot_projectile(gp);
         }
+        if(name.equals("LeSpooké")){
+            var p1 = new Point(gp.player.world_x, gp.player.world_y);
+            var p2 = new Point(world_x, world_y);
+            if(p1.distance(p2) <= GamePanel.TILE_SIZE * 5){
+                patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 2);
+            } else {
+                patrol_behavior(100, 100, 400, 200, 20);
+            }
+        }
 
         world_x += vel_x;
         world_y += vel_y;
@@ -114,9 +123,9 @@ public class Monster extends Entity {
         }
     }
 
-    public void damage_monster(int player_direction){
+    public void damage_monster(int player_direction, int atk){
         if(!invincible){
-            health = Math.max(health - 1, 0);
+            health = Math.max(health - Math.max(atk - defense, 1), 0);
             invincible = true;
             hp_bar_on = true;
             hp_counter = 0;
@@ -140,10 +149,15 @@ public class Monster extends Entity {
     public void damage_reaction(int player_direction){
         // speed += 2;
         direction = player_direction;
+        if(name.equals("LeSpooké")){
+            waiting = 30;
+            is_waiting = true;
+        }
     }
 
     public void shoot_projectile(GamePanel gp){
         var fireball = Projectile.fireball(world_x, world_y, direction);
+        fireball.offense = offense;
         gp.projectileManager.projectiles.add(fireball);
     }
 

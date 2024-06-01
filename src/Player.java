@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
     GamePanel gp;
-    KeyHandler keyH;
     
     public ArrayList<BufferedImage> player_sprites = new ArrayList<>();
     
@@ -25,10 +24,9 @@ public class Player extends Entity {
 
     public int shot_counter = 0;
     public int shot_counter_max = 30;
-
-    public Player(GamePanel gp, KeyHandler kh){
+    //TODO: make sure you assign all default values in here and not initially allocated
+    public Player(GamePanel gp){
         this.gp = gp;
-        keyH = kh;
         screen_x = GamePanel.screenWidth / 2 - (GamePanel.TILE_SIZE / 2);
         screen_y = GamePanel.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
 
@@ -72,41 +70,94 @@ public class Player extends Entity {
         }
     }
 
+
+    public static Player wizard(GamePanel gp){
+        var player = new Player(gp);
+        player.maxHealth = 10;
+        player.offense = 1;
+        player.defense = 1;
+        //TODO
+        return player;
+    }
+
+    public static Player knight(GamePanel gp){
+        var player = new Player(gp);
+        player.maxHealth = 10;
+        player.offense = 1;
+        player.defense = 1;
+        //TODO
+        return player;
+    }
+
+    public static Player archer(GamePanel gp){
+        var player = new Player(gp);
+        player.maxHealth = 10;
+        player.offense = 200;
+        player.defense = 1;
+        //TODO
+        return player;
+    }
+
+    public static Player healer(GamePanel gp){
+        var player = new Player(gp);
+        player.maxHealth = 10;
+        player.offense = 1;
+        player.defense = 1;
+        //TODO
+        return player;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void update(){
         int timesKeyPressed = 0;
         double vel_x = 0;
         double vel_y = 0;
 
-        if(keyH.attackHit){
+        if(gp.keyH.attackHit){
             attacking = true;
-            keyH.attackHit = false;
+            gp.keyH.attackHit = false;
             return;
         }
         if(attacking) attack_animation();
 
 
-        if(keyH.upPressed){
+        if(gp.keyH.upPressed){
             direction = UP;
             if(!gp.collisionChecker.checkUp(this)){
                 vel_y -= speed;
                 timesKeyPressed++;
             }
         }
-        if(keyH.downPressed){
+        if(gp.keyH.downPressed){
             direction = DOWN;
             if(!gp.collisionChecker.checkDown(this)){
                 vel_y += speed;
                 timesKeyPressed++;
             }
         }
-        if(keyH.leftPressed){
+        if(gp.keyH.leftPressed){
             direction = LEFT;
             if(!gp.collisionChecker.checkLeft(this)){
                 vel_x -= speed;
                 timesKeyPressed++;
             }
         }
-        if(keyH.rightPressed){
+        if(gp.keyH.rightPressed){
             direction = RIGHT;
             if(!gp.collisionChecker.checkRight(this)){
                 vel_x += speed;
@@ -126,9 +177,9 @@ public class Player extends Entity {
             evaluate_monster(ent);
         }
 
-        if(keyH.specialHit){
+        if(gp.keyH.specialHit){
             shoot_projectile();
-            keyH.specialHit = false;
+            gp.keyH.specialHit = false;
         }
 
 
@@ -205,15 +256,14 @@ public class Player extends Entity {
     }
 
     public void evaluate_monster(Monster monster){
-        if(monster.name.equals("Skeleton") && !invincible){
-            health = Math.max(0, health - 1);
-            invincible = true;
+        if(monster.name.equals("Skeleton") || monster.name.equals("LeSpooké")){
+            damage_player(monster.offense);
         }
     }
 
-    public void hurt_player(){
+    public void damage_player(int atk){
         if(!invincible){
-            health = Math.max(health - 1, 0);
+            health = Math.max(health - Math.max(atk - defense, 1), 0);
             invincible = true;
         }
     }
@@ -247,7 +297,7 @@ public class Player extends Entity {
 
             int m_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
             if(m_index != -1){
-                gp.monsterManager.monsters.get(m_index).damage_monster(direction);
+                gp.monsterManager.monsters.get(m_index).damage_monster(direction, offense);
             }
 
             world_x = current_world_x;
@@ -266,6 +316,7 @@ public class Player extends Entity {
         if(shot_counter >= 30){
             var fire = Projectile.fireball(world_x, world_y, direction);
             fire.origin_player = true;
+            fire.offense = offense;
             gp.projectileManager.projectiles.add(fire);
             shot_counter = 0;
         }

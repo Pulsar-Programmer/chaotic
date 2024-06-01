@@ -54,12 +54,12 @@ public class Projectile extends Entity {
 
         int monster = CollisionChecker.check_monsters(this, gp.monsterManager.monsters);
         if(monster != -1 && origin_player){
-            gp.monsterManager.monsters.get(monster).damage_monster(direction);
+            gp.monsterManager.monsters.get(monster).damage_monster(direction, offense);
             alive = false;
         }
 
         if(CollisionChecker.check_collision(this, gp.player) && !origin_player){
-            gp.player.hurt_player();
+            gp.player.damage_player(offense);
             alive = false;
         }
 

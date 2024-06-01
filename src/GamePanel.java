@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
+    Player player = new Player(this);
     CollisionChecker collisionChecker = new CollisionChecker(this);
     GUIManager guiManager = new GUIManager(this);
     ObjectManager objectManager = new ObjectManager();
@@ -152,18 +152,22 @@ public class GamePanel extends JPanel implements Runnable {
                 if(guiManager.commandNum==0){
                     gameState = PLAY;
                     guiManager.commandNum=0;
+                    player = Player.wizard(this);
                 }
                 if(guiManager.commandNum==1){
                     gameState = PLAY;
                     guiManager.commandNum=0;
+                    player = Player.knight(this);
                 }
                 if(guiManager.commandNum==2){
                     gameState = PLAY;
                     guiManager.commandNum=0;
+                    player = Player.archer(this);
                 }
                 if(guiManager.commandNum==3){
                     gameState = PLAY;
                     guiManager.commandNum=0;
+                    player = Player.healer(this);
                 }
                 keyH.startHit = false;
             }
