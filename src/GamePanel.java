@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -63,15 +62,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 
         var monsters = map.getMonsters();
-        monsters.add(Monster.skeleton());
-        var monsta = Monster.skeleton();
+        monsters.add(Monster.ghost());
+        var monsta = Monster.ghost();
         monsta.name = "Turret";
         monsta.offense = 10;
         monsta.maxHealth = 20;
         monsta.health = 20;
         monsters.add(monsta);
         var othermonsta = Monster.skeleton();
-        othermonsta.name = "LeSpooké";
         monsters.add(othermonsta);
 
         // objects.add(Object.key(32*5, 32*12));

@@ -25,6 +25,16 @@ public class Projectile extends Entity {
         return ball;
     }
 
+    public static Projectile turret(int world_x, int world_y, int direction){
+        var ball = new Projectile();
+        ball.name = "Turret";
+        ball.sprite = 1;
+        ball.world_x = world_x;
+        ball.world_y = world_y;
+        ball.direction = direction;
+        return ball;
+    }
+
     public void update(GamePanel gp){
         var vel_x = 0;
         var vel_y = 0;

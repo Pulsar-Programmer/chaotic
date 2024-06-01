@@ -22,23 +22,36 @@ public class MonsterManager {
     public void setupMonsterSprites(){
         monster_sprites = new ArrayList<>();
         try {
-            var first = new ArrayList<BufferedImage>();
+            var ghost = new ArrayList<BufferedImage>();
             
             //add first (slime) stuff here
-            first.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
-            first.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
-            first.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));
-            first.add(ImageIO.read(new File("res/player/walk/boy_down_2.png")));
-            first.add(ImageIO.read(new File("res/player/walk/boy_left_1.png")));
-            first.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
-            first.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
-            first.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/up.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/up.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/down.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/down.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/left.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/left.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/right.png")));
+            ghost.add(ImageIO.read(new File("res/monsters/ghost/right.png")));
+
+            monster_sprites.add(ghost);
+
+            var skeleton = new ArrayList<BufferedImage>();
+
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/up_1.png")));
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/up_2.png")));
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/down_1.png")));
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/down_2.png")));
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/left_1.png")));
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/left_2.png")));
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/right_1.png")));
+            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/right_2.png")));
+
+            monster_sprites.add(skeleton);
 
 
-
-            monster_sprites.add(first);
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 

@@ -5,7 +5,8 @@ import java.util.Optional;
 
 public class Tile {
     public Optional<Point> teleporter;
-    
+    public Optional<Integer> map_to_load; 
+
     int sprite;
     public boolean has_collision;
 

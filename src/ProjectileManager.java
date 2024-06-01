@@ -17,19 +17,33 @@ public class ProjectileManager {
     public void setup_projectile_sprites(){
         projectile_sprites = new ArrayList<>();
         try {
-            var first = new ArrayList<BufferedImage>();
+            var fireball = new ArrayList<BufferedImage>();
             
-            first.add(ImageIO.read(new File("res/projectiles/fireball_up_1.png")));
-            first.add(ImageIO.read(new File("res/projectiles/fireball_up_2.png")));
-            first.add(ImageIO.read(new File("res/projectiles/fireball_down_1.png")));
-            first.add(ImageIO.read(new File("res/projectiles/fireball_down_2.png")));
-            first.add(ImageIO.read(new File("res/projectiles/fireball_left_1.png")));
-            first.add(ImageIO.read(new File("res/projectiles/fireball_left_2.png")));
-            first.add(ImageIO.read(new File("res/projectiles/fireball_right_1.png")));
-            first.add(ImageIO.read(new File("res/projectiles/fireball_right_2.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_up_1.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_up_2.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_down_1.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_down_2.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_left_1.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_left_2.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_right_1.png")));
+            fireball.add(ImageIO.read(new File("res/projectiles/fireball_right_2.png")));
 
 
-            projectile_sprites.add(first);
+            projectile_sprites.add(fireball);
+
+            var turret = new ArrayList<BufferedImage>();
+
+            turret.add(ImageIO.read(new File("res/projectiles/turret/up_1.png")));
+            turret.add(ImageIO.read(new File("res/projectiles/turret/up_2.png")));
+            turret.add(ImageIO.read(new File("res/projectiles/turret/down_1.png")));
+            turret.add(ImageIO.read(new File("res/projectiles/turret/down_2.png")));
+            turret.add(ImageIO.read(new File("res/projectiles/turret/left_1.png")));
+            turret.add(ImageIO.read(new File("res/projectiles/turret/left_2.png")));
+            turret.add(ImageIO.read(new File("res/projectiles/turret/right_1.png")));
+            turret.add(ImageIO.read(new File("res/projectiles/turret/right_2.png")));
+            
+            projectile_sprites.add(turret);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

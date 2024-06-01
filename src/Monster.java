@@ -25,15 +25,27 @@ public class Monster extends Entity {
         walking = new Animation();
     }
 
-    public static Monster skeleton(){
+    public static Monster ghost(){
         var mon = new Monster();
-        mon.name = "Skeleton";
+        mon.name = "Ghost";
         mon.sprite = 0;
         mon.speed = 4;
         mon.health = mon.maxHealth;
         mon.maxSpriteNum = 1;
         return mon;
     }
+
+    public static Monster skeleton(){
+        var mon = new Monster();
+        mon.name = "Skeleton";
+        mon.sprite = 1;
+        mon.speed = 4;
+        mon.health = mon.maxHealth;
+        mon.maxSpriteNum = 1;
+        return mon;
+    }
+
+
     //we need a patrol behavior
     public void patrol_behavior(int low_x, int low_y, int high_x, int high_y, int wait_time){
         
@@ -82,17 +94,17 @@ public class Monster extends Entity {
         vel_x = 0;
         vel_y = 0;
 
-        if(name.equals("Skeleton")){
+        if(name.equals("Ghost")){
             patrol_behavior(100, 100, 400, 200, 20);
         }
         if(name.equals("Turret")){
             patrol_behavior(200, 200, 300, 300, 60);
-            if(is_waiting){
+            if(waiting == 1){
                 shoot_projectile(gp);
             }
             // shoot_projectile(gp);
         }
-        if(name.equals("LeSpooké")){
+        if(name.equals("Skeleton")){
             var p1 = new Point(gp.player.world_x, gp.player.world_y);
             var p2 = new Point(world_x, world_y);
             if(p1.distance(p2) <= GamePanel.TILE_SIZE * 5){
@@ -150,16 +162,18 @@ public class Monster extends Entity {
     public void damage_reaction(int player_direction){
         // speed += 2;
         direction = player_direction;
-        if(name.equals("LeSpooké")){
+        if(name.equals("Skeleton")){
             waiting = 30;
             is_waiting = true;
         }
     }
 
     public void shoot_projectile(GamePanel gp){
-        var fireball = Projectile.fireball(world_x, world_y, direction);
-        fireball.offense = offense;
-        gp.projectileManager.projectiles.add(fireball);
+        if(name.equals("Turret")){
+            var turret = Projectile.turret(world_x, world_y, direction);
+            turret.offense = offense;
+            gp.projectileManager.projectiles.add(turret);
+        }
     }
 
 }

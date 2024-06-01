@@ -283,7 +283,7 @@ public class Player extends Entity {
     }
 
     public void evaluate_monster(Monster monster){
-        if(monster.name.equals("Skeleton") || monster.name.equals("LeSpooké")){
+        if(monster.name.equals("Ghost") || monster.name.equals("Skeleton")){
             damage_player(monster.offense);
         }
     }
