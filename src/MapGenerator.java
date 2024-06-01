@@ -9,7 +9,7 @@ final class MapGenerator {
     public static final int TIC_TAC_TOE = 2; //tic tac toe against computer
     public static final int LOGIC = 3; //electrical components, maybe redstone
     //some of these rooms will be mandatory
-
+    
 
     // public static Map generate(){
 

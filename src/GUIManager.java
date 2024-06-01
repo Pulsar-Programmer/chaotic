@@ -97,7 +97,7 @@ public class GUIManager {
         g2d.drawString(text, x, y);
 
         g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 48F));
-        text = "Necromancer";
+        text = "Wizard";
         y += GamePanel.TILE_SIZE * 4;
         g2d.drawString(text, x, y);
         if (commandNum == 0) {
@@ -117,7 +117,7 @@ public class GUIManager {
         if (commandNum == 2) {
             g2d.drawString("->", x - 50, y);
         }
-        text = "Human";
+        text = "Healer";
         y += GamePanel.TILE_SIZE;
         g2d.drawString(text, x, y);
 

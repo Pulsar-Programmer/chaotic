@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class Player extends Entity {
     GamePanel gp;
     
-    public ArrayList<BufferedImage> player_sprites = new ArrayList<>();
+    public ArrayList<ArrayList<BufferedImage>> player_sprites = new ArrayList<>();
     
     // private int defense;
     // private int offense;
@@ -54,24 +54,49 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage(){
+        player_sprites = new ArrayList<ArrayList<BufferedImage>>();
         try {
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_up_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_down_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_left_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/walk/boy_right_2.png")));
+            // var player = new ArrayList<BufferedImage>();
+            // setup_class(player, "walk");
+            // setup_class(player, "attack");
+            // player_sprites.add(player);
 
-            player_sprites.add(App.res("res/player/attack/up_1.png"));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/up_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/down_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/down_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/left_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/left_2.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/right_1.png")));
-            player_sprites.add(ImageIO.read(new File("res/player/attack/right_2.png")));
+            var mage = new ArrayList<BufferedImage>();
+            // setup_class(mage, "mage/walk");
+            // setup_class(mage, "mage/atk");
+            player_sprites.add(mage);
+
+            var knight = new ArrayList<BufferedImage>();
+            setup_images(knight, "knight/walk");
+            // setup_class(knight, "knight/atk");
+            player_sprites.add(knight);
+
+            var archer = new ArrayList<BufferedImage>();
+            setup_images(archer, "archer/walk");
+            setup_images(archer, "archer/atk");
+            // setup_class(archer, "archer/special");
+            player_sprites.add(archer);
+
+            var healer = new ArrayList<BufferedImage>();
+            setup_images(healer, "healer/walk");
+            setup_images(healer, "healer/atk");
+            player_sprites.add(healer);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setup_images(ArrayList<BufferedImage> to_add, String path){
+        try {
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/up_1.png")));
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/up_2.png")));
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/down_1.png")));
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/down_2.png")));
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/left_1.png")));
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/left_2.png")));
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/right_1.png")));
+            to_add.add(ImageIO.read(new File("res/player/" + path + "/right_2.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -246,7 +271,7 @@ public class Player extends Entity {
     }
     public void draw(Graphics2D g2){
         int num = attacking ? 8 + attack_animation.sprite_num : walking.sprite_num;
-        BufferedImage image = player_sprites.get(direction + num);
+        BufferedImage image = player_sprites.get(class_type - 1).get(direction + num);
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }
@@ -352,7 +377,7 @@ public class Player extends Entity {
     public void shootSpecialProjectile(){
         if(shot_counter >= shot_counter_max){
             for(var i = 0; i < 4; i++){
-                var fire = Projectile.fireball(world_x, world_y, i * 2);
+                var fire = Projectile.power_magic(world_x, world_y, i * 2);
                 fire.origin_player = true;
                 fire.offense = offense;
                 gp.projectileManager.projectiles.add(fire);
@@ -371,6 +396,10 @@ public class Player extends Entity {
             
             //stuff in here
 //what should we do for the knight?
+            var fire = Projectile.knight(world_x, world_y, direction);
+            fire.origin_player = true;
+            fire.offense = 5000;
+            gp.projectileManager.projectiles.add(fire);
 
             shot_counter = 0;
         }
@@ -378,7 +407,7 @@ public class Player extends Entity {
     public void archer_projectile(){
         if(shot_counter >= shot_counter_max){
             
-            var fire = Projectile.fireball(world_x, world_y, direction);
+            var fire = Projectile.power_arrow(world_x, world_y, direction);
             fire.origin_player = true;
             fire.offense = 5000;
             gp.projectileManager.projectiles.add(fire);

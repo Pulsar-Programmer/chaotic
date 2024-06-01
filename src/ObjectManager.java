@@ -18,7 +18,7 @@ public class ObjectManager {
         sprites = new BufferedImage[3][3];
         try {
             //key
-            sprites[0][0] = ImageIO.read(new File("res/player/walk/boy_down_1.png"));
+            // sprites[0][0] = ImageIO.read(new File("res/player/walk/boy_down_1.png"));
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,32 +18,67 @@ public class ProjectileManager {
         projectile_sprites = new ArrayList<>();
         try {
             var fireball = new ArrayList<BufferedImage>();
-            
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_up_1.png")));
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_up_2.png")));
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_down_1.png")));
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_down_2.png")));
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_left_1.png")));
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_left_2.png")));
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_right_1.png")));
-            fireball.add(ImageIO.read(new File("res/projectiles/fireball_right_2.png")));
-
-
+            setup_images(fireball, "fireball");
             projectile_sprites.add(fireball);
 
             var turret = new ArrayList<BufferedImage>();
-
-            turret.add(ImageIO.read(new File("res/projectiles/turret/up_1.png")));
-            turret.add(ImageIO.read(new File("res/projectiles/turret/up_2.png")));
-            turret.add(ImageIO.read(new File("res/projectiles/turret/down_1.png")));
-            turret.add(ImageIO.read(new File("res/projectiles/turret/down_2.png")));
-            turret.add(ImageIO.read(new File("res/projectiles/turret/left_1.png")));
-            turret.add(ImageIO.read(new File("res/projectiles/turret/left_2.png")));
-            turret.add(ImageIO.read(new File("res/projectiles/turret/right_1.png")));
-            turret.add(ImageIO.read(new File("res/projectiles/turret/right_2.png")));
-            
+            setup_images(turret, "turret");
             projectile_sprites.add(turret);
 
+            var magic = new ArrayList<BufferedImage>();
+            setup_images(magic, "magic");
+            projectile_sprites.add(magic);
+
+            var power_magic = new ArrayList<BufferedImage>();
+            setup_images(power_magic, "power_magic");
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/up_3.png")));
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/up_4.png")));
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/down_3.png")));
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/down_4.png")));
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/left_3.png")));
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/left_4.png")));
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/right_3.png")));
+            power_magic.add(ImageIO.read(new File("res/projectiles/power_magic/right_4.png")));
+            projectile_sprites.add(power_magic);
+
+            var knight = new ArrayList<BufferedImage>();
+            setup_images(knight, "knight");
+            knight.add(ImageIO.read(new File("res/projectiles/knight/up_3.png")));
+            knight.add(ImageIO.read(new File("res/projectiles/knight/down_3.png")));
+            knight.add(ImageIO.read(new File("res/projectiles/knight/left_3.png")));
+            knight.add(ImageIO.read(new File("res/projectiles/knight/right_3.png")));
+            projectile_sprites.add(knight);
+            
+            var arrow = new ArrayList<BufferedImage>();
+            arrow.add(ImageIO.read(new File("res/projectiles/arrow/up.png")));
+            arrow.add(ImageIO.read(new File("res/projectiles/arrow/down.png")));
+            arrow.add(ImageIO.read(new File("res/projectiles/arrow/left.png")));
+            arrow.add(ImageIO.read(new File("res/projectiles/arrow/right.png")));
+            projectile_sprites.add(arrow);
+
+            var power_arrow = new ArrayList<BufferedImage>();
+            setup_images(power_arrow, "power_arrow");
+            power_arrow.add(ImageIO.read(new File("res/projectiles/power_arrow/up_3.png")));
+            power_arrow.add(ImageIO.read(new File("res/projectiles/power_arrow/down_3.png")));
+            power_arrow.add(ImageIO.read(new File("res/projectiles/power_arrow/left_3.png")));
+            power_arrow.add(ImageIO.read(new File("res/projectiles/power_arrow/right_3.png")));
+            projectile_sprites.add(power_arrow);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setup_images(ArrayList<BufferedImage> to_add, String path){
+        try {
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/up_1.png")));
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/up_2.png")));
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/down_1.png")));
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/down_2.png")));
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/left_1.png")));
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/left_2.png")));
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/right_1.png")));
+            to_add.add(ImageIO.read(new File("res/projectiles/" + path + "/right_2.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 public class Projectile extends Entity {
     String name;
     int sprite;
-    int maxSpriteNum = 1;
+    int maxSpriteNum = 2;
     boolean origin_player;
     
     public Projectile(){
@@ -29,6 +29,60 @@ public class Projectile extends Entity {
         var ball = new Projectile();
         ball.name = "Turret";
         ball.sprite = 1;
+        ball.world_x = world_x;
+        ball.world_y = world_y;
+        ball.direction = direction;
+        return ball;
+    }
+
+    public static Projectile knight(int world_x, int world_y, int direction){
+        var ball = new Projectile();
+        ball.name = "Knight";
+        ball.sprite = 4;
+        ball.maxSpriteNum = 3;
+        ball.world_x = world_x;
+        ball.world_y = world_y;
+        ball.direction = direction;
+        return ball;
+    }
+
+    public static Projectile magic(int world_x, int world_y, int direction){
+        var ball = new Projectile();
+        ball.name = "Magic";
+        ball.sprite = 2;
+        ball.world_x = world_x;
+        ball.world_y = world_y;
+        ball.direction = direction;
+        return ball;
+    }
+
+    public static Projectile power_magic(int world_x, int world_y, int direction){
+        var ball = new Projectile();
+        ball.name = "Power Magic";
+        ball.sprite = 3;
+        ball.maxSpriteNum = 4;
+        ball.world_x = world_x;
+        ball.world_y = world_y;
+        ball.direction = direction;
+        return ball;
+    }
+
+    public static Projectile arrow(int world_x, int world_y, int direction){
+        var ball = new Projectile();
+        ball.name = "Arrow";
+        ball.sprite = 5;
+        ball.maxSpriteNum = 1;
+        ball.world_x = world_x;
+        ball.world_y = world_y;
+        ball.direction = direction;
+        return ball;
+    }
+
+    public static Projectile power_arrow(int world_x, int world_y, int direction){
+        var ball = new Projectile();
+        ball.name = "Power Arrow";
+        ball.sprite = 6;
+        ball.maxSpriteNum = 3;
         ball.world_x = world_x;
         ball.world_y = world_y;
         ball.direction = direction;
@@ -82,7 +136,7 @@ public class Projectile extends Entity {
         walking.frame_counter += 1;
         if(walking.frame_counter > 10){
             walking.sprite_num += 1;
-            walking.sprite_num %= (maxSpriteNum + 1);
+            walking.sprite_num %= (maxSpriteNum);
             walking.frame_counter = 0;
         }
     }
