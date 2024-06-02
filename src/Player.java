@@ -2,10 +2,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 public class Player extends Entity {
     GamePanel gp;
@@ -64,24 +61,24 @@ public class Player extends Entity {
             // player_sprites.add(player);
 
             var mage = new ArrayList<BufferedImage>();
-            setup_images(mage, "wizard/walk");
-            setup_images(mage, "wizard/atk");
+            setup_images(mage, "wizard/walk", 2);
+            setup_images(mage, "wizard/atk", 2);
             player_sprites.add(mage);
 
             var knight = new ArrayList<BufferedImage>();
-            setup_images(knight, "knight/walk");
-            // setup_class(knight, "knight/atk");
+            setup_images(knight, "knight/walk", 2);
+            setup_images(knight, "knight/atk", 3);
             player_sprites.add(knight);
 
             var archer = new ArrayList<BufferedImage>();
-            setup_images(archer, "archer/walk");
-            setup_images(archer, "archer/atk");
+            setup_images(archer, "archer/walk", 2);
+            setup_images(archer, "archer/atk", 2);
             // setup_class(archer, "archer/special");
             player_sprites.add(archer);
 
             var healer = new ArrayList<BufferedImage>();
-            setup_images(healer, "healer/walk");
-            setup_images(healer, "healer/atk");
+            setup_images(healer, "healer/walk", 2);
+            setup_images(healer, "healer/atk", 2);
             player_sprites.add(healer);
 
         } catch (Exception e) {
@@ -89,19 +86,23 @@ public class Player extends Entity {
         }
     }
 
-    public static void setup_images(ArrayList<BufferedImage> to_add, String path){
+    public static void setup_images(ArrayList<BufferedImage> to_add, String path, int spriteNum){
         try {
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/up_1.png")));
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/up_2.png")));
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/down_1.png")));
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/down_2.png")));
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/left_1.png")));
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/left_2.png")));
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/right_1.png")));
-            to_add.add(ImageIO.read(new File("res/player/" + path + "/right_2.png")));
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(App.res("res/player/" + path + "/up_" + i + ".png"));
+            }
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(App.res("res/player/" + path + "/down_" + i + ".png"));
+            }
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(App.res("res/player/" + path + "/left_" + i + ".png"));
+            }
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(App.res("res/player/" + path + "/right_" + i + ".png"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } 
     }
 
 
@@ -123,6 +124,7 @@ public class Player extends Entity {
         player.offense = 6;
         player.defense = 10;
         player.class_type = KNIGHT;
+        player.attack_animation.max_sprite_num = 3;
         //TODO
         return player;
     }
@@ -166,6 +168,7 @@ public class Player extends Entity {
 
 
     public void update(){
+        System.out.println(world_x + ":" + world_y);
         int timesKeyPressed = 0;
         double vel_x = 0;
         double vel_y = 0;
@@ -264,8 +267,8 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2){
-        int num = attacking || special_attacking ? 8 + attack_animation.sprite_num : walking.sprite_num;
-        BufferedImage image = player_sprites.get(class_type - 1).get(direction * 2 + num);
+        int num = attacking || special_attacking ? 8 + attack_animation.sprite_num + direction *  attack_animation.max_sprite_num : walking.sprite_num + direction * walking.max_sprite_num;
+        BufferedImage image = player_sprites.get(class_type - 1).get(num);
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }
@@ -314,6 +317,23 @@ public class Player extends Entity {
 
     public void engage_attack(){
         attack_animation.frame_counter += 1;
+        if(class_type == KNIGHT){
+            if(attack_animation.frame_counter <= 10){
+                attack_animation.sprite_num = 0;
+            } else 
+            if(attack_animation.frame_counter <= 20){
+                attack_animation.sprite_num = 1;
+                standard_attack();
+            } else 
+            if(attack_animation.frame_counter <= 30){
+                attack_animation.sprite_num = 2;
+            } else{
+                attack_animation.sprite_num = 0;
+                attack_animation.frame_counter = 0;
+                attacking = false;
+            }
+            return;
+        }
         if(attack_animation.frame_counter <= 10){
             attack_animation.sprite_num = 0;
         } else if(attack_animation.frame_counter <= 25){
@@ -328,9 +348,6 @@ public class Player extends Entity {
                 }
                 
             } else
-            if(class_type == KNIGHT){
-                standard_attack();
-            } else
             if(class_type == ARCHER && attack_animation.frame_counter == 15){
                 var fire = Projectile.arrow(world_x, world_y, direction);
                 fire.origin_player = true;
@@ -340,8 +357,7 @@ public class Player extends Entity {
             if(class_type == HEALER){
                 standard_attack();
             }
-        }
-        if(attack_animation.frame_counter > 25){
+        } else{
             attack_animation.sprite_num = 0;
             attack_animation.frame_counter = 0;
             attacking = false;
@@ -354,8 +370,9 @@ public class Player extends Entity {
             attack_animation.sprite_num = 0;
         } else if(attack_animation.frame_counter <= 25){
             attack_animation.sprite_num = 1;
-        }
-        if(attack_animation.frame_counter > 25){
+        } else if(attack_animation.max_sprite_num == 3 && attack_animation.frame_counter <= 35){
+            attack_animation.sprite_num = 2;
+        } else{
             attack_animation.sprite_num = 0;
             attack_animation.frame_counter = 0;
             special_attacking = false;

@@ -187,6 +187,7 @@ final class MapGenerator {
 
         //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------
         var room = MapGenerator.generic_room(10, 10); //spawn room
+        room.setPlayer_spawn(new Point(3, 3));
 
         var top = MapGenerator.standard_corridor(5, false, 3); //top cut premath
         top.rebase_y();
@@ -203,7 +204,6 @@ final class MapGenerator {
         room.branch(bottom, new Point(5, 10)); //creating the bottom cut
         room.branch(left, new Point(0, 5)); //creating the left cut
         room.branch(right, new Point(10, 5)); //creating the right cut
-        room.rebase_origin();
 
         //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------
 

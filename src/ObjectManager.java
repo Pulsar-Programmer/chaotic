@@ -15,7 +15,7 @@ public class ObjectManager {
         sprites = new ArrayList<ArrayList<BufferedImage>>();
         try {
             var rock = new ArrayList<BufferedImage>();
-            rock.add(App.res("res/objects/escape_room/1.png"));
+            rock.add(App.res("res/objects/escape_room/2.png"));
             sprites.add(rock);
 
             var plate = new ArrayList<BufferedImage>();

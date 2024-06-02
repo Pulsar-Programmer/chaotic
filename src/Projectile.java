@@ -122,7 +122,7 @@ public class Projectile extends Entity {
             alive = false;
         }
 
-        if(CollisionChecker.check_collision(this, gp.player) && !origin_player){
+        if(CollisionChecker.check_entities(this, gp.player) && !origin_player){
             gp.player.damage_player(offense);
             alive = false;
         }

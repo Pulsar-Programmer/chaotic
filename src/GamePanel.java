@@ -77,8 +77,6 @@ public class GamePanel extends JPanel implements Runnable {
         objects.add(Object.metal_plate(32*10, 32*10));
 
         maps[0] = map;
-        // tiles = MapGenerator.puzzle_room(20, 20).getTiles();
-        
         load_map(0);
     }
 
@@ -87,8 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
         tileManager.tiles = tempMap.getTiles();
         objectManager.objects = tempMap.getObjects();
         monsterManager.monsters = tempMap.getMonsters();
-        player.world_x = tempMap.getPlayer_spawn().x;
-        player.world_y = tempMap.getPlayer_spawn().y;
+        player.world_x = tempMap.getPlayer_spawn().x * GamePanel.TILE_SIZE;
+        player.world_y = tempMap.getPlayer_spawn().y * GamePanel.TILE_SIZE;
     }
 
     @Override
@@ -190,21 +188,29 @@ public class GamePanel extends JPanel implements Runnable {
                     gameState = PLAY;
                     guiManager.commandNum=0;
                     player = Player.wizard(this);
+                    player.world_x = maps[mapNum].getPlayer_spawn().x * GamePanel.TILE_SIZE;
+                    player.world_y = maps[mapNum].getPlayer_spawn().y * GamePanel.TILE_SIZE;
                 }
                 if(guiManager.commandNum==1){
                     gameState = PLAY;
                     guiManager.commandNum=0;
                     player = Player.knight(this);
+                    player.world_x = maps[mapNum].getPlayer_spawn().x * GamePanel.TILE_SIZE;
+                    player.world_y = maps[mapNum].getPlayer_spawn().y * GamePanel.TILE_SIZE;
                 }
                 if(guiManager.commandNum==2){
                     gameState = PLAY;
                     guiManager.commandNum=0;
                     player = Player.archer(this);
+                    player.world_x = maps[mapNum].getPlayer_spawn().x * GamePanel.TILE_SIZE;
+                    player.world_y = maps[mapNum].getPlayer_spawn().y * GamePanel.TILE_SIZE;
                 }
                 if(guiManager.commandNum==3){
                     gameState = PLAY;
                     guiManager.commandNum=0;
                     player = Player.healer(this);
+                    player.world_x = maps[mapNum].getPlayer_spawn().x * GamePanel.TILE_SIZE;
+                    player.world_y = maps[mapNum].getPlayer_spawn().y * GamePanel.TILE_SIZE;
                 }
                 keyH.startHit = false;
             }
@@ -212,7 +218,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         if((gameState == PAUSE || gameState == PLAY) && keyH.pauseHit){
             gameState = (gameState + 1) % 2;
-            // System.out.println("State!");
             keyH.pauseHit = false;
         }
 

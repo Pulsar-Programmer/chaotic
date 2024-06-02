@@ -15,7 +15,7 @@ public class Map {
         tiles = new HashMap<>();
         objects = new ArrayList<>();
         monsters = new ArrayList<>();
-        player_spawn = new Point(1, 1);
+        player_spawn = new Point(0, 0);
     }
 
     public static Map new_map(){
@@ -146,71 +146,109 @@ public class Map {
     // }
 
     public void rebase_origin(){
-        var gen = new HashMap<Point, Tile>();
         int min_x = Integer.MAX_VALUE;
         int min_y = Integer.MAX_VALUE;
         for (Point p : tiles.keySet()) {
             min_x = Math.min(min_x, p.x);
             min_y = Math.min(min_y, p.y);
         }
-        final int min_x_safe = min_x;
-        final int min_y_safe = min_y;
-        tiles.forEach((p, t) -> {
-            var shifted = new Point(p.x - min_x_safe, p.y - min_y_safe);
-            gen.put(shifted, t);
-        });
-        tiles = gen;
+        for (Monster monster : monsters) {
+            min_x = Math.min(min_x, monster.world_x / GamePanel.TILE_SIZE);
+            min_y = Math.min(min_y, monster.world_y / GamePanel.TILE_SIZE);
+        }
+        for (Object object : objects) {
+            min_x = Math.min(min_x, object.world_x / GamePanel.TILE_SIZE);
+            min_y = Math.min(min_y, object.world_y / GamePanel.TILE_SIZE);
+        }
+        min_x = Math.min(min_x, player_spawn.x);
+        min_y = Math.min(min_y, player_spawn.y);
+
+        translate_map(-min_x, -min_y);
     }
 
     public void rebase_x(){
-        var gen = new HashMap<Point, Tile>();
         int max_x = Integer.MIN_VALUE;
         int min_y = Integer.MAX_VALUE;
         for (Point p : tiles.keySet()) {
             max_x = Math.max(max_x, p.x);
             min_y = Math.min(min_y, p.y);
         }
-        final int max_x_safe = max_x;
-        final int min_y_safe = min_y;
-        tiles.forEach((p, t) -> {
-            var shifted = new Point(p.x - max_x_safe, p.y - min_y_safe);
-            gen.put(shifted, t);
-        });
-        tiles = gen;
+        for (Monster monster : monsters) {
+            max_x = Math.max(max_x, monster.world_x / GamePanel.TILE_SIZE);
+            min_y = Math.min(min_y, monster.world_y / GamePanel.TILE_SIZE);
+        }
+        for (Object object : objects) {
+            max_x = Math.max(max_x, object.world_x / GamePanel.TILE_SIZE);
+            min_y = Math.min(min_y, object.world_y / GamePanel.TILE_SIZE);
+        }
+        max_x = Math.max(max_x, player_spawn.x);
+        min_y = Math.min(min_y, player_spawn.y);
+
+        translate_map(-max_x, -min_y);
     }
 
     public void rebase_y(){
-        var gen = new HashMap<Point, Tile>();
         int min_x = Integer.MAX_VALUE;
         int max_y = Integer.MIN_VALUE;
         for (Point p : tiles.keySet()) {
             min_x = Math.min(min_x, p.x);
             max_y = Math.max(max_y, p.y);
         }
-        final int min_x_safe = min_x;
-        final int max_y_safe = max_y;
-        tiles.forEach((p, t) -> {
-            var shifted = new Point(p.x - min_x_safe, p.y - max_y_safe);
-            gen.put(shifted, t);
-        });
-        tiles = gen;
+        for (Monster monster : monsters) {
+            min_x = Math.min(min_x, monster.world_x / GamePanel.TILE_SIZE);
+            max_y = Math.max(max_y, monster.world_y / GamePanel.TILE_SIZE);
+        }
+        for (Object object : objects) {
+            min_x = Math.min(min_x, object.world_x / GamePanel.TILE_SIZE);
+            max_y = Math.max(max_y, object.world_y / GamePanel.TILE_SIZE);
+        }
+        min_x = Math.min(min_x, player_spawn.x);
+        max_y = Math.max(max_y, player_spawn.y);
+
+        translate_map(-min_x, -max_y);
     }
 
     public void rebase_xy(){
-        var gen = new HashMap<Point, Tile>();
         int max_x = Integer.MIN_VALUE;
         int max_y = Integer.MIN_VALUE;
         for (Point p : tiles.keySet()) {
             max_x = Math.max(max_x, p.x);
             max_y = Math.max(max_y, p.y);
         }
-        final int max_x_safe = max_x;
-        final int max_y_safe = max_y;
+        for (Monster monster : monsters) {
+            max_x = Math.max(max_x, monster.world_x / GamePanel.TILE_SIZE);
+            max_y = Math.max(max_y, monster.world_y / GamePanel.TILE_SIZE);
+        }
+        for (Object object : objects) {
+            max_x = Math.max(max_x, object.world_x / GamePanel.TILE_SIZE);
+            max_y = Math.max(max_y, object.world_y / GamePanel.TILE_SIZE);
+        }
+        max_x = Math.max(max_x, player_spawn.x);
+        max_y = Math.max(max_y, player_spawn.y);
+
+        translate_map(-max_x, -max_y);
+    }
+
+    public void translate_map(final int x, final int y){
+        var gen = new HashMap<Point, Tile>();
         tiles.forEach((p, t) -> {
-            var shifted = new Point(p.x - max_x_safe, p.y - max_y_safe);
+            var shifted = new Point(p.x + x, p.y + y);
             gen.put(shifted, t);
         });
         tiles = gen;
+
+        for(var i = 0; i < objects.size(); i++){
+            var obj = objects.get(i);
+            obj.world_x += x * GamePanel.TILE_SIZE;
+            obj.world_y += y * GamePanel.TILE_SIZE;
+        }
+        for(var i = 0; i < monsters.size(); i++){
+            var mon = monsters.get(i);
+            mon.world_x += x * GamePanel.TILE_SIZE;
+            mon.world_y += y * GamePanel.TILE_SIZE;
+        }
+        player_spawn.x += x;
+        player_spawn.y += y;
     }
 
     
