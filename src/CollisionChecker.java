@@ -8,19 +8,16 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public int round_divide(int obj, int add){
-        if(obj < 0){
-            return -(int)((-obj + add) / GamePanel.TILE_SIZE);
-        } else {
-            return (obj + add) / GamePanel.TILE_SIZE;
-        }
-    }
+    //round_divide fn is dead
 
     public boolean checkUp(Entity entity){
+        int left_x = entity.world_x + entity.solidArea.x;
+        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
+        int top_y = entity.world_y + entity.solidArea.y - entity.speed;
 
-        int left_tile = round_divide(entity.world_x, entity.solidArea.x);
-        int right_tile = round_divide(entity.world_x, entity.solidArea.x + entity.solidArea.width);
-        int top_tile = round_divide(entity.world_y, entity.solidArea.y - entity.speed);
+        int left_tile = left_x/GamePanel.TILE_SIZE;
+        int right_tile = right_x/GamePanel.TILE_SIZE;
+        int top_tile = top_y/GamePanel.TILE_SIZE;
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile2 = gp.tileManager.find(right_tile, top_tile);
@@ -32,9 +29,13 @@ public class CollisionChecker {
     }
 
     public boolean checkDown(Entity entity){
-        int left_tile = round_divide(entity.world_x, entity.solidArea.x);
-        int right_tile = round_divide(entity.world_x, entity.solidArea.x + entity.solidArea.width);
-        int bottom_tile = round_divide(entity.world_y, entity.solidArea.y + entity.solidArea.height + entity.speed);
+        int left_x = entity.world_x + entity.solidArea.x;
+        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
+        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height + entity.speed;
+        
+        int left_tile = left_x/GamePanel.TILE_SIZE;
+        int right_tile = right_x/GamePanel.TILE_SIZE;
+        int bottom_tile = bottom_y/GamePanel.TILE_SIZE;
 
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
@@ -46,9 +47,13 @@ public class CollisionChecker {
     }
 
     public boolean checkLeft(Entity entity){
-        int left_tile = round_divide(entity.world_x, entity.speed);
-        int top_tile = round_divide(entity.world_y, entity.solidArea.y);
-        int bottom_tile = round_divide(entity.world_y, entity.solidArea.y + entity.solidArea.height);
+        int left_x = entity.world_x + entity.solidArea.x - entity.speed;
+        int top_y = entity.world_y + entity.solidArea.y;
+        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
+        
+        int left_tile = left_x/GamePanel.TILE_SIZE;
+        int top_tile = top_y/GamePanel.TILE_SIZE;
+        int bottom_tile = bottom_y/GamePanel.TILE_SIZE;
 
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
@@ -60,9 +65,13 @@ public class CollisionChecker {
     }
 
     public boolean checkRight(Entity entity){
-        int right_tile = round_divide(entity.world_x, entity.solidArea.x + entity.solidArea.width + entity.speed);
-        int top_tile = round_divide(entity.world_y, entity.world_y + entity.solidArea.y);
-        int bottom_tile = round_divide(entity.world_y, entity.solidArea.y + entity.solidArea.height);
+        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width + entity.speed;
+        int top_y = entity.world_y + entity.solidArea.y;
+        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
+        
+        int right_tile = right_x/GamePanel.TILE_SIZE;
+        int top_tile = top_y/GamePanel.TILE_SIZE;
+        int bottom_tile = bottom_y/GamePanel.TILE_SIZE;
 
         var tile2 = gp.tileManager.find(right_tile, top_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);

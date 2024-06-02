@@ -8,6 +8,7 @@ final class MapGenerator {
     public static final int BABA_IS_YOU = 1; //baba words to move around
     public static final int TIC_TAC_TOE = 2; //tic tac toe against computer
     public static final int LOGIC = 3; //electrical components, maybe redstone
+    public static final int MAZE = 4; //cool maze
     //some of these rooms will be mandatory
     
 
@@ -169,6 +170,7 @@ final class MapGenerator {
                 if(gen_range(100) >= 5){
                     continue;
                 }
+                //TODO: generate mossy stuff here and in other places
                 tiles.put(new Point(i, j), new Tile(1));
             }
         }
@@ -199,11 +201,11 @@ final class MapGenerator {
 
         var right = MapGenerator.standard_corridor(5, true, 3); //right cut premath
         
-        
         room.branch(top, new Point(5, 0)); //creating the top cut
         room.branch(bottom, new Point(5, 10)); //creating the bottom cut
         room.branch(left, new Point(0, 5)); //creating the left cut
         room.branch(right, new Point(10, 5)); //creating the right cut
+        room.rebase_origin();
 
         //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------
 

@@ -168,7 +168,6 @@ public class Player extends Entity {
 
 
     public void update(){
-        System.out.println(world_x + ":" + world_y);
         int timesKeyPressed = 0;
         double vel_x = 0;
         double vel_y = 0;
