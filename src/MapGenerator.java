@@ -188,15 +188,15 @@ final class MapGenerator {
         //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------
         var room = MapGenerator.generic_room(10, 10); //spawn room
 
-        var top = MapGenerator.standard_corridor(20, false, 3); //top cut premath
+        var top = MapGenerator.standard_corridor(5, false, 3); //top cut premath
         top.rebase_y();
 
-        var bottom = MapGenerator.standard_corridor(20, false, 3); //bottom cut premath
+        var bottom = MapGenerator.standard_corridor(5, false, 3); //bottom cut premath
         
-        var left = MapGenerator.standard_corridor(20, true, 3); //left cut premath
+        var left = MapGenerator.standard_corridor(5, true, 3); //left cut premath
         left.rebase_x();
 
-        var right = MapGenerator.standard_corridor(20, true, 3); //right cut premath
+        var right = MapGenerator.standard_corridor(5, true, 3); //right cut premath
         
         
         room.branch(top, new Point(5, 0)); //creating the top cut
@@ -206,9 +206,26 @@ final class MapGenerator {
         room.rebase_origin();
 
         //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------
-        //ToDo
+
+
+        //TODO
+
+
+
         return room;
     }
+
+    // public static Map one(){
+    //     //TODO
+    // }
+
+    // public static Map two(){
+    //     //TODO
+    // }
+
+    // public static Map three(){
+    //     //TODO
+    // }
 
 
 

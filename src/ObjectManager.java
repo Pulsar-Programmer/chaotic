@@ -1,12 +1,9 @@
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-
 public class ObjectManager {
-    BufferedImage[][] sprites;
+    ArrayList<ArrayList<BufferedImage>> sprites;
     ArrayList<Object> objects;
 
     public ObjectManager(){
@@ -15,13 +12,24 @@ public class ObjectManager {
     }
 
     public void setupSprites(){
-        sprites = new BufferedImage[3][3];
+        sprites = new ArrayList<ArrayList<BufferedImage>>();
         try {
-            //key
-            // sprites[0][0] = ImageIO.read(new File("res/player/walk/boy_down_1.png"));
+            var rock = new ArrayList<BufferedImage>();
+            rock.add(App.res("res/objects/escape_room/1.png"));
+            sprites.add(rock);
 
+            var plate = new ArrayList<BufferedImage>();
+            plate.add(App.res("res/objects/escape_room/3.png"));
+            sprites.add(plate);
+            
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void update(GamePanel gp){
+        for(var elem : objects){
+            elem.update(gp.player);
         }
     }
 

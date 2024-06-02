@@ -80,10 +80,10 @@ public class CollisionChecker {
         return tile4.has_collision || tile2.has_collision;
     }
 
-    public int checkObject(Entity entity){
+    public static int checkObjects(Entity entity, ArrayList<Object> objects){
         int index = -1;
 
-        for(var i = 0; i < gp.objectManager.objects.size(); i++){
+        for(var i = 0; i < objects.size(); i++){
 
             var entity_rect = new Rectangle();
             var object_rect = new Rectangle();
@@ -93,7 +93,7 @@ public class CollisionChecker {
             entity_rect.width = entity.solidArea.width;
             entity_rect.height = entity.solidArea.height;
 
-            var object = gp.objectManager.objects.get(i);
+            var object = objects.get(i);
             object_rect.x = object.world_x + object.solidArea.x;
             object_rect.y = object.world_y + object.solidArea.y;
             object_rect.width = object.solidArea.width;
@@ -106,6 +106,23 @@ public class CollisionChecker {
         }
 
         return index;
+    }
+
+    public static boolean checkObject(Entity entity, Object object){
+        var entity_rect = new Rectangle();
+        var object_rect = new Rectangle();
+
+        entity_rect.x = entity.world_x + entity.solidArea.x;
+        entity_rect.y = entity.world_y + entity.solidArea.y;
+        entity_rect.width = entity.solidArea.width;
+        entity_rect.height = entity.solidArea.height;
+
+        object_rect.x = object.world_x + object.solidArea.x;
+        object_rect.y = object.world_y + object.solidArea.y;
+        object_rect.width = object.solidArea.width;
+        object_rect.height = object.solidArea.height;
+
+        return entity_rect.intersects(object_rect);
     }
 
     private void check_teleporter(Tile tile){

@@ -16,45 +16,66 @@ public class Object {
         world_y = 0;
     }
 
-    public static Object key(int world_x, int world_y){
-        var obj = new Object();
-        obj.name = "Key";
-        obj.image = 0;
-        obj.world_x = world_x;
-        obj.world_y = world_y;
-        return obj;
-    }
-
-    public static Object coin(int world_x, int world_y){
-        var obj = new Object();
-        obj.name = "Coin";
-        obj.image = 1;
-        obj.world_x = world_x;
-        obj.world_y = world_y;
-        return obj;
-    }
-
-    // public static Object door(int world_x, int world_y){
+    // public static Object key(int world_x, int world_y){
     //     var obj = new Object();
-    //     obj.name = "Door";
+    //     obj.name = "Key";
+    //     obj.image = 0;
+    //     obj.world_x = world_x;
+    //     obj.world_y = world_y;
+    //     return obj;
+    // }
+
+    // public static Object coin(int world_x, int world_y){
+    //     var obj = new Object();
+    //     obj.name = "Coin";
     //     obj.image = 1;
     //     obj.world_x = world_x;
     //     obj.world_y = world_y;
     //     return obj;
     // }
 
-    // public static Object chest(int world_x, int world_y){
-    //     var obj = new Object();
-    //     obj.name = "Chest";
-    //     obj.image = 2;
-    //     obj.world_x = world_x;
-    //     obj.world_y = world_y;
-    //     return obj;
-    // }
+    public static Object rock(int world_x, int world_y){
+        var obj = new Object();
+        obj.name = "Rock";
+        obj.image = 0;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        return obj;
+    }
 
+    public static Object metal_plate(int world_x, int world_y){
+        var obj = new Object();
+        obj.name = "Metal Plate";
+        obj.image = 1;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        return obj;
+    }
+
+    public void update(Player player){
+        if(name.equals("Rock")){
+            update_rock(player);
+        } else
+        if(name.equals("Metal Plate")){
+
+        }
+    }
+
+    public void update_rock(Player player){
+        if (CollisionChecker.checkObject(player, this)) {
+            int direction = player.direction;
+            if (direction == Entity.DOWN) {
+                world_y += player.speed;
+            } else if (direction == Entity.LEFT) {
+                world_x -= player.speed;
+            } else if (direction == Entity.RIGHT) {
+                world_x += player.speed;
+            } else if (direction == Entity.UP) {
+                world_y -= player.speed;
+            }
+        }
+    }
     public void draw(Graphics2D g2d, GamePanel gp){
-        
-        gp.screen_draw(gp.objectManager.sprites[image][animation_state], world_x, world_y, g2d);
-        
+        gp.screen_draw(gp.objectManager.sprites.get(image).get(animation_state), world_x, world_y, g2d);
     }
 }

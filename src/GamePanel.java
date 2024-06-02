@@ -72,8 +72,9 @@ public class GamePanel extends JPanel implements Runnable {
         var othermonsta = Monster.skeleton();
         monsters.add(othermonsta);
 
-        // objects.add(Object.key(32*5, 32*12));
-        // objects.add(Object.door(32*10, 32*10));
+        var objects = map.getObjects();
+        objects.add(Object.rock(32*5, 32*12));
+        objects.add(Object.metal_plate(32*10, 32*10));
 
         maps[0] = map;
         // tiles = MapGenerator.puzzle_room(20, 20).getTiles();
@@ -118,6 +119,7 @@ public class GamePanel extends JPanel implements Runnable {
             player.update();
             monsterManager.update(this);
             projectileManager.update(this);
+            objectManager.update(this);
         }
         else if(gameState == PAUSE){
             

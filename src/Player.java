@@ -207,7 +207,7 @@ public class Player extends Entity {
             }
         }
 
-        int obj_index = gp.collisionChecker.checkObject(this);
+        int obj_index = CollisionChecker.checkObjects(this, gp.objectManager.objects);
         if(obj_index != -1){
             var obj = gp.objectManager.objects.get(obj_index);
             evaluate_object(obj);
