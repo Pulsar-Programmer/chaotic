@@ -62,8 +62,8 @@ public class Player extends Entity {
             // player_sprites.add(player);
 
             var mage = new ArrayList<BufferedImage>();
-            // setup_class(mage, "mage/walk");
-            // setup_class(mage, "mage/atk");
+            setup_images(mage, "wizard/walk");
+            setup_images(mage, "wizard/atk");
             player_sprites.add(mage);
 
             var knight = new ArrayList<BufferedImage>();
@@ -377,7 +377,7 @@ public class Player extends Entity {
     public void shootSpecialProjectile(){
         if(shot_counter >= shot_counter_max){
             for(var i = 0; i < 4; i++){
-                var fire = Projectile.power_magic(world_x, world_y, i * 2);
+                var fire = Projectile.power_magic(world_x, world_y, i);
                 fire.origin_player = true;
                 fire.offense = offense;
                 gp.projectileManager.projectiles.add(fire);
