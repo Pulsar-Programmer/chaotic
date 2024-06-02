@@ -78,6 +78,9 @@ public class KeyHandler implements KeyListener{
             pausePressed = false;
             pauseHit = false;
         }
+        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE){
+            startHit = false;
+        }
         if(code == KeyEvent.VK_Q){
             attackPressed = false;
             attackHit = false;

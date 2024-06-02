@@ -248,7 +248,7 @@ public class GamePanel extends JPanel implements Runnable {
             world_y + GamePanel.TILE_SIZE > player.world_y - player.screen_y &&
             world_y - GamePanel.TILE_SIZE < player.world_y + player.screen_y
         ){
-            g2d.drawImage(sprite, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+            g2d.drawImage(sprite, screen_x, screen_y, sprite.getWidth() * SCALE, sprite.getHeight() * SCALE, null);
         }
     }
 

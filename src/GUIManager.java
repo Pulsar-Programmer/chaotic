@@ -73,7 +73,7 @@ public class GUIManager {
         g2d.setColor(Color.gray);
         g2d.fillRect(0, 48, 5 * 30, 16);
         g2d.setColor(Color.white);
-        g2d.fillRect(0, 48, 5 * 30 * entity.shot_counter/entity.shot_counter_max, 16);
+        g2d.fillRect(0, 48, 5 * 30 * entity.special_counter/entity.special_counter_max, 16);
     }
 
     public void drawPauseScreen(Graphics2D g2d) {

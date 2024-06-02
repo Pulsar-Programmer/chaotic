@@ -15,15 +15,17 @@ public class Player extends Entity {
     // private int defense;
     // private int offense;
     // public int health;
+    // public int special_offense = 2 * offense;
 
     public final int screen_x, screen_y;
     public int invicibility_counter = 60;
     public boolean invincible = false;
     public boolean attacking = false;
+    public boolean special_attacking = false;
     public Animation attack_animation = new Animation();
 
-    public int shot_counter = 0;
-    public int shot_counter_max = 30;
+    public int special_counter = 0;
+    public int special_counter_max = 30;
 
     public int class_type = 0;
     public static final int WIZARD = 1;
@@ -109,7 +111,7 @@ public class Player extends Entity {
         player.health = player.maxHealth;
         player.offense = 30;
         player.defense = 100; //used to be 5
-        player.shot_counter_max = 300;
+        player.special_counter_max = 300;
         //TODO
         player.class_type = WIZARD;
         return player;
@@ -130,7 +132,7 @@ public class Player extends Entity {
         player.maxHealth = 12;
         player.offense = 1;
         player.defense = 1;
-        player.shot_counter_max = 300;
+        player.special_counter_max = 300;
         player.class_type = ARCHER;
         //TODO
         return player;
@@ -142,7 +144,7 @@ public class Player extends Entity {
         player.offense = 1;
         player.defense = 5;
         player.class_type = HEALER;
-        player.shot_counter_max = 200;
+        player.special_counter_max = 200;
         //TODO
         return player;
     }
@@ -173,7 +175,7 @@ public class Player extends Entity {
             gp.keyH.attackHit = false;
             return;
         }
-        if(attacking) attack_animation();
+        if(attacking) engage_attack();
 
 
         if(gp.keyH.upPressed){
@@ -218,21 +220,12 @@ public class Player extends Entity {
         }
 
         if(gp.keyH.specialHit){
-            if(class_type == WIZARD){ //potential code to use, if we wanted to do custom bullets per class
-                shootSpecialProjectile();  
-            } else
-            if (class_type == KNIGHT) {
-                knight_projectile();
-            } else
-            if (class_type == ARCHER) {
-                archer_projectile();
-            } else
-            if (class_type == HEALER) {
-                health_projectile();
-            }
-            
+            engage_special();
             
             gp.keyH.specialHit = false;
+        }
+        if(special_attacking){
+            special_attack_animation();
         }
 
         if(vel_x != 0 || vel_y != 0){
@@ -261,37 +254,38 @@ public class Player extends Entity {
             }
         }
 
-        if(shot_counter < shot_counter_max){
-            shot_counter += 1;
+        if(special_counter < special_counter_max){
+            special_counter += 1;
         }
 
         if(health<=0){
             gp.gameState = GamePanel.DEATH;
         }
     }
+
     public void draw(Graphics2D g2){
-        int num = attacking ? 8 + attack_animation.sprite_num : walking.sprite_num;
+        int num = attacking || special_attacking ? 8 + attack_animation.sprite_num : walking.sprite_num;
         BufferedImage image = player_sprites.get(class_type - 1).get(direction * 2 + num);
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }
-        if(attacking){
-            if(direction == UP){
-                g2.drawImage(image, screen_x, screen_y - GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
-            }
-            if(direction == LEFT){
-                g2.drawImage(image, screen_x - GamePanel.TILE_SIZE, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
-            }
-            if(direction == RIGHT){
-                g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
-            }
-            if(direction == DOWN){
-                g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
-            }
-        }
-        else{
-            g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
-        }
+        // if(attacking){
+        //     if(direction == UP){
+        //         g2.drawImage(image, screen_x, screen_y - GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
+        //     }
+        //     if(direction == LEFT){
+        //         g2.drawImage(image, screen_x - GamePanel.TILE_SIZE, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
+        //     }
+        //     if(direction == RIGHT){
+        //         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
+        //     }
+        //     if(direction == DOWN){
+        //         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
+        //     }
+        // }
+        // else{
+            g2.drawImage(image, screen_x, screen_y, image.getWidth() * GamePanel.SCALE, image.getHeight() * GamePanel.SCALE, null);
+        // }
         
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
@@ -308,9 +302,7 @@ public class Player extends Entity {
     }
 
     public void evaluate_monster(Monster monster){
-        if(monster.name.equals("Ghost") || monster.name.equals("Skeleton")){
-            damage_player(monster.offense);
-        }
+        damage_player(monster.offense);
     }
 
     public void damage_player(int atk){
@@ -319,43 +311,35 @@ public class Player extends Entity {
             invincible = true;
         }
     }
-    
-    
-    public void attack_animation(){
+
+    public void engage_attack(){
         attack_animation.frame_counter += 1;
         if(attack_animation.frame_counter <= 10){
             attack_animation.sprite_num = 0;
-        }
-        else if(attack_animation.frame_counter <= 25){
+        } else if(attack_animation.frame_counter <= 25){
             attack_animation.sprite_num = 1;
 
-            int current_world_x = world_x;
-            int current_world_y = world_y;
-            int current_solid_area_width = solidArea.width;
-            int current_solid_area_height = solidArea.height;
-
-            if(direction == UP){
-                world_y -= attackArea.height;
-            } else if(direction == DOWN){
-                world_y += attackArea.height;
-            } else if(direction == LEFT){
-                world_x -= attackArea.width;
-            } else if(direction == RIGHT){
-                world_x += attackArea.width;
+            if(class_type == WIZARD){
+                if(attack_animation.frame_counter % 8 == 0){
+                    var fire = Projectile.magic(world_x, world_y, direction);
+                    fire.origin_player = true;
+                    fire.offense = offense;
+                    gp.projectileManager.projectiles.add(fire);
+                }
+                
+            } else
+            if(class_type == KNIGHT){
+                standard_attack();
+            } else
+            if(class_type == ARCHER && attack_animation.frame_counter == 15){
+                var fire = Projectile.arrow(world_x, world_y, direction);
+                fire.origin_player = true;
+                fire.offense = offense;
+                gp.projectileManager.projectiles.add(fire);
+            } else
+            if(class_type == HEALER){
+                standard_attack();
             }
-
-            solidArea.width = attackArea.width;
-            solidArea.height = attackArea.height;
-
-            int m_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
-            if(m_index != -1){
-                gp.monsterManager.monsters.get(m_index).damage_monster(direction, offense);
-            }
-
-            world_x = current_world_x;
-            world_y = current_world_y;
-            solidArea.width = current_solid_area_width;
-            solidArea.height = current_solid_area_height;
         }
         if(attack_animation.frame_counter > 25){
             attack_animation.sprite_num = 0;
@@ -364,55 +348,78 @@ public class Player extends Entity {
         }
     }
 
-    public void shoot_projectile(){
-        if(shot_counter >= shot_counter_max){
-            var fire = Projectile.fireball(world_x, world_y, direction);
-            fire.origin_player = true;
-            fire.offense = offense;
-            gp.projectileManager.projectiles.add(fire);
-            shot_counter = 0;
+    public void special_attack_animation(){
+        attack_animation.frame_counter += 1;
+        if(attack_animation.frame_counter <= 10){
+            attack_animation.sprite_num = 0;
+        } else if(attack_animation.frame_counter <= 25){
+            attack_animation.sprite_num = 1;
+        }
+        if(attack_animation.frame_counter > 25){
+            attack_animation.sprite_num = 0;
+            attack_animation.frame_counter = 0;
+            special_attacking = false;
         }
     }
-        
-    public void shootSpecialProjectile(){
-        if(shot_counter >= shot_counter_max){
-            for(var i = 0; i < 4; i++){
-                var fire = Projectile.power_magic(world_x, world_y, i);
+    
+    public void standard_attack(){
+        int current_world_x = world_x;
+        int current_world_y = world_y;
+        int current_solid_area_width = solidArea.width;
+        int current_solid_area_height = solidArea.height;
+
+        if(direction == UP){
+            world_y -= attackArea.height;
+        } else if(direction == DOWN){
+            world_y += attackArea.height;
+        } else if(direction == LEFT){
+            world_x -= attackArea.width;
+        } else if(direction == RIGHT){
+            world_x += attackArea.width;
+        }
+
+        solidArea.width = attackArea.width;
+        solidArea.height = attackArea.height;
+
+        int m_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
+        if(m_index != -1){
+            gp.monsterManager.monsters.get(m_index).damage_monster(direction, offense);
+        }
+
+        world_x = current_world_x;
+        world_y = current_world_y;
+        solidArea.width = current_solid_area_width;
+        solidArea.height = current_solid_area_height;
+    }
+
+    public void engage_special(){
+        if(special_counter >= special_counter_max){
+            special_attacking = true; // I will abandon this feature?
+            if(class_type == WIZARD){
+                for(var i = 0; i < 4; i++){
+                    var fire = Projectile.power_magic(world_x, world_y, i);
+                    fire.origin_player = true;
+                    fire.offense = offense;
+                    gp.projectileManager.projectiles.add(fire);
+                }
+            } else
+            if(class_type == KNIGHT){
+                var fire = Projectile.knight(world_x, world_y, direction);
                 fire.origin_player = true;
                 fire.offense = offense;
                 gp.projectileManager.projectiles.add(fire);
+            } else
+            if(class_type == ARCHER){
+                var fire = Projectile.power_arrow(world_x, world_y, direction);
+                fire.origin_player = true;
+                fire.offense = offense;
+                gp.projectileManager.projectiles.add(fire);
+            } else
+            if(class_type == HEALER){
+                health = Math.min(health + 3, maxHealth);
             }
-            shot_counter = 0;
-        }
-    }
-    public void health_projectile(){
-        if(shot_counter >= shot_counter_max){
-            health = Math.min(health + 3, maxHealth);
-            shot_counter = 0;
-        }
-    }
-    public void knight_projectile(){
-        if(shot_counter >= shot_counter_max){
-            
-            //stuff in here
-//what should we do for the knight?
-            var fire = Projectile.knight(world_x, world_y, direction);
-            fire.origin_player = true;
-            fire.offense = 5000;
-            gp.projectileManager.projectiles.add(fire);
 
-            shot_counter = 0;
-        }
-    }
-    public void archer_projectile(){
-        if(shot_counter >= shot_counter_max){
-            
-            var fire = Projectile.power_arrow(world_x, world_y, direction);
-            fire.origin_player = true;
-            fire.offense = 5000;
-            gp.projectileManager.projectiles.add(fire);
-
-            shot_counter = 0;
+            special_counter = 0;
         }
     }
     
