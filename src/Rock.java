@@ -9,22 +9,20 @@ public class Rock extends Entity {
         }
     }
 
-public void move(Player player){
-    int direction = player.direction;
-    if(direction==DOWN){
-world_y+=speed;
+    public void move(Player player) {
+        int direction = player.direction;
+        if (direction == DOWN) {
+            world_y += speed;
+        } else if (direction == LEFT) {
+            world_x -= speed;
+        } else if (direction == RIGHT) {
+            world_x += speed;
+        } else if (direction == UP) {
+            world_y -= speed;
+        }
     }
-    else if(direction ==LEFT){
-world_x-=speed;
+
+    public void detectPlate() {
+        // if()
     }
-    else if(direction==RIGHT){
-world_x+=speed;
-    }
-    else if(direction==UP){
-world_y-=speed;
-    }
-}
-public void detectPlate(){
-    if()
-}
 }
