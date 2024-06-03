@@ -31,6 +31,7 @@ public class GUIManager {
     public void setupSprites() {
         sprites = new ArrayList<BufferedImage>();
         try {
+            sprites.add(App.res("res/objects/awards/ultimate.png"));
             // sprites.add(ImageIO.read(new File("res/gui/health/zero.png")));
             // sprites.add(ImageIO.read(new File("res/gui/health/one.png")));
             // sprites.add(ImageIO.read(new File("res/gui/health/two.png")));
@@ -74,6 +75,11 @@ public class GUIManager {
         g2d.fillRect(0, 48, 5 * 30, 16);
         g2d.setColor(Color.white);
         g2d.fillRect(0, 48, 5 * 30 * entity.special_counter/entity.special_counter_max, 16);
+
+        g2d.drawImage(sprites.get(0), 10, 96, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+        g2d.setFont(g2d.getFont().deriveFont(32F));
+        g2d.setColor(Color.white);
+        g2d.drawString("x " + entity.trophe_count, 60, 96 + 3 * GamePanel.TILE_SIZE / 4);
     }
 
     public void drawPauseScreen(Graphics2D g2d) {

@@ -119,9 +119,9 @@ public class Projectile extends Entity implements Collider {
             alive = false;
         }
 
-        int monster = CollisionChecker.check_intersections(this, gp.monsterManager.monsters).getFirst();
-        if(monster != -1 && origin_player){
-            gp.monsterManager.monsters.get(monster).damage_monster(direction, offense);
+        var ms = CollisionChecker.check_intersections(this, gp.monsterManager.monsters);
+        if(!ms.isEmpty() && origin_player){
+            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense);
             alive = false;
         }
 

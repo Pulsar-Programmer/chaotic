@@ -4,6 +4,7 @@ public abstract class Entity {
    // public Entity linkedEntity;
     public int world_x, world_y;
     public int speed;
+    public int maxSpeed = 5;
     public Rectangle solidArea = new Rectangle(0, 0, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
    

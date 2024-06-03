@@ -24,11 +24,16 @@ public class Player extends Entity implements Collider {
     public int special_counter = 0;
     public int special_counter_max = 30;
 
+    double vel_x = 0;
+    double vel_y = 0;
+
     public int class_type = 0;
     public static final int WIZARD = 1;
     public static final int KNIGHT = 2;
     public static final int ARCHER = 3;
     public static final int HEALER = 4;
+
+    public int trophe_count = 0;
 
     //TODO: make sure you assign all default values in here and not initially allocated
     public Player(GamePanel gp){
@@ -169,8 +174,8 @@ public class Player extends Entity implements Collider {
 
     public void update(){
         int timesKeyPressed = 0;
-        double vel_x = 0;
-        double vel_y = 0;
+        vel_x = 0;
+        vel_y = 0;
 
         if(gp.keyH.attackHit){
             attacking = true;
@@ -209,15 +214,15 @@ public class Player extends Entity implements Collider {
             }
         }
 
-        int obj_index = CollisionChecker.check_intersections(this, gp.objectManager.objects).getFirst();
-        if(obj_index != -1){
-            var obj = gp.objectManager.objects.get(obj_index);
+        var objs = CollisionChecker.check_intersections(this, gp.objectManager.objects);
+        if(!objs.isEmpty()){
+            var obj = gp.objectManager.objects.get(objs.getFirst());
             evaluate_object(obj);
         }
 
-        int ent_index = CollisionChecker.check_intersections(this, gp.monsterManager.monsters).getFirst();
-        if(ent_index != -1){
-            var ent = gp.monsterManager.monsters.get(ent_index);
+        var ents = CollisionChecker.check_intersections(this, gp.monsterManager.monsters);
+        if(!ents.isEmpty()){
+            var ent = gp.monsterManager.monsters.get(ents.getFirst());
             evaluate_monster(ent);
         }
 
@@ -397,9 +402,9 @@ public class Player extends Entity implements Collider {
         solidArea.width = attackArea.width;
         solidArea.height = attackArea.height;
 
-        int m_index = CollisionChecker.check_intersections(this, gp.monsterManager.monsters).getFirst();
-        if(m_index != -1){
-            gp.monsterManager.monsters.get(m_index).damage_monster(direction, offense);
+        var ms = CollisionChecker.check_intersections(this, gp.monsterManager.monsters);
+        if(!ms.isEmpty()){
+            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense);
         }
 
         world_x = current_world_x;

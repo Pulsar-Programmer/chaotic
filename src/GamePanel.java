@@ -73,8 +73,19 @@ public class GamePanel extends JPanel implements Runnable {
         monsters.add(othermonsta);
 
         var objects = map.getObjects();
-        objects.add(Object.rock(32*5, 32*12));
-        objects.add(Object.metal_plate(32*10, 32*10));
+        var plate = Object.metal_plate(32*10, 32*10);
+        var rock = Object.rock(32*5, 32*12);
+        var plate_2 = Object.metal_plate(32*8, 32*6);
+        var rock_2 = Object.rock(32*2, 32*15);
+        plate.minigame_affiliation = 1;
+        // rock.minigame_affiliation = 1;
+        plate_2.minigame_affiliation = 1;
+        // rock_2.minigame_affiliation = 1;
+        objects.add(plate);
+        objects.add(plate_2);
+        objects.add(rock);
+        objects.add(rock_2);
+
 
         maps[0] = map;
         load_map(0);
