@@ -121,7 +121,7 @@ public class Projectile extends Entity implements Collider {
 
         var ms = CollisionChecker.check_intersections(this, gp.monsterManager.monsters);
         if(!ms.isEmpty() && origin_player){
-            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense);
+            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense, false);
             alive = false;
         }
 
@@ -160,5 +160,10 @@ public class Projectile extends Entity implements Collider {
     @Override
     public int world_y() {
         return world_y;
+    }
+
+    @Override
+    public int speed() {
+        return speed;
     }
 }

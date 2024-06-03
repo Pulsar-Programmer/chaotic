@@ -2,7 +2,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 
 import javax.swing.JPanel;
 
@@ -19,7 +21,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     TileManager tileManager = new TileManager();
     KeyHandler keyH = new KeyHandler();
-    MouseHandler mouseHandler = new MouseHandler();
     Thread gameThread;
     Player player = new Player(this);
     CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -56,9 +57,11 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
         // tiles = MapGenerator.procedure().getTiles();
         var map = Map.new_map();
+        map.setTiles(tileManager.tiles);
         // map.layer(MapGenerator.boss_room(10, 10, 0));
         // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
-        map = Map.new_map();
+        // map = MapGenerator.generic_room(10, 10);
+        // map.setPlayer_spawn(new Point(5, 5));
 
 
         var monsters = map.getMonsters();
@@ -77,14 +80,18 @@ public class GamePanel extends JPanel implements Runnable {
         var rock = Object.rock(32*5, 32*12);
         var plate_2 = Object.metal_plate(32*8, 32*6);
         var rock_2 = Object.rock(32*2, 32*15);
+        var door = Object.door(GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE);
         plate.minigame_affiliation = 1;
         // rock.minigame_affiliation = 1;
         plate_2.minigame_affiliation = 1;
         // rock_2.minigame_affiliation = 1;
+        door.minigame_affiliation = 1;
+        door.teleporter = Optional.of(new Point(10, 10));
         objects.add(plate);
         objects.add(plate_2);
         objects.add(rock);
         objects.add(rock_2);
+        objects.add(door);
 
 
         maps[0] = map;

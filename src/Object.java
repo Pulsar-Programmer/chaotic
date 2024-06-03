@@ -1,7 +1,7 @@
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Optional;
 
 public class Object implements Collider {
     private int image;
@@ -14,7 +14,8 @@ public class Object implements Collider {
     public boolean tile_activated = false;
     public int tile_activation_counter = 0;
     public int minigame_affiliation = 0; //0 means no association
-
+    
+    public Optional<Point> teleporter = Optional.empty();
 
     private Object(){
         image = 0;
@@ -71,33 +72,61 @@ public class Object implements Collider {
         return obj;
     }
 
+    public static Object door(int world_x, int world_y){
+        var obj = new Object();
+        obj.name = "Door";
+        obj.image = 3;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        return obj;
+    }
+
     public void update(GamePanel gp){
         if(name.equals("Rock")){
-            update_rock(gp.player);
+            update_rock(gp);
         } else
         if(name.equals("Plate")){
             update_plate(gp.objectManager);
         } else
+        if(name.equals("Door")){
+
+        }
         if(name.equals("Trophe")){
             if(CollisionChecker.check_intersection(gp.player, this)) {
                 gp.player.trophe_count += 1;
                 gp.objectManager.objects.remove(this);
             }
+            // if(gp.objectManager.objects.get(CollisionChecker.check_intersections(this, gp.objectManager.objects).getFirst()).name.equals("Rock")){
+                
+            // }
         }
     }
 
-    public void update_rock(Player player){
-        if(CollisionChecker.check_intersection(player, this)) {
-            player.speed = player.maxSpeed - 3;
+    public void update_rock(GamePanel gp){
+        if(CollisionChecker.check_intersection(gp.player, this)) {
+            gp.player.pushing_rock = true;
 
-            world_y += player.vel_y;
-            world_x += player.vel_x;
-        } else {
-            player.speed = player.maxSpeed;
+            var up = gp.collisionChecker.checkUp(this);
+            var down = gp.collisionChecker.checkDown(this);
+            var left = gp.collisionChecker.checkLeft(this);
+            var right = gp.collisionChecker.checkRight(this);
+
+            if(up){
+                gp.player.vel_y =  Math.max(0, gp.player.vel_y);
+            }
+            if(down){
+                gp.player.vel_y = Math.min(0, gp.player.vel_y);
+            }
+            if(left){
+                gp.player.vel_x = Math.max(0, gp.player.vel_x);
+            }
+            if(right){
+                gp.player.vel_x = Math.min(0, gp.player.vel_x);
+            }
+            
+            world_x += gp.player.vel_x;
+            world_y += gp.player.vel_y;
         }
-
-        // if(CollisionChecker.check_intersections(this, null)
-        //check against other rocks..
     }
 
     public void update_plate(ObjectManager objectManager){
@@ -117,7 +146,7 @@ public class Object implements Collider {
     }
 
     public void draw(Graphics2D g2d, GamePanel gp){
-        if(name.equals("Plate")){
+        if(name.equals("Plate") || name.equals("Door")){
             animation_state = tile_activated ? 1 : 0;
         }
         gp.screen_draw(gp.objectManager.sprites.get(image).get(animation_state), world_x, world_y, g2d);
@@ -136,5 +165,10 @@ public class Object implements Collider {
     @Override
     public int world_y() {
         return world_y;
+    }
+
+    @Override
+    public int speed() {
+        return 0;
     }
 }

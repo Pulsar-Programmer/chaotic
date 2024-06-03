@@ -27,6 +27,11 @@ public class ObjectManager {
             var trophe = new ArrayList<BufferedImage>();
             trophe.add(App.res("res/objects/awards/ultimate.png"));
             sprites.add(trophe);
+
+            var door = new ArrayList<BufferedImage>();
+            door.add(App.res("res/tiles/blue/door/north_closed.png"));
+            door.add(App.res("res/tiles/blue/door/north_open.png"));
+            sprites.add(door);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,7 +48,7 @@ public class ObjectManager {
     public void update_minigame_checker(GamePanel gp){
         var all_activated_hashmap = new HashMap<Integer, Boolean>();
         for (var object : objects) {
-            if(object.minigame_affiliation != 0){
+            if(object.minigame_affiliation != 0 && !object.name.equals("Door")){
                 all_activated_hashmap.putIfAbsent(object.minigame_affiliation, true);
                 all_activated_hashmap.put(object.minigame_affiliation, all_activated_hashmap.get(object.minigame_affiliation) && object.tile_activation_counter >= 120);
             }
@@ -52,6 +57,10 @@ public class ObjectManager {
             if(b){
                 for(var i = 0; i < objects.size(); i++){
                     if(objects.get(i).minigame_affiliation == a){
+                        if(objects.get(i).name.equals("Door")){
+                            objects.get(i).tile_activated = true;
+                            continue;
+                        }
                         objects.remove(i);
                         i--;
                     }

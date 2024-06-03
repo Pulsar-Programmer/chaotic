@@ -34,6 +34,7 @@ public class Player extends Entity implements Collider {
     public static final int HEALER = 4;
 
     public int trophe_count = 0;
+    public boolean pushing_rock = false;
 
     //TODO: make sure you assign all default values in here and not initially allocated
     public Player(GamePanel gp){
@@ -42,8 +43,8 @@ public class Player extends Entity implements Collider {
         screen_y = GamePanel.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
 
         solidArea = new Rectangle(8, 16, 32, 32);
-        attackArea.width = 36;
-        attackArea.height = 36;
+        attackArea.width = 60;
+        attackArea.height = 60;
 
         walking = new Animation();
 
@@ -130,7 +131,7 @@ public class Player extends Entity implements Collider {
         player.defense = 10;
         player.class_type = KNIGHT;
         player.attack_animation.max_sprite_num = 3;
-        //TODO
+        //TODO @arkinsriva
         return player;
     }
 
@@ -176,7 +177,7 @@ public class Player extends Entity implements Collider {
         int timesKeyPressed = 0;
         vel_x = 0;
         vel_y = 0;
-
+        
         if(gp.keyH.attackHit){
             attacking = true;
             gp.keyH.attackHit = false;
@@ -184,6 +185,13 @@ public class Player extends Entity implements Collider {
         }
         if(attacking) engage_attack();
 
+        if(pushing_rock){
+            speed = maxSpeed - 3;
+        } else {
+            speed = maxSpeed;
+            // vel_x = 0;
+            // vel_y = 0;
+        }
 
         if(gp.keyH.upPressed){
             direction = UP;
@@ -213,6 +221,11 @@ public class Player extends Entity implements Collider {
                 timesKeyPressed++;
             }
         }
+
+        // if(pushing_rock){
+        //     gp.player.vel_x = 0;
+        //     gp.player.vel_y = 0;
+        // }
 
         var objs = CollisionChecker.check_intersections(this, gp.objectManager.objects);
         if(!objs.isEmpty()){
@@ -268,6 +281,7 @@ public class Player extends Entity implements Collider {
         if(health<=0){
             gp.gameState = GamePanel.DEATH;
         }
+        pushing_rock = false;
     }
 
     public void draw(Graphics2D g2){
@@ -300,6 +314,12 @@ public class Player extends Entity implements Collider {
     public void evaluate_object(Object obj){
         if(obj.name.equals("Key")){
             gp.objectManager.objects.remove(obj);
+        }
+        if(obj.name.equals("Door") && obj.tile_activated){
+            if(obj.teleporter.isPresent()){
+                var p = obj.teleporter.get();
+                gp.player.teleport_player(p.x, p.y);
+            }
         }
     }
 
@@ -389,22 +409,12 @@ public class Player extends Entity implements Collider {
         int current_solid_area_width = solidArea.width;
         int current_solid_area_height = solidArea.height;
 
-        if(direction == UP){
-            world_y -= attackArea.height;
-        } else if(direction == DOWN){
-            world_y += attackArea.height;
-        } else if(direction == LEFT){
-            world_x -= attackArea.width;
-        } else if(direction == RIGHT){
-            world_x += attackArea.width;
-        }
-
         solidArea.width = attackArea.width;
         solidArea.height = attackArea.height;
 
         var ms = CollisionChecker.check_intersections(this, gp.monsterManager.monsters);
         if(!ms.isEmpty()){
-            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense);
+            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense, class_type == HEALER);
         }
 
         world_x = current_world_x;
@@ -457,5 +467,10 @@ public class Player extends Entity implements Collider {
     @Override
     public int world_y() {
         return world_y;
+    }
+
+    @Override
+    public int speed() {
+        return speed;
     }
 }

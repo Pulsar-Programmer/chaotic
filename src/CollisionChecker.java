@@ -10,10 +10,10 @@ public class CollisionChecker {
 
     //round_divide fn is dead
 
-    public boolean checkUp(Entity entity){
-        int left_x = entity.world_x + entity.solidArea.x;
-        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
-        int top_y = entity.world_y + entity.solidArea.y - entity.speed;
+    public boolean checkUp(Collider entity){
+        int left_x = entity.world_x() + entity.collider_rect().x;
+        int right_x = entity.world_x() + entity.collider_rect().x + entity.collider_rect().width;
+        int top_y = entity.world_y() + entity.collider_rect().y - entity.speed();
 
         int left_tile = left_x/GamePanel.TILE_SIZE;
         int right_tile = right_x/GamePanel.TILE_SIZE;
@@ -22,16 +22,16 @@ public class CollisionChecker {
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile2 = gp.tileManager.find(right_tile, top_tile);
 
-        check_teleporter(tile1);
-        check_teleporter(tile2);
+        // check_teleporter(tile1);
+        // check_teleporter(tile2);
     
         return tile1.has_collision || tile2.has_collision;
     }
 
-    public boolean checkDown(Entity entity){
-        int left_x = entity.world_x + entity.solidArea.x;
-        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width;
-        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height + entity.speed;
+    public boolean checkDown(Collider entity){
+        int left_x = entity.world_x() + entity.collider_rect().x;
+        int right_x = entity.world_x() + entity.collider_rect().x + entity.collider_rect().width;
+        int bottom_y = entity.world_y() + entity.collider_rect().y + entity.collider_rect().height + entity.speed();
         
         int left_tile = left_x/GamePanel.TILE_SIZE;
         int right_tile = right_x/GamePanel.TILE_SIZE;
@@ -40,16 +40,16 @@ public class CollisionChecker {
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
 
-        check_teleporter(tile3);
-        check_teleporter(tile4);
+        // check_teleporter(tile3);
+        // check_teleporter(tile4);
 
         return tile3.has_collision || tile4.has_collision;
     }
 
-    public boolean checkLeft(Entity entity){
-        int left_x = entity.world_x + entity.solidArea.x - entity.speed;
-        int top_y = entity.world_y + entity.solidArea.y;
-        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
+    public boolean checkLeft(Collider entity){
+        int left_x = entity.world_x() + entity.collider_rect().x - entity.speed();
+        int top_y = entity.world_y() + entity.collider_rect().y;
+        int bottom_y = entity.world_y() + entity.collider_rect().y + entity.collider_rect().height;
         
         int left_tile = left_x/GamePanel.TILE_SIZE;
         int top_tile = top_y/GamePanel.TILE_SIZE;
@@ -58,16 +58,16 @@ public class CollisionChecker {
         var tile1 = gp.tileManager.find(left_tile, top_tile);
         var tile3 = gp.tileManager.find(left_tile, bottom_tile);
 
-        check_teleporter(tile1);
-        check_teleporter(tile3);
+        // check_teleporter(tile1);
+        // check_teleporter(tile3);
 
         return tile1.has_collision || tile3.has_collision;
     }
 
-    public boolean checkRight(Entity entity){
-        int right_x = entity.world_x + entity.solidArea.x + entity.solidArea.width + entity.speed;
-        int top_y = entity.world_y + entity.solidArea.y;
-        int bottom_y = entity.world_y + entity.solidArea.y + entity.solidArea.height;
+    public boolean checkRight(Collider entity){
+        int right_x = entity.world_x() + entity.collider_rect().x + entity.collider_rect().width + entity.speed();
+        int top_y = entity.world_y() + entity.collider_rect().y;
+        int bottom_y = entity.world_y() + entity.collider_rect().y + entity.collider_rect().height;
         
         int right_tile = right_x/GamePanel.TILE_SIZE;
         int top_tile = top_y/GamePanel.TILE_SIZE;
@@ -76,18 +76,15 @@ public class CollisionChecker {
         var tile2 = gp.tileManager.find(right_tile, top_tile);
         var tile4 = gp.tileManager.find(right_tile, bottom_tile);
 
-        check_teleporter(tile2);
-        check_teleporter(tile4);
+        // check_teleporter(tile2);
+        // check_teleporter(tile4);
 
         return tile4.has_collision || tile2.has_collision;
     }
 
-    private void check_teleporter(Tile tile){
-        if(tile.teleporter.isPresent()){
-            var p = tile.teleporter.get();
-            gp.player.teleport_player(p.x, p.y);
-        }
-    }
+    // private void check_teleporter(Tile tile){
+        
+    // }
 
     public static ArrayList<Integer> check_intersections(Collider entity, ArrayList<? extends Collider> entities){
         var list = new ArrayList<Integer>();

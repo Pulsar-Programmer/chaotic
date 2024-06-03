@@ -57,7 +57,7 @@ public class TileManager {
     }
     public void loadMap(){
         try {
-            var scanner = new Scanner(new File("res/arkinmap.txt"));
+            var scanner = new Scanner(new File("res/map.txt"));
             int x = 0;
             int y = 0;
 
@@ -77,9 +77,9 @@ public class TileManager {
                     }
                     var num = Integer.parseInt(part);
                     var p = new Point(x, y);
-                    if(num >= 2 && num != 11){
+                    if(num >= 3 && num != 12){
                         tiles.put(p, Tile.with_collision(num));
-                    } else if(num==11){
+                    } else if(num==12){
                         var tile = new Tile(num);
 
                         tile.teleporter = Optional.of(new Point(10, 10));

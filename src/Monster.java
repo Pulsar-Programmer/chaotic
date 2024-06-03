@@ -136,7 +136,7 @@ public class Monster extends Entity implements Collider {
         }
     }
 
-    public void damage_monster(int player_direction, int atk){
+    public void damage_monster(int player_direction, int atk, boolean is_healer){
         if(!invincible){
             health = Math.max(health - Math.max(atk - defense, 1), 0);
             invincible = true;
@@ -145,7 +145,7 @@ public class Monster extends Entity implements Collider {
             if(health == 0){
                 dying = true;
             }
-            damage_reaction(player_direction);
+            damage_reaction(player_direction, is_healer);
         }
     }
 
@@ -159,11 +159,15 @@ public class Monster extends Entity implements Collider {
         }
     }
 
-    public void damage_reaction(int player_direction){
+    public void damage_reaction(int player_direction, boolean is_healer){
         // speed += 2;
         direction = player_direction;
         if(name.equals("Skeleton")){
             waiting = 30;
+            is_waiting = true;
+        }
+        if(is_healer){
+            waiting = 100;
             is_waiting = true;
         }
     }
@@ -191,4 +195,8 @@ public class Monster extends Entity implements Collider {
         return world_y;
     }
 
+    @Override
+    public int speed() {
+        return speed;
+    }
 }
