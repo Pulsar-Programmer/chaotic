@@ -36,6 +36,18 @@ public class ObjectManager {
             var key = new ArrayList<BufferedImage>();
             key.add(App.res("res/objects/key.png"));
             sprites.add(key);
+
+            var heart = new ArrayList<BufferedImage>();
+            heart.add(App.res("res/objects/heart.png"));
+            sprites.add(heart);
+
+            var coin = new ArrayList<BufferedImage>();
+            coin.add(App.res("res/objects/coin.png"));
+            sprites.add(coin);
+
+            var toll = new ArrayList<BufferedImage>();
+            toll.add(App.res("res/objects/toll.png"));
+            sprites.add(toll);
             
         } catch (Exception e) {
             e.printStackTrace();

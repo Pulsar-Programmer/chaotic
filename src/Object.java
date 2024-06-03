@@ -14,6 +14,8 @@ public class Object implements Collider {
     public boolean tile_activated = false;
     public int tile_activation_counter = 0;
     public int minigame_affiliation = 0; //0 means no association
+    public int healing_power = 0;
+    public int toll_amount = 0;
     
     public Optional<Point> teleporter = Optional.empty();
 
@@ -87,6 +89,36 @@ public class Object implements Collider {
         obj.image = 4;
         obj.world_x = world_x;
         obj.world_y = world_y;
+        return obj;
+    }
+
+    public static Object heart(int world_x, int world_y, int healing_power){
+        var obj = new Object();
+        obj.name = "Heart";
+        obj.image = 5;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        obj.healing_power = healing_power;
+        return obj;
+    }
+
+    public static Object coin(int world_x, int world_y){
+        var obj = new Object();
+        obj.name = "Coin";
+        obj.image = 6;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        // obj.healing_power = healing_power; rename to worth and use it for coin, too lol
+        return obj;
+    }
+
+    public static Object toll(int world_x, int world_y, int toll_amount){
+        var obj = new Object();
+        obj.name = "Toll";
+        obj.image = 7;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        obj.toll_amount = toll_amount;
         return obj;
     }
 

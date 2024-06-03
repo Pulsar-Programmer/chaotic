@@ -32,6 +32,7 @@ public class GUIManager {
         sprites = new ArrayList<BufferedImage>();
         try {
             sprites.add(App.res("res/objects/awards/ultimate.png"));
+            sprites.add(App.res("res/objects/coin.png"));
             // sprites.add(ImageIO.read(new File("res/gui/health/zero.png")));
             // sprites.add(ImageIO.read(new File("res/gui/health/one.png")));
             // sprites.add(ImageIO.read(new File("res/gui/health/two.png")));
@@ -80,6 +81,11 @@ public class GUIManager {
         g2d.setFont(g2d.getFont().deriveFont(32F));
         g2d.setColor(Color.white);
         g2d.drawString("x " + entity.trophe_count, 60, 96 + 3 * GamePanel.TILE_SIZE / 4);
+
+        g2d.drawImage(sprites.get(1), 120, 96, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+        g2d.setFont(g2d.getFont().deriveFont(32F));
+        g2d.setColor(Color.white);
+        g2d.drawString("x " + entity.coin_count, 170, 96 + 3 * GamePanel.TILE_SIZE / 4);
     }
 
     public void drawPauseScreen(Graphics2D g2d) {

@@ -61,7 +61,14 @@ public class MonsterManager {
             if(!elem.alive) dead = elem;
             elem.update(gp);
         }
-        monsters.remove(dead);
+        if(dead != null){
+            monsters.remove(dead);
+            if(MapGenerator.gen_range(10) >= 5){
+                gp.objectManager.objects.add(Object.heart(dead.world_x, dead.world_y, dead.offense/2 + 1));
+            } else {
+                gp.objectManager.objects.add(Object.coin(dead.world_x, dead.world_y));
+            }
+        }
     }
 
     public void draw(Graphics2D g2d, GamePanel gp){

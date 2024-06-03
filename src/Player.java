@@ -35,6 +35,7 @@ public class Player extends Entity implements Collider {
 
     public int trophe_count = 0;
     public boolean pushing_rock = false;
+    public int coin_count = 0;
 
     //TODO: make sure you assign all default values in here and not initially allocated
     public Player(GamePanel gp){
@@ -314,12 +315,24 @@ public class Player extends Entity implements Collider {
     public void evaluate_object(Object obj){
         if(obj.name.equals("Key")){
             gp.objectManager.objects.remove(obj);
-        }
+        } else
         if(obj.name.equals("Door") && obj.tile_activated){
             if(obj.teleporter.isPresent()){
                 var p = obj.teleporter.get();
                 gp.player.teleport_player(p.x, p.y);
             }
+        } else
+        if(obj.name.equals("Heart")){
+            gp.objectManager.objects.remove(obj);
+            health = Math.min(maxHealth, health + obj.healing_power);
+        } else
+        if(obj.name.equals("Coin")){
+            gp.objectManager.objects.remove(obj);
+            coin_count += 1;
+        } else
+        if(obj.name.equals("Toll") && obj.toll_amount <= coin_count){
+            gp.objectManager.objects.remove(obj);
+            coin_count -= obj.toll_amount;
         }
     }
 
