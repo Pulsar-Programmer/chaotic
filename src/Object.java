@@ -1,7 +1,8 @@
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
-public class Object {
+public class Object implements Collider {
     private int image;
     private int animation_state;
     public String name;
@@ -40,6 +41,8 @@ public class Object {
         obj.image = 0;
         obj.world_x = world_x;
         obj.world_y = world_y;
+        obj.solidArea.height = 18 * GamePanel.SCALE;
+        obj.solidArea.width = 18 * GamePanel.SCALE;
         return obj;
     }
 
@@ -57,12 +60,12 @@ public class Object {
             update_rock(player);
         } else
         if(name.equals("Metal Plate")){
-
+            update_plate();
         }
     }
 
     public void update_rock(Player player){
-        if (CollisionChecker.checkObject(player, this)) {
+        if (CollisionChecker.check_intersection(player, this)) {
             int direction = player.direction;
             if (direction == Entity.DOWN) {
                 world_y += player.speed;
@@ -75,7 +78,28 @@ public class Object {
             }
         }
     }
+
+    public void update_plate(){
+        
+    }
+
+
     public void draw(Graphics2D g2d, GamePanel gp){
         gp.screen_draw(gp.objectManager.sprites.get(image).get(animation_state), world_x, world_y, g2d);
+    }
+
+    @Override
+    public Rectangle collider_rect() {
+        return solidArea;
+    }
+
+    @Override
+    public int world_x() {
+        return world_x;
+    }
+
+    @Override
+    public int world_y() {
+        return world_y;
     }
 }

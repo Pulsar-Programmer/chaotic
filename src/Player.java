@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player extends Entity {
+public class Player extends Entity implements Collider {
     GamePanel gp;
     
     public ArrayList<ArrayList<BufferedImage>> player_sprites = new ArrayList<>();
@@ -209,13 +209,13 @@ public class Player extends Entity {
             }
         }
 
-        int obj_index = CollisionChecker.checkObjects(this, gp.objectManager.objects);
+        int obj_index = CollisionChecker.check_intersections(this, gp.objectManager.objects).getFirst();
         if(obj_index != -1){
             var obj = gp.objectManager.objects.get(obj_index);
             evaluate_object(obj);
         }
 
-        int ent_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
+        int ent_index = CollisionChecker.check_intersections(this, gp.monsterManager.monsters).getFirst();
         if(ent_index != -1){
             var ent = gp.monsterManager.monsters.get(ent_index);
             evaluate_monster(ent);
@@ -397,7 +397,7 @@ public class Player extends Entity {
         solidArea.width = attackArea.width;
         solidArea.height = attackArea.height;
 
-        int m_index = CollisionChecker.check_monsters((Entity)this, gp.monsterManager.monsters);
+        int m_index = CollisionChecker.check_intersections(this, gp.monsterManager.monsters).getFirst();
         if(m_index != -1){
             gp.monsterManager.monsters.get(m_index).damage_monster(direction, offense);
         }
@@ -438,5 +438,19 @@ public class Player extends Entity {
             special_counter = 0;
         }
     }
-    
+
+    @Override
+    public Rectangle collider_rect() {
+        return solidArea;
+    }
+
+    @Override
+    public int world_x() {
+        return world_x;
+    }
+
+    @Override
+    public int world_y() {
+        return world_y;
+    }
 }

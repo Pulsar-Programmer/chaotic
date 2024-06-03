@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
         var map = Map.new_map();
         // map.layer(MapGenerator.boss_room(10, 10, 0));
         // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
-        map = MapGenerator.procedure();
+        map = Map.new_map();
 
 
         var monsters = map.getMonsters();

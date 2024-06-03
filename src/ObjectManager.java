@@ -15,11 +15,11 @@ public class ObjectManager {
         sprites = new ArrayList<ArrayList<BufferedImage>>();
         try {
             var rock = new ArrayList<BufferedImage>();
-            rock.add(App.res("res/objects/escape_room/2.png"));
+            rock.add(App.res("res/objects/escape_room/rock_1.png"));
             sprites.add(rock);
 
             var plate = new ArrayList<BufferedImage>();
-            plate.add(App.res("res/objects/escape_room/3.png"));
+            plate.add(App.res("res/objects/escape_room/plate.png"));
             sprites.add(plate);
             
         } catch (Exception e) {

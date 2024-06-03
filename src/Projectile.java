@@ -1,4 +1,7 @@
-public class Projectile extends Entity {
+import java.awt.Rectangle;
+import java.util.ArrayList;
+
+public class Projectile extends Entity implements Collider {
     String name;
     int sprite;
     int maxSpriteNum = 2;
@@ -116,13 +119,13 @@ public class Projectile extends Entity {
             alive = false;
         }
 
-        int monster = CollisionChecker.check_monsters(this, gp.monsterManager.monsters);
+        int monster = CollisionChecker.check_intersections(this, gp.monsterManager.monsters).getFirst();
         if(monster != -1 && origin_player){
             gp.monsterManager.monsters.get(monster).damage_monster(direction, offense);
             alive = false;
         }
 
-        if(CollisionChecker.check_entities(this, gp.player) && !origin_player){
+        if(CollisionChecker.check_intersection(this, gp.player) && !origin_player){
             gp.player.damage_player(offense);
             alive = false;
         }
@@ -144,5 +147,18 @@ public class Projectile extends Entity {
 
 
 
+    @Override
+    public Rectangle collider_rect() {
+        return solidArea;
+    }
 
+    @Override
+    public int world_x() {
+        return world_x;
+    }
+
+    @Override
+    public int world_y() {
+        return world_y;
+    }
 }

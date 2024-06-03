@@ -82,51 +82,6 @@ public class CollisionChecker {
         return tile4.has_collision || tile2.has_collision;
     }
 
-    public static int checkObjects(Entity entity, ArrayList<Object> objects){
-        int index = -1;
-
-        for(var i = 0; i < objects.size(); i++){
-
-            var entity_rect = new Rectangle();
-            var object_rect = new Rectangle();
-
-            entity_rect.x = entity.world_x + entity.solidArea.x;
-            entity_rect.y = entity.world_y + entity.solidArea.y;
-            entity_rect.width = entity.solidArea.width;
-            entity_rect.height = entity.solidArea.height;
-
-            var object = objects.get(i);
-            object_rect.x = object.world_x + object.solidArea.x;
-            object_rect.y = object.world_y + object.solidArea.y;
-            object_rect.width = object.solidArea.width;
-            object_rect.height = object.solidArea.height;
-
-            if(entity_rect.intersects(object_rect)){
-                index = i;
-            }
-
-        }
-
-        return index;
-    }
-
-    public static boolean checkObject(Entity entity, Object object){
-        var entity_rect = new Rectangle();
-        var object_rect = new Rectangle();
-
-        entity_rect.x = entity.world_x + entity.solidArea.x;
-        entity_rect.y = entity.world_y + entity.solidArea.y;
-        entity_rect.width = entity.solidArea.width;
-        entity_rect.height = entity.solidArea.height;
-
-        object_rect.x = object.world_x + object.solidArea.x;
-        object_rect.y = object.world_y + object.solidArea.y;
-        object_rect.width = object.solidArea.width;
-        object_rect.height = object.solidArea.height;
-
-        return entity_rect.intersects(object_rect);
-    }
-
     private void check_teleporter(Tile tile){
         if(tile.teleporter.isPresent()){
             var p = tile.teleporter.get();
@@ -134,47 +89,47 @@ public class CollisionChecker {
         }
     }
 
-    public static int check_monsters(Entity entity, ArrayList<Monster> entities){
-        int index = -1;
+    public static ArrayList<Integer> check_intersections(Collider entity, ArrayList<? extends Collider> entities){
+        var list = new ArrayList<Integer>();
 
         for(var i = 0; i < entities.size(); i++){
 
             var entity_rect = new Rectangle();
             var creature_rect = new Rectangle();
 
-            entity_rect.x = entity.world_x + entity.solidArea.x;
-            entity_rect.y = entity.world_y + entity.solidArea.y;
-            entity_rect.width = entity.solidArea.width;
-            entity_rect.height = entity.solidArea.height;
+            entity_rect.x = entity.world_x() + entity.collider_rect().x;
+            entity_rect.y = entity.world_y() + entity.collider_rect().y;
+            entity_rect.width = entity.collider_rect().width;
+            entity_rect.height = entity.collider_rect().height;
 
             var creature = entities.get(i);
-            creature_rect.x = creature.world_x + creature.solidArea.x;
-            creature_rect.y = creature.world_y + creature.solidArea.y;
-            creature_rect.width = creature.solidArea.width;
-            creature_rect.height = creature.solidArea.height;
+            creature_rect.x = creature.world_x() + creature.collider_rect().x;
+            creature_rect.y = creature.world_y() + creature.collider_rect().y;
+            creature_rect.width = creature.collider_rect().width;
+            creature_rect.height = creature.collider_rect().height;
 
             if(entity_rect.intersects(creature_rect)){
-                index = i;
+                list.add(i);
             }
 
         }
 
-        return index;
+        return list;
     }
 
-    public static boolean check_entities(Entity entity, Entity creature){
+    public static boolean check_intersection(Collider entity, Collider creature){
         var entity_rect = new Rectangle();
         var creature_rect = new Rectangle();
 
-        entity_rect.x = entity.world_x + entity.solidArea.x;
-        entity_rect.y = entity.world_y + entity.solidArea.y;
-        entity_rect.width = entity.solidArea.width;
-        entity_rect.height = entity.solidArea.height;
+        entity_rect.x = entity.world_x() + entity.collider_rect().x;
+        entity_rect.y = entity.world_y() + entity.collider_rect().y;
+        entity_rect.width = entity.collider_rect().width;
+        entity_rect.height = entity.collider_rect().height;
 
-        creature_rect.x = creature.world_x + creature.solidArea.x;
-        creature_rect.y = creature.world_y + creature.solidArea.y;
-        creature_rect.width = creature.solidArea.width;
-        creature_rect.height = creature.solidArea.height;
+        creature_rect.x = creature.world_x() + creature.collider_rect().x;
+        creature_rect.y = creature.world_y() + creature.collider_rect().y;
+        creature_rect.width = creature.collider_rect().width;
+        creature_rect.height = creature.collider_rect().height;
 
         return entity_rect.intersects(creature_rect);
     }

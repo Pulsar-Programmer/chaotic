@@ -1,7 +1,9 @@
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 
-public class Monster extends Entity {
+public class Monster extends Entity implements Collider {
     
     public String name;
     public int sprite;
@@ -172,6 +174,21 @@ public class Monster extends Entity {
             turret.offense = offense;
             gp.projectileManager.projectiles.add(turret);
         }
+    }
+
+    @Override
+    public Rectangle collider_rect() {
+        return solidArea;
+    }
+
+    @Override
+    public int world_x() {
+        return world_x;
+    }
+
+    @Override
+    public int world_y() {
+        return world_y;
     }
 
 }
