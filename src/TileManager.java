@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
@@ -10,7 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class TileManager {
-    BufferedImage[] tile_sprites;
+    ArrayList<BufferedImage> tile_sprites;
     HashMap<Point, Tile> tiles;
 
     public TileManager(){
@@ -35,20 +36,21 @@ public class TileManager {
         });
     }
     public void getTileImage(){
-        tile_sprites = new BufferedImage[12]; //variable to change depending on number tile sprites added.
+        tile_sprites = new ArrayList<BufferedImage>(); //variable to change depending on number tile sprites added.
         try {
-            tile_sprites[0] = ImageIO.read(new File("res/tiles/blue/bricks.png"));
-            tile_sprites[1] = ImageIO.read(new File("res/tiles/blue/paver.png"));
-            tile_sprites[2] = ImageIO.read(new File("res/tiles/blue/wall/west.png"));
-            tile_sprites[3] = ImageIO.read(new File("res/tiles/blue/wall/east.png"));
-            tile_sprites[4] = ImageIO.read(new File("res/tiles/blue/wall/south.png"));
-            tile_sprites[5] = ImageIO.read(new File("res/tiles/blue/wall/north.png"));
-            tile_sprites[6] = ImageIO.read(new File("res/tiles/blue/wall/southeast.png"));
-            tile_sprites[7] = ImageIO.read(new File("res/tiles/blue/wall/southwest.png"));
-            tile_sprites[8] = ImageIO.read(new File("res/tiles/blue/wall/northeast.png"));
-            tile_sprites[9] = ImageIO.read(new File("res/tiles/blue/wall/northwest.png"));
-            tile_sprites[10] = ImageIO.read(new File("res/tiles/blue/door/north_closed.png"));
-            tile_sprites[11] = ImageIO.read(new File("res/tiles/blue/door/north_open.png"));
+            tile_sprites.add(App.res("res/tiles/blue/bricks.png")); //1
+            tile_sprites.add(App.res("res/tiles/blue/paver.png")); //2
+            tile_sprites.add(App.res("res/tiles/blue/mossy_bricks.png")); //3
+            tile_sprites.add(App.res("res/tiles/blue/wall/west.png")); //4
+            tile_sprites.add(App.res("res/tiles/blue/wall/east.png")); //5
+            tile_sprites.add(App.res("res/tiles/blue/wall/south.png")); //6
+            tile_sprites.add(App.res("res/tiles/blue/wall/north.png")); //7
+            tile_sprites.add(App.res("res/tiles/blue/wall/southeast.png")); //8
+            tile_sprites.add(App.res("res/tiles/blue/wall/southwest.png")); //9
+            tile_sprites.add(App.res("res/tiles/blue/wall/northeast.png")); //10
+            tile_sprites.add(App.res("res/tiles/blue/wall/northwest.png")); //11
+            tile_sprites.add(App.res("res/tiles/blue/door/north_closed.png")); //12
+            tile_sprites.add(App.res("res/tiles/blue/door/north_open.png")); //13
         } catch (Exception e) {
             e.printStackTrace();
         }

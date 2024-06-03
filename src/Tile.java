@@ -1,6 +1,7 @@
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Tile {
@@ -10,8 +11,8 @@ public class Tile {
     int sprite;
     public boolean has_collision;
 
-    public void draw(Graphics2D g2d, int tileSize, BufferedImage[] tiles, int x, int y){
-        g2d.drawImage(tiles[sprite], x, y, tileSize, tileSize, null);
+    public void draw(Graphics2D g2d, int tileSize, ArrayList<BufferedImage> tiles, int x, int y){
+        g2d.drawImage(tiles.get(sprite), x, y, tileSize, tileSize, null);
     }
 
     public Tile(int sprite){
