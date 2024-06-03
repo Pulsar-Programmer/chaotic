@@ -81,6 +81,15 @@ public class Object implements Collider {
         return obj;
     }
 
+    public static Object key(int world_x, int world_y){
+        var obj = new Object();
+        obj.name = "Key";
+        obj.image = 4;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        return obj;
+    }
+
     public void update(GamePanel gp){
         if(name.equals("Rock")){
             update_rock(gp);

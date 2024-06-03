@@ -87,12 +87,14 @@ public class GamePanel extends JPanel implements Runnable {
         // rock_2.minigame_affiliation = 1;
         door.minigame_affiliation = 1;
         door.teleporter = Optional.of(new Point(10, 10));
+        var key = Object.key(GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE * 10);
+        key.minigame_affiliation = 1;
         objects.add(plate);
         objects.add(plate_2);
         objects.add(rock);
         objects.add(rock_2);
         objects.add(door);
-
+        objects.add(key);
 
         maps[0] = map;
         load_map(0);

@@ -3,10 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-
 import java.awt.Graphics2D;
 import java.awt.Point;
 

@@ -32,6 +32,10 @@ public class ObjectManager {
             door.add(App.res("res/tiles/blue/door/north_closed.png"));
             door.add(App.res("res/tiles/blue/door/north_open.png"));
             sprites.add(door);
+
+            var key = new ArrayList<BufferedImage>();
+            key.add(App.res("res/objects/key.png"));
+            sprites.add(key);
             
         } catch (Exception e) {
             e.printStackTrace();
