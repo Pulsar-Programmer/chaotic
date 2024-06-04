@@ -17,6 +17,8 @@ public class ObjectManager {
         try {
             var rock = new ArrayList<BufferedImage>();
             rock.add(App.res("res/objects/escape_room/rock_1.png"));
+            rock.add(App.res("res/objects/tictactoe/x.png"));
+            rock.add(App.res("res/objects/tictactoe/o.png"));
             sprites.add(rock);
 
             var plate = new ArrayList<BufferedImage>();
@@ -48,7 +50,6 @@ public class ObjectManager {
             var toll = new ArrayList<BufferedImage>();
             toll.add(App.res("res/objects/toll.png"));
             sprites.add(toll);
-            
         } catch (Exception e) {
             e.printStackTrace();
         }

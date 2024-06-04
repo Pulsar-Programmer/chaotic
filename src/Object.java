@@ -16,6 +16,7 @@ public class Object implements Collider {
     public int minigame_affiliation = 0; //0 means no association
     public int healing_power = 0;
     public int toll_amount = 0;
+    public Optional<Boolean> painted_rock = Optional.empty();
     
     public Optional<Point> teleporter = Optional.empty();
 
@@ -189,6 +190,9 @@ public class Object implements Collider {
     public void draw(Graphics2D g2d, GamePanel gp){
         if(name.equals("Plate") || name.equals("Door")){
             animation_state = tile_activated ? 1 : 0;
+        }
+        if(name.equals("Rock")){
+            animation_state = painted_rock.isPresent() ? painted_rock.get() ? 1 : 2 : 0;
         }
         gp.screen_draw(gp.objectManager.sprites.get(image).get(animation_state), world_x, world_y, g2d);
     }

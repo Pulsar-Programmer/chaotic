@@ -56,6 +56,7 @@ public class GUIManager {
             drawTitleScreen(g2);
             // System.out.println("gagins");
         } else if (gp.gameState == GamePanel.PLAY) {
+         
             drawGameUI(g2, gp.player);
             gui_counter = 0;
             // System.out.println("aggin");
