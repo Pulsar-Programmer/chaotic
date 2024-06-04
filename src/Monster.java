@@ -18,6 +18,7 @@ public class Monster extends Entity implements Collider {
 
     public boolean hp_bar_on = false;
     public int hp_counter = 0;
+    public int shot_counter = 0;
 
     public Monster() {
         world_x = 100;
@@ -37,6 +38,17 @@ public class Monster extends Entity implements Collider {
         return mon;
     }
 
+    public static Monster turret(){
+        var mon = new Monster();
+        mon.name = "Turret";
+        mon.sprite = 1;
+        mon.speed = 4;
+        mon.offense = 10;
+        mon.maxHealth = 20;
+        mon.health = mon.maxHealth;
+        return mon;
+    }
+
     public static Monster skeleton() {
         var mon = new Monster();
         mon.name = "Skeleton";
@@ -48,9 +60,18 @@ public class Monster extends Entity implements Collider {
 
     public static Monster knight() {
         var mon = new Monster();
-        mon.name = "Boss";
+        mon.name = "Knight";
         mon.sprite = 2;
         mon.speed = 4;
+        mon.health = mon.maxHealth;
+        return mon;
+    }
+    public static Monster boss() {
+        var mon = new Monster();
+        mon.name = "Boss";
+        mon.sprite = 1;
+        mon.speed = 3;
+        mon.solidArea = new Rectangle(0,0,GamePanel.TILE_SIZE*5,GamePanel.TILE_SIZE*5);
         mon.health = mon.maxHealth;
         return mon;
     }
@@ -123,9 +144,22 @@ public class Monster extends Entity implements Collider {
                 patrol_behavior(100, 100, 400, 200, 20);
             }
         }
-        // if(name.equals("Boss")){
-        //     attack3(gp.monsterManager);
-        // }
+        if(name.equals("Boss")){
+            var p1 = new Point(gp.player.world_x, gp.player.world_y);
+            var p2 = new Point(world_x, world_y);
+            if (p1.distance(p2) <= GamePanel.TILE_SIZE * 10) {
+                patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 2);
+            } else {
+                patrol_behavior(100, 100, 400, 200, 20);
+            }
+            shot_counter += 1;
+            if(shot_counter == 40){
+                shoot_projectile(gp);
+                shot_counter = 0;
+            }
+        }
+        
+         
 
         world_x += vel_x;
         world_y += vel_y;
@@ -187,6 +221,11 @@ public class Monster extends Entity implements Collider {
 
     public void shoot_projectile(GamePanel gp) {
         if (name.equals("Turret")) {
+            var turret = Projectile.turret(world_x, world_y, direction);
+            turret.offense = offense;
+            gp.projectileManager.projectiles.add(turret);
+        } else 
+        if (name.equals("Boss")) {
             var turret = Projectile.turret(world_x, world_y, direction);
             turret.offense = offense;
             gp.projectileManager.projectiles.add(turret);

@@ -256,14 +256,11 @@ final class MapGenerator {
         var map = Map.new_map();
         var monsters = map.getMonsters();
         monsters.add(Monster.ghost());
-        var monsta = Monster.ghost();
-        monsta.name = "Turret";
-        monsta.offense = 10;
-        monsta.maxHealth = 20;
-        monsta.health = 20;
-        monsters.add(monsta);
+        monsters.add(Monster.turret());
         var othermonsta = Monster.skeleton();
         monsters.add(othermonsta);
+        var boss = Monster.boss();
+        monsters.add(boss);
         // var boss = Monster.knight();
         // monsters.add(boss);
 
