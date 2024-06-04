@@ -24,32 +24,41 @@ public class MonsterManager {
         try {
             var ghost = new ArrayList<BufferedImage>();
             
-            //add first (slime) stuff here
-            ghost.add(ImageIO.read(new File("res/monsters/ghost/up.png")));
             ghost.add(ImageIO.read(new File("res/monsters/ghost/up.png")));
             ghost.add(ImageIO.read(new File("res/monsters/ghost/down.png")));
-            ghost.add(ImageIO.read(new File("res/monsters/ghost/down.png")));
             ghost.add(ImageIO.read(new File("res/monsters/ghost/left.png")));
-            ghost.add(ImageIO.read(new File("res/monsters/ghost/left.png")));
-            ghost.add(ImageIO.read(new File("res/monsters/ghost/right.png")));
             ghost.add(ImageIO.read(new File("res/monsters/ghost/right.png")));
 
             monster_sprites.add(ghost);
 
             var skeleton = new ArrayList<BufferedImage>();
-
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/up_1.png")));
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/up_2.png")));
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/down_1.png")));
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/down_2.png")));
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/left_1.png")));
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/left_2.png")));
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/right_1.png")));
-            skeleton.add(ImageIO.read(new File("res/monsters/skeleton/right_2.png")));
-
+            setup_images(skeleton, "skeleton", 2);
             monster_sprites.add(skeleton);
 
+            var knight = new ArrayList<BufferedImage>();
+            setup_images(knight, "knight/walk", 2);
+            setup_images(knight, "knight/atk", 4);
+            monster_sprites.add(knight);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+
+    public static void setup_images(ArrayList<BufferedImage> to_add, String path, int spriteNum){
+        try {
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(ImageIO.read(new File("res/monsters/" + path + "/up_" + i + ".png")));
+            }
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(ImageIO.read(new File("res/monsters/" + path + "/down_" + i + ".png")));
+            }
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(ImageIO.read(new File("res/monsters/" + path + "/left_" + i + ".png")));
+            }
+            for(var i = 1; i <= spriteNum; i++){
+                to_add.add(ImageIO.read(new File("res/monsters/" + path + "/right_" + i + ".png")));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,7 +89,8 @@ public class MonsterManager {
             }
 
             //DRAW MONSTA
-            var sprite = monster_sprites.get(monsta.sprite).get(monsta.direction * monsta.maxSpriteNum + monsta.walking.sprite_num);
+            // System.out.println(monsta.sprite + ":" + monsta.direction + ":" + monsta.walking.max_sprite_num);
+            var sprite = monster_sprites.get(monsta.sprite).get(monsta.direction * monsta.walking.max_sprite_num + monsta.walking.sprite_num);
 
             var world_x = monsta.world_x;
             var world_y = monsta.world_y;
@@ -120,5 +130,4 @@ public class MonsterManager {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
-
 }

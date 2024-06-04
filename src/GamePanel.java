@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
     MonsterManager monsterManager = new MonsterManager();
     ProjectileManager projectileManager = new ProjectileManager();
     Map[] maps = {Map.new_map(), Map.new_map(), Map.new_map()};
-    
+    Sound sounds = new Sound();
     public int gameState = TITLE;
     public final static int TITLE = -1;
     public final static int PLAY = 0;
@@ -49,6 +49,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
+        sounds.setFile(12);
+        sounds.loop();
         setupGame();
         gameThread = new Thread(this);
         gameThread.start();
@@ -56,49 +58,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         // tiles = MapGenerator.procedure().getTiles();
-        var map = Map.new_map();
+        var map = MapGenerator.sample_map();
         map.setTiles(tileManager.tiles);
         // map.layer(MapGenerator.boss_room(10, 10, 0));
         // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
         // map = MapGenerator.generic_room(10, 10);
         // map.setPlayer_spawn(new Point(5, 5));
-
-
-        var monsters = map.getMonsters();
-        monsters.add(Monster.ghost());
-        var monsta = Monster.ghost();
-        monsta.name = "Turret";
-        monsta.offense = 10;
-        monsta.maxHealth = 20;
-        monsta.health = 20;
-        monsters.add(monsta);
-        var othermonsta = Monster.skeleton();
-        monsters.add(othermonsta);
-
-        var objects = map.getObjects();
-        var plate = Object.metal_plate(32*10, 32*10);
-        var rock = Object.rock(32*5, 32*12);
-        var plate_2 = Object.metal_plate(32*8, 32*6);
-        var rock_2 = Object.rock(32*2, 32*15);
-        var door = Object.door(GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE);
-        plate.minigame_affiliation = 1;
-        // rock.minigame_affiliation = 1;
-        plate_2.minigame_affiliation = 1;
-        // rock_2.minigame_affiliation = 1;
-        door.minigame_affiliation = 1;
-        door.teleporter = Optional.of(new Point(10, 10));
-        var key = Object.key(GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE * 15);
-        key.minigame_affiliation = 1;
-        var toll = Object.toll(GamePanel.TILE_SIZE * 2, ABORT, 1);
-        toll.minigame_affiliation = 1;
-        objects.add(plate);
-        objects.add(plate_2);
-        objects.add(rock);
-        objects.add(rock_2);
-        objects.add(door);
-        objects.add(key);
-        objects.add(toll);
-
         maps[0] = map;
         load_map(0);
     }
@@ -144,10 +109,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
         else if(gameState == PAUSE){
             
-        } 
-        else if (gameState == END){
+        } else if (gameState == END){
+        
         }
         else if(gameState==DEATH){
+            
             if(keyH.upHit){
                 guiManager.commandNum = (guiManager.commandNum + 1) % 2;
                 keyH.upHit = false;
@@ -169,7 +135,10 @@ public class GamePanel extends JPanel implements Runnable {
                     } else if(player.class_type == Player.HEALER){
                         player = Player.healer(this);
                     }
-                    setupGame();             
+                    setupGame();
+                    sounds.stop();
+                    sounds.setFile(1);
+                    sounds.loop();          
                 }
                 else if(guiManager.commandNum==1){
                     System.exit(0);
@@ -198,6 +167,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
         else if(gameState == CLASS_SELECTION){
+            
             if(keyH.upHit){
                 guiManager.commandNum = (guiManager.commandNum + 3) % 4;
                 keyH.upHit = false;
@@ -235,15 +205,30 @@ public class GamePanel extends JPanel implements Runnable {
                     player.world_x = maps[mapNum].getPlayer_spawn().x * GamePanel.TILE_SIZE;
                     player.world_y = maps[mapNum].getPlayer_spawn().y * GamePanel.TILE_SIZE;
                 }
+                
                 keyH.startHit = false;
+                sounds.stop();
+                sounds.setFile(1);
+                sounds.loop();
             }
         }
 
-        if((gameState == PAUSE || gameState == PLAY) && keyH.pauseHit){
+        if(keyH.pauseHit){
+            if(gameState == PAUSE){
+                sounds.stop();
+                sounds.setFile(1);
+                sounds.loop();
+            }
+            if(gameState == PLAY){
+                sounds.stop();
+                sounds.setFile(16);
+                sounds.loop();
+            }
             gameState = (gameState + 1) % 2;
             keyH.pauseHit = false;
         }
 
+       
 
     }
 

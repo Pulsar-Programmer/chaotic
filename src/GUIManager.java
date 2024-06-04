@@ -33,12 +33,11 @@ public class GUIManager {
         try {
             sprites.add(App.res("res/objects/awards/ultimate.png"));
             sprites.add(App.res("res/objects/coin.png"));
-            // sprites.add(ImageIO.read(new File("res/gui/health/zero.png")));
-            // sprites.add(ImageIO.read(new File("res/gui/health/one.png")));
-            // sprites.add(ImageIO.read(new File("res/gui/health/two.png")));
-            // sprites.add(ImageIO.read(new File("res/gui/health/three.png")));
-            // sprites.add(ImageIO.read(new File("res/gui/health/four.png")));
-            // sprites.add(ImageIO.read(new File("res/gui/health/five.png")));
+            sprites.add(App.res("res/gui/health/zero.png"));
+            sprites.add(App.res("res/gui/health/one.png"));
+            sprites.add(App.res("res/gui/health/two.png"));
+            sprites.add(App.res("res/gui/health/three.png"));
+            sprites.add(App.res("res/gui/health/four.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,6 +55,7 @@ public class GUIManager {
             drawTitleScreen(g2);
             // System.out.println("gagins");
         } else if (gp.gameState == GamePanel.PLAY) {
+         
             drawGameUI(g2, gp.player);
             gui_counter = 0;
             // System.out.println("aggin");
@@ -68,9 +68,11 @@ public class GUIManager {
         }
     }
 
+    /** Draws the UI for the game while it is currently in PLAY mode. */
     public void drawGameUI(Graphics2D g2d, Player entity) {
-        g2d.setColor(Color.red);
-        g2d.fillRect(0, 0, 32 * entity.health, 48);
+        // g2d.setColor(Color.red);
+        // g2d.fillRect(0, 0, 32 * entity.health, 48);
+        draw_health(g2d, entity.health, entity.maxHealth);
 
         g2d.setColor(Color.gray);
         g2d.fillRect(0, 48, 5 * 30, 16);
@@ -86,6 +88,46 @@ public class GUIManager {
         g2d.setFont(g2d.getFont().deriveFont(32F));
         g2d.setColor(Color.white);
         g2d.drawString("x " + entity.coin_count, 170, 96 + 3 * GamePanel.TILE_SIZE / 4);
+    }
+    
+    // public static int determine_heart_sprite(Player player){
+    //     int currentHealth = player.health;
+    //     int maxHealth = player.maxHealth;
+    //     int total_hearts = player.maxHealth/4;
+    //     int pct_of_last_heart = currentHealth % 4;
+
+    //     if(pct_of_last_heart >= 4){
+    //         return 4;
+    //     } else if(pct_of_last_heart >= 3){
+    //         return 3;
+    //     } else if(pct_of_last_heart >= 2){
+    //         return 2;
+    //     } else if(pct_of_last_heart >= 1){
+    //         return 1;
+    //     } else if(pct_of_last_heart <=.1){
+    //         return 0;
+    //     }
+    // }
+
+    public void draw_health(Graphics2D g2d, int health, int maxHealth){
+        //amt can be 8 -> 2 full hearts 10 -> 
+        int numOfHearts = maxHealth/4;
+        int remainderOfHearts = health%4;
+        int heartsRemain = (health-remainderOfHearts)/4;
+        for(var i = 0; i < numOfHearts; i++){
+            if(heartsRemain>0){
+                heartsRemain--;   
+                g2d.drawImage(sprites.get(6), 10 + i * GamePanel.TILE_SIZE, 10, GamePanel.TILE_SIZE / 2, GamePanel.TILE_SIZE / 2, null);
+            }
+            else if(remainderOfHearts>0){
+                g2d.drawImage(sprites.get(remainderOfHearts + 2), 10 + i * GamePanel.TILE_SIZE, 10, GamePanel.TILE_SIZE / 2, GamePanel.TILE_SIZE / 2, null);
+                remainderOfHearts = 0;
+            }
+            else{
+                g2d.drawImage(sprites.get(2), 10 + i * GamePanel.TILE_SIZE, 10, GamePanel.TILE_SIZE / 2, GamePanel.TILE_SIZE / 2, null);
+            }
+        
+        }
     }
 
     public void drawPauseScreen(Graphics2D g2d) {

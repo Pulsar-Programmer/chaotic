@@ -1,5 +1,6 @@
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.Optional;
 
 final class MapGenerator {
 
@@ -245,4 +246,61 @@ final class MapGenerator {
     public static int gen_range(int low, int high){
         return (int)(Math.random() * (high - low)) + low;
     }
+
+
+    public static Map sample_map(){
+        var map = Map.new_map();
+        var monsters = map.getMonsters();
+        monsters.add(Monster.ghost());
+        var monsta = Monster.ghost();
+        monsta.name = "Turret";
+        monsta.offense = 10;
+        monsta.maxHealth = 20;
+        monsta.health = 20;
+        monsters.add(monsta);
+        var othermonsta = Monster.skeleton();
+        monsters.add(othermonsta);
+        // var boss = Monster.knight();
+        // monsters.add(boss);
+
+        var objects = map.getObjects();
+        var plate = Object.metal_plate(32*10, 32*10);
+        var rock = Object.rock(32*5, 32*12);
+        var plate_2 = Object.metal_plate(32*8, 32*6);
+        var rock_2 = Object.rock(32*2, 32*15);
+        var door = Object.door(GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE);
+        plate.minigame_affiliation = 1;
+        // rock.minigame_affiliation = 1;
+        plate_2.minigame_affiliation = 1;
+        // rock_2.minigame_affiliation = 1;
+        door.minigame_affiliation = 1;
+        door.teleporter = Optional.of(new Point(10, 10));
+        var key = Object.key(GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE * 15);
+        key.minigame_affiliation = 1;
+        var toll = Object.toll(GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE * 5, 1);
+        toll.minigame_affiliation = 1;
+        var rock_o = Object.rock(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 11);
+        rock_o.minigame_affiliation = 2;
+        rock_o.painted_rock = Optional.of(false);
+        var rock_x = Object.rock(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 13);
+        rock_x.minigame_affiliation = 2;
+        rock_x.painted_rock = Optional.of(true);
+        objects.add(plate);
+        objects.add(plate_2);
+        objects.add(rock);
+        objects.add(rock_2);
+        objects.add(door);
+        objects.add(key);
+        objects.add(toll);
+        objects.add(rock_o);
+        objects.add(rock_x);
+
+        return map;
+    }
+
+    // public void spawnskeletons(int x, int y) {
+    //     var map = Map.new_map();
+    //     var monsters = map.getMonsters();
+    //     monsters.add(Monster.skeleton());
+    // }
 }

@@ -281,6 +281,9 @@ public class Player extends Entity implements Collider {
 
         if(health<=0){
             gp.gameState = GamePanel.DEATH;
+            gp.sounds.stop();
+            gp.sounds.setFile(0);
+            gp.sounds.loop();
         }
         pushing_rock = false;
     }
