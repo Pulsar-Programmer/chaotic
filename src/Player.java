@@ -37,6 +37,9 @@ public class Player extends Entity implements Collider {
     public boolean pushing_rock = false;
     public int coin_count = 0;
 
+    public boolean touching_electricity = false;
+    public int electricity_counter = 0;
+
     //TODO: make sure you assign all default values in here and not initially allocated
     public Player(GamePanel gp){
         this.gp = gp;
@@ -115,10 +118,10 @@ public class Player extends Entity implements Collider {
 
     public static Player wizard(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 500; //used to be 10
+        player.maxHealth = 12;
         player.health = player.maxHealth;
         player.offense = 30;
-        player.defense = 100; //used to be 5
+        player.defense = 5;
         player.special_counter_max = 300;
         //TODO
         player.class_type = WIZARD;
@@ -127,7 +130,7 @@ public class Player extends Entity implements Collider {
 
     public static Player knight(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 15;
+        player.maxHealth = 12;
         player.offense = 6;
         player.defense = 10;
         player.class_type = KNIGHT;
@@ -286,6 +289,17 @@ public class Player extends Entity implements Collider {
             gp.sounds.loop();
         }
         pushing_rock = false;
+
+        if(touching_electricity){
+            electricity_counter += 1;
+            if(electricity_counter >= 240){
+                health = Math.max(health - 4, 0);
+                electricity_counter = 0;
+            }
+        } else {
+            electricity_counter = 0;
+        }
+        touching_electricity = false;
     }
 
     public void draw(Graphics2D g2){
@@ -336,6 +350,13 @@ public class Player extends Entity implements Collider {
         if(obj.name.equals("Toll") && obj.toll_amount <= coin_count){
             gp.objectManager.objects.remove(obj);
             coin_count -= obj.toll_amount;
+        } else
+        if(obj.name.equals("Wire") && obj.tile_activated){
+            touching_electricity = true;
+        } else
+        if(obj.name.equals("Chimer")){
+            touching_electricity = true;
+            electricity_counter += 5;
         }
     }
 

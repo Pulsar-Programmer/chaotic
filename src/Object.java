@@ -10,7 +10,6 @@ public class Object implements Collider {
     public int world_x, world_y;
     public Rectangle solidArea = new Rectangle(0, 0, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 
-
     public boolean tile_activated = false;
     public int tile_activation_counter = 0;
     public int minigame_affiliation = 0; //0 means no association
@@ -20,6 +19,10 @@ public class Object implements Collider {
     
     public Optional<Point> teleporter = Optional.empty();
 
+    public boolean is_vertical = false;
+    public Animation electric = new Animation();
+    public boolean movable = false;
+
     private Object(){
         image = 0;
         animation_state = 0;
@@ -27,24 +30,6 @@ public class Object implements Collider {
         world_x = 0;
         world_y = 0;
     }
-
-    // public static Object key(int world_x, int world_y){
-    //     var obj = new Object();
-    //     obj.name = "Key";
-    //     obj.image = 0;
-    //     obj.world_x = world_x;
-    //     obj.world_y = world_y;
-    //     return obj;
-    // }
-
-    // public static Object coin(int world_x, int world_y){
-    //     var obj = new Object();
-    //     obj.name = "Coin";
-    //     obj.image = 1;
-    //     obj.world_x = world_x;
-    //     obj.world_y = world_y;
-    //     return obj;
-    // }
 
     public static Object rock(int world_x, int world_y){
         var obj = new Object();
@@ -123,8 +108,35 @@ public class Object implements Collider {
         return obj;
     }
 
+    public static Object wire(int world_x, int world_y, boolean is_vertical){
+        var obj = new Object();
+        obj.is_vertical = is_vertical;
+        if(is_vertical){
+            obj.solidArea = new Rectangle(8 * GamePanel.SCALE, 0, 4 *  GamePanel.SCALE, GamePanel.TILE_SIZE);
+        } else{
+            obj.solidArea = new Rectangle(0, 8 * GamePanel.SCALE, GamePanel.TILE_SIZE, 4 *  GamePanel.SCALE);
+        }
+        obj.name = "Wire";
+        obj.image = 8;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        return obj;
+    }
+
+    public static Object chimer(int world_x, int world_y){
+        var obj = new Object();
+        obj.name = "Chimer";
+        obj.image = 9;
+        obj.tile_activated = true;
+        obj.world_x = world_x;
+        obj.world_y = world_y;
+        return obj;
+    }
+
+    
+
     public void update(GamePanel gp){
-        if(name.equals("Rock")){
+        if(name.equals("Rock") || (name.equals("Wire") && movable)){
             update_rock(gp);
         } else
         if(name.equals("Plate")){
@@ -141,6 +153,24 @@ public class Object implements Collider {
             // if(gp.objectManager.objects.get(CollisionChecker.check_intersections(this, gp.objectManager.objects).getFirst()).name.equals("Rock")){
                 
             // }
+        }
+        if(name.equals("Wire")){
+            tile_activated = false;
+            for(var elem : CollisionChecker.check_intersections(this, gp.objectManager.objects)){
+                var obj = gp.objectManager.objects.get(elem);
+                if(obj.name.equals("Wire") || obj.name.equals("Chimer")){
+                    tile_activated = obj.tile_activated;
+                }
+            }
+            electric.frame_counter += 1;
+            if(electric.frame_counter >= 5){
+                electric.frame_counter = 0;
+                electric.sprite_num += 1;
+                electric.sprite_num %= electric.max_sprite_num;
+            }
+        }
+        if(name.equals("")){
+
         }
     }
 
@@ -193,6 +223,11 @@ public class Object implements Collider {
         }
         if(name.equals("Rock")){
             animation_state = painted_rock.isPresent() ? painted_rock.get() ? 1 : 2 : 0;
+        }
+        if(name.equals("Wire")){
+            animation_state = 
+            (is_vertical ? 3 : 0) +
+            (tile_activated ? electric.sprite_num + 1 : 0);
         }
         gp.screen_draw(gp.objectManager.sprites.get(image).get(animation_state), world_x, world_y, g2d);
     }
