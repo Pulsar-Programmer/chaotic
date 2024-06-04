@@ -112,9 +112,9 @@ public class Object implements Collider {
         var obj = new Object();
         obj.is_vertical = is_vertical;
         if(is_vertical){
-            obj.solidArea = new Rectangle(8, 0, 4, GamePanel.TILE_SIZE);
+            obj.solidArea = new Rectangle(8 * GamePanel.SCALE, 0, 4 *  GamePanel.SCALE, GamePanel.TILE_SIZE);
         } else{
-            obj.solidArea = new Rectangle(0, 8, GamePanel.TILE_SIZE, 4);
+            obj.solidArea = new Rectangle(0, 8 * GamePanel.SCALE, GamePanel.TILE_SIZE, 4 *  GamePanel.SCALE);
         }
         obj.name = "Wire";
         obj.image = 8;
@@ -155,6 +155,7 @@ public class Object implements Collider {
             // }
         }
         if(name.equals("Wire")){
+            tile_activated = false;
             for(var elem : CollisionChecker.check_intersections(this, gp.objectManager.objects)){
                 var obj = gp.objectManager.objects.get(elem);
                 if(obj.name.equals("Wire") || obj.name.equals("Chimer")){
@@ -226,7 +227,7 @@ public class Object implements Collider {
         if(name.equals("Wire")){
             animation_state = 
             (is_vertical ? 3 : 0) +
-            (tile_activated ? electric.sprite_num : 0);
+            (tile_activated ? electric.sprite_num + 1 : 0);
         }
         gp.screen_draw(gp.objectManager.sprites.get(image).get(animation_state), world_x, world_y, g2d);
     }
