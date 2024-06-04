@@ -16,6 +16,7 @@ public abstract class Entity {
 
     public Animation walking;
 
+    // /** Max Health must always be a multiple of four. */
     public int maxHealth = 10;
     public int health = 0;
 
