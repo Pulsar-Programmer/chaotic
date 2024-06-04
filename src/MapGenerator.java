@@ -238,6 +238,10 @@ final class MapGenerator {
     //     //TODO
     // }
 
+    public static Map maze(){
+        //TODO
+        return Map.new_map();
+    }
 
 
     public static int gen_range(int max){
@@ -294,7 +298,15 @@ final class MapGenerator {
         objects.add(toll);
         objects.add(rock_o);
         objects.add(rock_x);
-
+        var chimer = Object.chimer(GamePanel.TILE_SIZE * 20, GamePanel.TILE_SIZE * 10);
+        chimer.minigame_affiliation = 2;
+        var link = Object.wire(GamePanel.TILE_SIZE * 25, GamePanel.TILE_SIZE * 10, true);
+        var link2 = Object.wire(GamePanel.TILE_SIZE * 30, GamePanel.TILE_SIZE * 10, false);
+        link.movable = true;
+        link2.movable = true;
+        objects.add(chimer);
+        objects.add(link);
+        objects.add(link2);
         return map;
     }
 

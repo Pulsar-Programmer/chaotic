@@ -50,6 +50,19 @@ public class ObjectManager {
             var toll = new ArrayList<BufferedImage>();
             toll.add(App.res("res/objects/toll.png"));
             sprites.add(toll);
+
+            var wire = new ArrayList<BufferedImage>();
+            wire.add(App.res("res/objects/wire/horizontal.png"));
+            wire.add(App.res("res/objects/wire/horizontal_electric_1.png"));
+            wire.add(App.res("res/objects/wire/horizontal_electric_2.png"));
+            wire.add(App.res("res/objects/wire/vertical.png"));
+            wire.add(App.res("res/objects/wire/vertical_electric_1.png"));
+            wire.add(App.res("res/objects/wire/vertical_electric_2.png"));
+            sprites.add(wire);
+
+            var chimer = new ArrayList<BufferedImage>();
+            chimer.add(App.res("res/objects/wire/chimer.png"));
+            sprites.add(chimer);
         } catch (Exception e) {
             e.printStackTrace();
         }
