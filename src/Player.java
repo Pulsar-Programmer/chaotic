@@ -393,6 +393,10 @@ public class Player extends Entity implements Collider {
             } else 
             if(attack_animation.frame_counter <= 20){
                 attack_animation.sprite_num = 1;
+                if(attack_animation.frame_counter == 15){
+                    gp.sounds.addFile(7);
+                    gp.sounds.start();
+                }
                 standard_attack();
             } else 
             if(attack_animation.frame_counter <= 30){
@@ -429,8 +433,10 @@ public class Player extends Entity implements Collider {
                 gp.sounds.start();
             } else
             if(class_type == HEALER){
-                gp.sounds.addFile(11);
-                gp.sounds.start();
+                if(attack_animation.frame_counter == 15){
+                    gp.sounds.addFile(3);
+                    gp.sounds.start();
+                }
                 standard_attack();
             }
         } else{
@@ -485,21 +491,29 @@ public class Player extends Entity implements Collider {
                     fire.offense = offense;
                     gp.projectileManager.projectiles.add(fire);
                 }
+                gp.sounds.addFile(11);
+                gp.sounds.start();
             } else
             if(class_type == KNIGHT){
                 var fire = Projectile.knight(world_x, world_y, direction);
                 fire.origin_player = true;
                 fire.offense = offense;
                 gp.projectileManager.projectiles.add(fire);
+                gp.sounds.addFile(8);
+                gp.sounds.start();
             } else
             if(class_type == ARCHER){
                 var fire = Projectile.power_arrow(world_x, world_y, direction);
                 fire.origin_player = true;
                 fire.offense = offense;
                 gp.projectileManager.projectiles.add(fire);
+                gp.sounds.addFile(4);
+                gp.sounds.start();
             } else
             if(class_type == HEALER){
                 health = Math.min(health + 3, maxHealth);
+                gp.sounds.addFile(9);
+                gp.sounds.start();
             }
 
             special_counter = 0;

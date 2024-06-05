@@ -71,7 +71,11 @@ public class ObjectManager {
     public void update(GamePanel gp){
         for(var i = 0; i < objects.size(); i++){
             update_minigame_checker(gp);
-            objects.get(i).update(gp);
+            try {
+                objects.get(i).update(gp);
+            } catch (Exception e) { 
+                //its fine
+            }
         }
     }
 

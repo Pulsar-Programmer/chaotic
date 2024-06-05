@@ -38,7 +38,7 @@ public class Sound {
             AudioInputStream a = AudioSystem.getAudioInputStream(arr[i]);
             Clip clip = AudioSystem.getClip();
             clip.open(a);
-            if(i != 14 && i != 11){
+            if(i == 1 || i == 12 || i == 16){
                 FloatControl gainControl = 
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(-10.0f);
