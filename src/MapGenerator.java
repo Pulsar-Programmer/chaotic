@@ -303,7 +303,9 @@ final class MapGenerator {
         var link = Object.wire(GamePanel.TILE_SIZE * 25, GamePanel.TILE_SIZE * 10, true);
         var link2 = Object.wire(GamePanel.TILE_SIZE * 30, GamePanel.TILE_SIZE * 10, false);
         link.movable = true;
+        link.minigame_affiliation = 2;
         link2.movable = true;
+        link2.minigame_affiliation = 2;
         objects.add(chimer);
         objects.add(link);
         objects.add(link2);

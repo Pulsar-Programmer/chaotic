@@ -4,9 +4,13 @@ import java.awt.Point;
 
 public class Map {
     
+    /** Represents the tiles in the Map. */
     private HashMap<Point, Tile> tiles;
+    /** Represents the objects in the Map. */
     private ArrayList<Object> objects;
+    /** Represents the monsters in the Map. */
     private ArrayList<Monster> monsters;
+    /** Represents the player spawn in the Map. */
     private Point player_spawn;
 
     //FACTORY FUNCTIONS
@@ -18,10 +22,12 @@ public class Map {
         player_spawn = new Point(0, 0);
     }
 
+    /** Creates a new map safely. */
     public static Map new_map(){
         return new Map();
     }
 
+    /** Creates a map from a given tileset. */
     public static Map from_tiles(HashMap<Point, Tile> tiles){
         var map = new Map();
         map.tiles = tiles;
@@ -32,19 +38,22 @@ public class Map {
 
     
     
-    
+    /** Sets the tiles of the map. */
     public void setTiles(HashMap<Point, Tile> tiles) {
         this.tiles = tiles;
     }
 
+    /** Sets the objects of the map. */
     public void setObjects(ArrayList<Object> objects) {
         this.objects = objects;
     }
 
+    /** Sets the monsters of the map. */
     public void setMonsters(ArrayList<Monster> monsters) {
         this.monsters = monsters;
     }
 
+    /** Sets the player spawn of the map. */
     public void setPlayer_spawn(Point player_spawn) {
         this.player_spawn = player_spawn;
     }
@@ -68,6 +77,7 @@ public class Map {
 
     //ETC.
 
+    /** Moves the map by a given Point distance in Tile lengths and makes a clone. */
     public static Map translate(Map map, Point by){
         var translated = new_map();
 
@@ -79,18 +89,44 @@ public class Map {
         map.objects.forEach((obj) -> {
             obj.world_x += by.x * GamePanel.TILE_SIZE;
             obj.world_y += by.y * GamePanel.TILE_SIZE;
+            translated.objects.add(obj);
         });
 
         map.monsters.forEach((mon) -> {
             mon.world_x += by.x * GamePanel.TILE_SIZE;
             mon.world_y += by.y * GamePanel.TILE_SIZE;
+            translated.monsters.add(mon);
         });
 
         map.player_spawn.translate(by.x, by.y);
+        translated.player_spawn = map.player_spawn;
 
         return translated;
     }
+    /** Moves the map by a given Point distance in Tile lengths. */
+    public void translate_map(final int x, final int y){
+        var gen = new HashMap<Point, Tile>();
+        tiles.forEach((p, t) -> {
+            var shifted = new Point(p.x + x, p.y + y);
+            gen.put(shifted, t);
+        });
+        tiles = gen;
 
+        for(var i = 0; i < objects.size(); i++){
+            var obj = objects.get(i);
+            obj.world_x += x * GamePanel.TILE_SIZE;
+            obj.world_y += y * GamePanel.TILE_SIZE;
+        }
+        for(var i = 0; i < monsters.size(); i++){
+            var mon = monsters.get(i);
+            mon.world_x += x * GamePanel.TILE_SIZE;
+            mon.world_y += y * GamePanel.TILE_SIZE;
+        }
+        player_spawn.x += x;
+        player_spawn.y += y;
+    }
+
+    /** Layers a map on top of another map, removing underlying tiles, retaining the player spawn, and overlaying the objects and monsters. */
     public void layer(Map layer){
         tiles.putAll(layer.tiles);
         objects.addAll(layer.objects);
@@ -115,6 +151,9 @@ public class Map {
         monsters.addAll(layer.monsters);
     }
 
+    /** Branches the map at a certain location, allowing one to chain map creating operations effectively. 
+     * This is a combination of the translate and boolean layer function.
+    */
     public Map branch(Map branch, Point cut){
         var appendable_branch = Map.translate(branch, cut);
         this.boolean_layer(appendable_branch);
@@ -145,6 +184,7 @@ public class Map {
     //     tiles = gen;
     // }
 
+    /** Moves the map such that, when drawn, it expands in the regular (bottom-right) quadrant. The drawing point can be thought of being moved to the top left of the map. */
     public void rebase_origin(){
         int min_x = Integer.MAX_VALUE;
         int min_y = Integer.MAX_VALUE;
@@ -166,6 +206,7 @@ public class Map {
         translate_map(-min_x, -min_y);
     }
 
+    /** Moves the map such that, when drawn, it expands in the bottom left quadrant. The drawing point can be thought of being moved to the top right of the map. */
     public void rebase_x(){
         int max_x = Integer.MIN_VALUE;
         int min_y = Integer.MAX_VALUE;
@@ -187,6 +228,7 @@ public class Map {
         translate_map(-max_x, -min_y);
     }
 
+    /** Moves the map such that, when drawn, it expands in the top right quadrant. The drawing point can be thought of being moved to the bottom left of the map. */
     public void rebase_y(){
         int min_x = Integer.MAX_VALUE;
         int max_y = Integer.MIN_VALUE;
@@ -208,6 +250,7 @@ public class Map {
         translate_map(-min_x, -max_y);
     }
 
+    /** Moves the map such that, when drawn, it expands in the top left quadrant. The drawing point can be thought of being moved to the bottom right of the map. */
     public void rebase_xy(){
         int max_x = Integer.MIN_VALUE;
         int max_y = Integer.MIN_VALUE;
@@ -227,28 +270,6 @@ public class Map {
         max_y = Math.max(max_y, player_spawn.y);
 
         translate_map(-max_x, -max_y);
-    }
-
-    public void translate_map(final int x, final int y){
-        var gen = new HashMap<Point, Tile>();
-        tiles.forEach((p, t) -> {
-            var shifted = new Point(p.x + x, p.y + y);
-            gen.put(shifted, t);
-        });
-        tiles = gen;
-
-        for(var i = 0; i < objects.size(); i++){
-            var obj = objects.get(i);
-            obj.world_x += x * GamePanel.TILE_SIZE;
-            obj.world_y += y * GamePanel.TILE_SIZE;
-        }
-        for(var i = 0; i < monsters.size(); i++){
-            var mon = monsters.get(i);
-            mon.world_x += x * GamePanel.TILE_SIZE;
-            mon.world_y += y * GamePanel.TILE_SIZE;
-        }
-        player_spawn.x += x;
-        player_spawn.y += y;
     }
 
     
