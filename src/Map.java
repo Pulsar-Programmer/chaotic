@@ -90,19 +90,28 @@ public class Map {
             obj.world_x += by.x * GamePanel.TILE_SIZE;
             obj.world_y += by.y * GamePanel.TILE_SIZE;
             translated.objects.add(obj);
+            translated.objects.add(obj);
         });
 
         map.monsters.forEach((mon) -> {
             mon.world_x += by.x * GamePanel.TILE_SIZE;
             mon.world_y += by.y * GamePanel.TILE_SIZE;
+
+            mon.patrol_start.x += by.x * GamePanel.TILE_SIZE;
+            mon.patrol_start.y += by.y * GamePanel.TILE_SIZE;
+            mon.patrol_end.x += by.x * GamePanel.TILE_SIZE;
+            mon.patrol_end.y += by.y * GamePanel.TILE_SIZE;
+            
             translated.monsters.add(mon);
         });
 
         map.player_spawn.translate(by.x, by.y);
         translated.player_spawn = map.player_spawn;
+        translated.player_spawn = map.player_spawn;
 
         return translated;
     }
+
     /** Moves the map by a given Point distance in Tile lengths. */
     public void translate_map(final int x, final int y){
         var gen = new HashMap<Point, Tile>();
@@ -121,6 +130,11 @@ public class Map {
             var mon = monsters.get(i);
             mon.world_x += x * GamePanel.TILE_SIZE;
             mon.world_y += y * GamePanel.TILE_SIZE;
+
+            mon.patrol_start.x += x * GamePanel.TILE_SIZE;
+            mon.patrol_start.y += y * GamePanel.TILE_SIZE;
+            mon.patrol_end.x += x * GamePanel.TILE_SIZE;
+            mon.patrol_end.y += y * GamePanel.TILE_SIZE;
         }
         player_spawn.x += x;
         player_spawn.y += y;
@@ -177,29 +191,11 @@ public class Map {
         return this;
     }
 
-    // public void invert_x(){
-    //     var gen = new HashMap<Point, Tile>();
-    //     tiles.forEach((p, t) -> {
-    //         gen.put(new Point(-p.x, p.y), t);
-    //     });
-    //     tiles = gen;
-    // }
-
-    // public void invert_y(){
-    //     var gen = new HashMap<Point, Tile>();
-    //     tiles.forEach((p, t) -> {
-    //         gen.put(new Point(p.x, -p.y), t);
-    //     });
-    //     tiles = gen;
-    // }
-
-    // public void invert_xy(){
-    //     var gen = new HashMap<Point, Tile>();
-    //     tiles.forEach((p, t) -> {
-    //         gen.put(new Point(-p.x, -p.y), t);
-    //     });
-    //     tiles = gen;
-    // }
+    public Map direct_branch(Map branch, Point cut){
+        var appendable_branch = Map.translate(branch, cut);
+        this.layer(appendable_branch);
+        return this;
+    }
 
     /** Moves the map such that, when drawn, it expands in the regular (bottom-right) quadrant. The drawing point can be thought of being moved to the top left of the map. */
     public void rebase_origin(){
