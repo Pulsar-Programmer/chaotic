@@ -63,11 +63,20 @@ public class Monster extends Entity implements Collider {
         return mon;
     }
 
+    public static Monster minion(){
+        var s4 = Monster.skeleton();
+        s4.name = "Minion";
+        s4.maxHealth = 2;
+        s4.health = s4.maxHealth;
+        return s4;
+    }
+
     public static Monster knight() {
         var mon = new Monster();
         mon.name = "Knight";
         mon.sprite = 2;
-        mon.speed = 4;
+        mon.speed = 6;
+        mon.maxHealth = 40;
         mon.health = mon.maxHealth;
         return mon;
     }
@@ -76,7 +85,8 @@ public class Monster extends Entity implements Collider {
         mon.name = "Boss";
         mon.sprite = 1;
         mon.speed = 3;
-        mon.solidArea = new Rectangle(0,0,GamePanel.TILE_SIZE*5,GamePanel.TILE_SIZE*5);
+        mon.solidArea = new Rectangle(0,0,GamePanel.TILE_SIZE*4,GamePanel.TILE_SIZE*4);
+        mon.maxHealth = 100;
         mon.health = mon.maxHealth;
         return mon;
     }
@@ -152,14 +162,14 @@ public class Monster extends Entity implements Collider {
                 patrol_behavior(patrol_start.x, patrol_start.y, patrol_end.x, patrol_end.y, 20);
             }
         }
-        if(name.equals("Boss")){
+        if(name.equals("Boss") || name.equals("Knight")){
             var p1 = new Point(gp.player.world_x, gp.player.world_y);
             var p2 = new Point(world_x, world_y);
             if (p1.distance(p2) <= GamePanel.TILE_SIZE * 10) {
                 patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 2);
-            } else {
-                // patrol_behavior(100, 100, 400, 200, 20);
-                patrol_behavior(patrol_start.x, patrol_start.y, patrol_end.x, patrol_end.y, 20);
+            }
+            if(MapGenerator.gen_range(1000) == 1){
+                attack3(gp.monsterManager);
             }
             shot_counter += 1;
             if(shot_counter == 40){
@@ -167,7 +177,9 @@ public class Monster extends Entity implements Collider {
                 shot_counter = 0;
             }
         }
-
+        if(name.equals("Minion")){
+            patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 0);
+        }
         var up = gp.collisionChecker.checkUp(this);
         var down = gp.collisionChecker.checkDown(this);
         var left = gp.collisionChecker.checkLeft(this);
@@ -252,65 +264,12 @@ public class Monster extends Entity implements Collider {
             turret.offense = offense;
             gp.projectileManager.projectiles.add(turret);
         } else 
-        if (name.equals("Boss")) {
-            var turret = Projectile.turret(world_x, world_y, direction);
+        if (name.equals("Boss") || name.equals("Knight")) {
+            var turret = Projectile.knight(world_x, world_y, direction);
             turret.offense = offense;
+            turret.speed = 12;
             gp.projectileManager.projectiles.add(turret);
         }
-    }
-
-    // -----------------------------------------------EVERETTS SUPER SECRET
-    // (terrible) JAVA ZONE >:3 ------------------------------------------
-    // Make variables here:
-
-    public void attack1() { // light attack
-        if (direction == UP) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-
-        } else if (direction == RIGHT) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-        } else if (direction == DOWN) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-        } else if (direction == LEFT) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-        }
-    }
-
-    public void attack2() { // heavy attack
-        if (direction == UP) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-        } else if (direction == RIGHT) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-        } else if (direction == DOWN) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-        } else if (direction == LEFT) {
-            // sprite1
-            // sprite2
-            // sprite3
-            // sprite4
-        }
-        // stun stage, post heavy attack
     }
 
     public void attack3(MonsterManager monsterManager) { // RAISE SOULS
@@ -318,7 +277,7 @@ public class Monster extends Entity implements Collider {
         // summons 4 skeletons, slight delay between each spawn
         var x = world_x + 1;
         var y = world_y + 1;
-        var s1 = Monster.skeleton();
+        var s1 = Monster.minion();
         s1.world_x = x;
         s1.world_y = y;
 
@@ -326,7 +285,7 @@ public class Monster extends Entity implements Collider {
 
         x = world_x - 1;
         y = world_y + 1;
-        var s2 = Monster.skeleton();
+        var s2 = Monster.minion();
         s2.world_x = x;
         s2.world_y = y;
 
@@ -335,7 +294,7 @@ public class Monster extends Entity implements Collider {
 
         x = world_x + 1;
         y = world_y - 1;
-        var s3 = Monster.skeleton();
+        var s3 = Monster.minion();
         s3.world_x = x;
         s3.world_y = y;
 
@@ -343,7 +302,7 @@ public class Monster extends Entity implements Collider {
 
         x = world_x - 1;
         y = world_y - 1;
-        var s4 = Monster.skeleton();
+        var s4 = Monster.minion();
         s4.world_x = x;
         s4.world_y = y;
 

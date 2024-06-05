@@ -65,17 +65,15 @@ public class MonsterManager {
     }
 
     public void update(GamePanel gp){
-        Monster dead = null;
-        for(var elem : monsters){
-            if(!elem.alive) dead = elem;
-            elem.update(gp);
-        }
-        if(dead != null){
-            monsters.remove(dead);
-            if(MapGenerator.gen_range(10) >= 5){
-                gp.objectManager.objects.add(Object.heart(dead.world_x, dead.world_y, dead.offense/2 + 1));
-            } else {
-                gp.objectManager.objects.add(Object.coin(dead.world_x, dead.world_y));
+        for(var i = 0; i < monsters.size(); i++){
+            monsters.get(i).update(gp);
+            if(!monsters.get(i).alive){
+                var dead = monsters.remove(i);
+                if(MapGenerator.gen_range(10) >= 5){
+                    gp.objectManager.objects.add(Object.heart(dead.world_x, dead.world_y, dead.offense/2 + 1));
+                } else {
+                    gp.objectManager.objects.add(Object.coin(dead.world_x, dead.world_y));
+                }
             }
         }
     }

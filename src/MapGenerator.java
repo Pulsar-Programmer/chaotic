@@ -155,23 +155,23 @@ final class MapGenerator {
         return room;
     }
 
-    public static Map random_puzzle_room(int minigame_affiliation, Object door){
-        var tiny_map = Map.new_map();
+    public static Map random_puzzle_room(int minigame_affiliation){
+        // var tiny_map = Map.new_map();
 
-        tiny_map.getTiles().put(new Point(0, 0), Tile.with_collision(10));
-        tiny_map.getTiles().put(new Point(1, 0), Tile.with_collision(6));
-        tiny_map.getTiles().put(new Point(2, 0), Tile.with_collision(9));
-        tiny_map.getTiles().put(new Point(0, 1), Tile.with_collision(15));
-        tiny_map.getTiles().put(new Point(1, 1), new Tile(0));
-        tiny_map.getTiles().put(new Point(2, 1), Tile.with_collision(16));
-        door.world_x = GamePanel.TILE_SIZE;
-        door.world_y = 0;
-        door.minigame_affiliation = minigame_affiliation;
+        // tiny_map.getTiles().put(new Point(0, 0), Tile.with_collision(10));
+        // tiny_map.getTiles().put(new Point(1, 0), Tile.with_collision(6));
+        // tiny_map.getTiles().put(new Point(2, 0), Tile.with_collision(9));
+        // tiny_map.getTiles().put(new Point(0, 1), Tile.with_collision(15));
+        // tiny_map.getTiles().put(new Point(1, 1), new Tile(0));
+        // tiny_map.getTiles().put(new Point(2, 1), Tile.with_collision(16));
+        // door.world_x = GamePanel.TILE_SIZE;
+        // door.world_y = 0;
+        // door.minigame_affiliation = minigame_affiliation;
         // door.teleporter = Optional.of(new Point(10, 10));
-        tiny_map.getObjects().add(door);
+        // tiny_map.getObjects().add(door);
 
         var map = MapGenerator.puzzle_room(12, 12);
-        map.direct_branch(tiny_map, new Point(5, -1));
+        // map.direct_branch(tiny_map, new Point(5, -1));
 
         var amt_minigames = gen_range(4) + 1;
         
@@ -317,7 +317,7 @@ final class MapGenerator {
         return room;
     }
 
-    public static Map boss_room(int dim_x, int dim_y, int boss){
+    public static Map boss_room(int dim_x, int dim_y){
         var room = generic_room(dim_x, dim_y);
         var tiles = room.getTiles();
         for(var i = 1; i < dim_x; i++){
@@ -333,7 +333,10 @@ final class MapGenerator {
                 tiles.put(new Point(i, j), new Tile(1));
             }
         }
-        //TODO
+        var monsta =  gen_range(2) == 1 ? Monster.knight() : Monster.boss();
+        monsta.world_x = GamePanel.TILE_SIZE * dim_x/2;
+        monsta.world_y = GamePanel.TILE_SIZE * 2;
+        room.getMonsters().add(monsta);
         return room;
     }
 
@@ -384,38 +387,44 @@ final class MapGenerator {
         Map map = MapGenerator.generic_room(15, 15);
         map.setPlayer_spawn(new Point(10, 10));
         // int counterOfY =0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                var generic_room = MapGenerator.arkin_enemy_room(new Point(7, 7), new Point(10, 10), 15, 15);
-                map.direct_branch(generic_room, new Point(j * 25, i * 25));
-                var generic_hor_corridor = MapGenerator.standard_corridor(10, true, 3);
-                map.direct_branch(generic_hor_corridor, new Point(15 + j * 25, i * 15 + 10));
-                var generic_ver_corridor = MapGenerator.standard_corridor(10, false, 3);
-                map.direct_branch(generic_ver_corridor, new Point(i * 15 + 10, j * 25 + 15));
-                // var ghost = Monster.skeleton();
-                // ghost.world_x = (5 + 25 * j) * GamePanel.TILE_SIZE;
-                // ghost.world_y = 5 + i * 25 * GamePanel.TILE_SIZE;
-                // map.getMonsters().add(ghost);
-            }
-        }
-        var maze = MapGenerator.maze();
+        // for (int i = 0; i < 4; i++) {
+        //     for (int j = 0; j < 4; j++) {
+        //         var generic_room = MapGenerator.arkin_enemy_room(new Point(7, 7), new Point(10, 10), 15, 15);
+        //         map.branch(generic_room, new Point(j * 25, i * 25));
+        //         map.five_stitch(Player.UP, new Point(j * 25, i * 25));
+        //         var generic_hor_corridor = MapGenerator.standard_corridor(10, true, 3);
+        //         map.branch(generic_hor_corridor, new Point(15 + j * 25, i * 15 + 10));
+        //         map.five_stitch(Player.RIGHT, new Point(15 + j * 25, i * 15 + 10));
+        //         var generic_ver_corridor = MapGenerator.standard_corridor(10, false, 3);
+        //         map.branch(generic_ver_corridor, new Point(i * 15 + 10, j * 25 + 15));
+        //         map.five_stitch(Player.DOWN, new Point(i * 15 + 10, j * 25 + 15));
+        //         // var ghost = Monster.skeleton();
+        //         // ghost.world_x = (5 + 25 * j) * GamePanel.TILE_SIZE;
+        //         // ghost.world_y = 5 + i * 25 * GamePanel.TILE_SIZE;
+        //         // map.getMonsters().add(ghost);
+        //     }
+        // }
         // maze.rebase_y();
         // map.branch(maze, new Point(-20, 10));
+
+
+        for(var i = 0; i < 4; i ++){
+            for(var j = 0; j < 4; j++){
+                
+            }
+        }
 
         map.rebase_origin();
 
         map.getObjects().add(Object.coin(5 * GamePanel.TILE_SIZE, 8 * GamePanel.TILE_SIZE));
-        var knight = Monster.knight();
-        knight.world_x = 10 * GamePanel.TILE_SIZE;
-        knight.world_y = 9 * GamePanel.TILE_SIZE;
-
-        map.getMonsters().add(knight);
+        
 
         map.rebase_origin();
-
-        map = maze();
-
         map.setPlayer_spawn(new Point(6, 5));
+        var door = Object.door(GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+        var escapeRoom = random_puzzle_room(1);
+        map.branch(escapeRoom, new Point(91,0));
+        map.five_stitch(Player.RIGHT, new Point(91,0));
 
         return map;
     }
@@ -483,8 +492,8 @@ final class MapGenerator {
         monsters.add(othermonsta);
         var boss = Monster.boss();
         monsters.add(boss);
-        // var boss = Monster.knight();
-        // monsters.add(boss);
+        var man = Monster.knight();
+        monsters.add(man);
 
 
         var objects = map.getObjects();
@@ -532,14 +541,80 @@ final class MapGenerator {
         return map;
     }
 
-    public static Map escapeRoom() {
-        Map escapeRoom = MapGenerator.generic_room(25, 20);
-        // objects that are added to the escape room.
-        return escapeRoom;
-    }
+    // public static Map escapeRoom() {
+    //     Map escapeRoom = MapGenerator.generic_room(25, 20);
+    //     // objects that are added to the escape room.
+    //      var objects = escapeRoom.getObjects();
+    //     var plate = Object.metal_plate(32*10, 32*10);
+    //      var plate_2 = Object.metal_plate(32*10, 32*10);
+    //       var plate_3 = Object.metal_plate(32*10, 32*10);
+    //        var rock = Object.rock(32*3, 32*3);
+    //         var rockTwo = Object.rock(32*5, 32*5);
+    //          var rockThree = Object.rock(32*8, 32*17);
+    //     objects.add(plate);
+    //     objects.add(plate_2);
+    //     objects.add(plate_3);
+    //     objects.add(rock);
+    //     objects.add()
+        
+    //     return escapeRoom;
+    // }
     // public void spawnskeletons(int x, int y) {
     //     var map = Map.new_map();
     //     var monsters = map.getMonsters();
     //     monsters.add(Monster.skeleton());
     // }
+
+    public static Map generate(){
+        var map = Map.new_map();
+     int x =0;
+     int y=0;
+        map.setPlayer_spawn(new Point(20, 20));
+        int[] move = {Player.RIGHT, Player.DOWN};
+        for(var i = 0; i < 20; i++){
+            var to_move = move[gen_range(2)];
+
+            Map room = Map.new_map();
+            var prob = gen_range(100);
+            if(prob >= 95){
+                room = generic_room(15, 15);
+            } else
+            if(prob >= 50){
+                room = arkin_enemy_room(new Point(3, 3), new Point(12, 12), 15, 15);
+            } else
+            if(prob >= 10){
+                room = random_puzzle_room(1);
+            } else {
+                room = boss_room(15, 15);
+                if(to_move == Player.RIGHT){
+                    map.rebase_x();
+                    map.branch(room, new Point(0, 0));
+                } else{
+                    map.rebase_y();
+                    map.branch(room, new Point(0, 0));
+                }
+                break;
+            }
+            if(to_move == Player.RIGHT){
+                map.rebase_x();
+                map.branch(room, new Point(0, 0));
+                // x=15
+                var corridor = MapGenerator.standard_corridor(10, true, 3);
+                map.branch(corridor, new Point(15, 5));
+            } else{
+                map.rebase_y();
+                map.branch(room, new Point(0, 0));
+
+                var corridor = MapGenerator.standard_corridor(10, true, 3);
+                map.branch(corridor, new Point(5, 0));
+            }
+        }
+
+
+
+        
+
+        
+        return map;
+    }
 }

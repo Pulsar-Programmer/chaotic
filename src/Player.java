@@ -123,9 +123,9 @@ public class Player extends Entity implements Collider {
 
     public static Player wizard(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 12;
+        player.maxHealth = 20;
         player.health = player.maxHealth;
-        player.offense = 3;
+        player.offense = 5;
         player.defense = 5;
         player.special_counter_max = 500;
         player.class_type = WIZARD;
