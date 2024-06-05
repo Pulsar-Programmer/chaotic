@@ -125,10 +125,9 @@ public class Player extends Entity implements Collider {
         var player = new Player(gp);
         player.maxHealth = 12;
         player.health = player.maxHealth;
-        player.offense = 30;
+        player.offense = 3;
         player.defense = 5;
-        player.special_counter_max = 300;
-        //TODO
+        player.special_counter_max = 500;
         player.class_type = WIZARD;
         return player;
     }
@@ -140,29 +139,26 @@ public class Player extends Entity implements Collider {
         player.defense = 10;
         player.class_type = KNIGHT;
         player.attack_animation.max_sprite_num = 3;
-        //TODO @arkinsriva
         return player;
     }
 
     public static Player archer(GamePanel gp){
         var player = new Player(gp);
         player.maxHealth = 12;
-        player.offense = 1;
-        player.defense = 1;
-        player.special_counter_max = 300;
+        player.offense = 5;
+        player.defense = 10;
+        player.special_counter_max = 200;
         player.class_type = ARCHER;
-        //TODO
         return player;
     }
 
     public static Player healer(GamePanel gp){
         var player = new Player(gp);
         player.maxHealth = 20;
-        player.offense = 1;
+        player.offense = 5;
         player.defense = 5;
         player.class_type = HEALER;
-        player.special_counter_max = 200;
-        //TODO
+        player.special_counter_max = 500;
         return player;
     }
 
