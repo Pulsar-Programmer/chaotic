@@ -49,7 +49,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
-        sounds.setFile(12);
+        sounds.clear();
+        sounds.addFile(12);
         sounds.loop();
         setupGame();
         gameThread = new Thread(this);
@@ -58,13 +59,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         // tiles = MapGenerator.procedure().getTiles();
-        var map = MapGenerator.one();
+        var map = MapGenerator.random_puzzle_room();
         // map.setTiles(tileManager.tiles);
+
         
         // map.layer(MapGenerator.boss_room(10, 10, 0));
         // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
         // map = MapGenerator.generic_room(10, 10);
-        // map.setPlayer_spawn(new Point(5, 5));
+        map.setPlayer_spawn(new Point(5, 5));
         maps[0] = map;
         load_map(0);
     }
@@ -102,6 +104,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update(){
 
+        // sounds.sweep();
+
         if(gameState == PLAY){
             player.update();
             monsterManager.update(this);
@@ -137,8 +141,8 @@ public class GamePanel extends JPanel implements Runnable {
                         player = Player.healer(this);
                     }
                     setupGame();
-                    sounds.stop();
-                    sounds.setFile(1);
+                    sounds.clear();
+                    sounds.addFile(1);
                     sounds.loop();          
                 }
                 else if(guiManager.commandNum==1){
@@ -208,21 +212,21 @@ public class GamePanel extends JPanel implements Runnable {
                 }
                 
                 keyH.startHit = false;
-                sounds.stop();
-                sounds.setFile(1);
+                sounds.clear();
+                sounds.addFile(1);
                 sounds.loop();
             }
         }
 
         if(keyH.pauseHit){
             if(gameState == PAUSE){
-                sounds.stop();
-                sounds.setFile(1);
+                sounds.clear();
+                sounds.addFile(1);
                 sounds.loop();
             }
             if(gameState == PLAY){
-                sounds.stop();
-                sounds.setFile(16);
+                sounds.clear();
+                sounds.addFile(16);
                 sounds.loop();
             }
             gameState = (gameState + 1) % 2;

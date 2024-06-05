@@ -40,6 +40,11 @@ public class Player extends Entity implements Collider {
     public boolean touching_electricity = false;
     public int electricity_counter = 0;
 
+    public boolean rock_up = false;
+    public boolean rock_down = false;
+    public boolean rock_left = false;
+    public boolean rock_right = false;
+
     //TODO: make sure you assign all default values in here and not initially allocated
     public Player(GamePanel gp){
         this.gp = gp;
@@ -199,32 +204,36 @@ public class Player extends Entity implements Collider {
 
         if(gp.keyH.upPressed){
             direction = UP;
-            if(!gp.collisionChecker.checkUp(this)){
+            if(!gp.collisionChecker.checkUp(this) && !rock_up){
                 vel_y -= speed;
                 timesKeyPressed++;
             }
         }
         if(gp.keyH.downPressed){
             direction = DOWN;
-            if(!gp.collisionChecker.checkDown(this)){
+            if(!gp.collisionChecker.checkDown(this) && !rock_down){
                 vel_y += speed;
                 timesKeyPressed++;
             }
         }
         if(gp.keyH.leftPressed){
             direction = LEFT;
-            if(!gp.collisionChecker.checkLeft(this)){
+            if(!gp.collisionChecker.checkLeft(this) && !rock_left){
                 vel_x -= speed;
                 timesKeyPressed++;
             }
         }
         if(gp.keyH.rightPressed){
             direction = RIGHT;
-            if(!gp.collisionChecker.checkRight(this)){
+            if(!gp.collisionChecker.checkRight(this) && !rock_right){
                 vel_x += speed;
                 timesKeyPressed++;
             }
         }
+        // rock_up = false;
+        // rock_down = false;
+        // rock_left = false;
+        // rock_right = false;
 
         // if(pushing_rock){
         //     gp.player.vel_x = 0;
@@ -284,8 +293,8 @@ public class Player extends Entity implements Collider {
 
         if(health<=0){
             gp.gameState = GamePanel.DEATH;
-            gp.sounds.stop();
-            gp.sounds.setFile(0);
+            gp.sounds.clear();
+            gp.sounds.addFile(0);
             gp.sounds.loop();
         }
         pushing_rock = false;
@@ -399,13 +408,15 @@ public class Player extends Entity implements Collider {
             attack_animation.sprite_num = 0;
         } else if(attack_animation.frame_counter <= 25){
             attack_animation.sprite_num = 1;
-
+            
             if(class_type == WIZARD){
                 if(attack_animation.frame_counter % 8 == 0){
                     var fire = Projectile.magic(world_x, world_y, direction);
                     fire.origin_player = true;
                     fire.offense = offense;
                     gp.projectileManager.projectiles.add(fire);
+                    gp.sounds.addFile(11);
+                    gp.sounds.start();
                 }
                 
             } else
@@ -414,8 +425,12 @@ public class Player extends Entity implements Collider {
                 fire.origin_player = true;
                 fire.offense = offense;
                 gp.projectileManager.projectiles.add(fire);
+                gp.sounds.addFile(14);
+                gp.sounds.start();
             } else
             if(class_type == HEALER){
+                gp.sounds.addFile(11);
+                gp.sounds.start();
                 standard_attack();
             }
         } else{

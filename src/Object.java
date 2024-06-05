@@ -158,7 +158,7 @@ public class Object implements Collider {
             tile_activated = false;
             for(var elem : CollisionChecker.check_intersections(this, gp.objectManager.objects)){
                 var obj = gp.objectManager.objects.get(elem);
-                if(obj.name.equals("Wire") || obj.name.equals("Chimer")){
+                if(obj.name.equals("Wire") || obj.name.equals("Chimer") || obj.name.equals("Plate")){
                     tile_activated = obj.tile_activated;
                 }
             }
@@ -182,6 +182,10 @@ public class Object implements Collider {
             var down = gp.collisionChecker.checkDown(this);
             var left = gp.collisionChecker.checkLeft(this);
             var right = gp.collisionChecker.checkRight(this);
+            gp.player.rock_up = up;
+            gp.player.rock_down = down;
+            gp.player.rock_left = left;
+            gp.player.rock_right = right;
 
             if(up){
                 gp.player.vel_y =  Math.max(0, gp.player.vel_y);

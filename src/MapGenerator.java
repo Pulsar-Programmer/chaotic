@@ -1,4 +1,5 @@
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
@@ -138,16 +139,69 @@ final class MapGenerator {
         for(var i = 2; i < dim_x - 1; i++){
             for(var j = 2; j < dim_y - 1; j++){
                 var p = new Point(i, j);
-                if(gen_range(100) >= 50){
+                var prob = gen_range(100);
+                if(prob >= 60){
                     tiles.put(p, new Tile(2));
+                    continue;
+                } else
+                if(prob >= 30){
+                    tiles.put(p, new Tile(0));
                     continue;
                 }
                 tiles.put(p, new Tile(1));
             }
         }
-        //TODO
+        //elements: toll, plates & rocks, key, electricity
         return room;
     }
+
+    public static Map random_puzzle_room(){
+        var map = MapGenerator.puzzle_room(12, 12);
+
+        var amt_minigames = gen_range(4) + 1;
+
+        ArrayList<Integer> choices = new ArrayList<Integer>();
+        choices.add(1); choices.add(2); choices.add(3); choices.add(4);
+        for(var i = 0; i < amt_minigames; i++){
+            choices.remove(gen_range(choices.size()));
+        }
+        if(!choices.contains(1)){
+            map.layer(toll_puzzle());
+        }
+        var plate_chosen = !choices.contains(2);
+        if(plate_chosen){
+            map.layer(rock_puzzle());
+        }
+        if(!choices.contains(3)){
+            map.layer(key_puzzle());
+        }
+        if(!choices.contains(4)){
+            map.layer(electric_puzzle(!plate_chosen));
+        }
+        return map;
+    }
+
+    public static Map toll_puzzle(){
+        var map = Map.new_map();
+        // map.getObjects().add(Object.)
+        return map;
+    }
+    public static Map rock_puzzle(){
+        var map = Map.new_map();
+        return map;
+    }
+    public static Map key_puzzle(){
+        var map = Map.new_map();
+        return map;
+    }
+    public static Map electric_puzzle(boolean with_chimer){
+        var map = Map.new_map();
+        if(with_chimer){
+
+        }
+        return map;
+    }
+    
 
     public static Map enemy_room(Point patrol_start, Point patrol_end, Monster enemy, int dim_x, int dim_y){
         var room = generic_room(dim_x, dim_y);
@@ -171,7 +225,6 @@ final class MapGenerator {
         enemy.patrol_start.y = patrol_start.y * GamePanel.TILE_SIZE;
         enemy.patrol_end.y = patrol_end.y * GamePanel.TILE_SIZE;
         room.getMonsters().add(enemy);
-        //TODO
         return room;
     }
 
@@ -206,7 +259,6 @@ final class MapGenerator {
             enem.patrol_end.y = patrol_end.y * GamePanel.TILE_SIZE;
             room.getMonsters().add(enem);
         }
-        //TODO
         return room;
     }
 
@@ -425,6 +477,11 @@ final class MapGenerator {
         return map;
     }
 
+    public static Map escapeRoom() {
+        Map escapeRoom = MapGenerator.generic_room(25, 20);
+        // objects that are added to the escape room.
+        return escapeRoom;
+    }
     // public void spawnskeletons(int x, int y) {
     //     var map = Map.new_map();
     //     var monsters = map.getMonsters();

@@ -3,13 +3,15 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
+import java.util.ArrayList;
 
 public class Sound {
     File[] arr;
-    Clip clip;
+    ArrayList<Clip> clips;
 
     // nah we good.
     public Sound() {
+        clips = new ArrayList<Clip>();
         arr = new File[30];
         
         arr[0] = new File("res/sounds/death_screen.wav");
@@ -31,32 +33,55 @@ public class Sound {
         arr[16] = new File("res/sounds/streets.wav");
     }
 
-    public void setFile(int i) {
+    public void addFile(int i) {
         try {
             AudioInputStream a = AudioSystem.getAudioInputStream(arr[i]);
-            clip = AudioSystem.getClip();
+            Clip clip = AudioSystem.getClip();
             clip.open(a);
-            FloatControl gainControl = 
-            (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-10.0f);
-            if(i==1){
-                gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-20.0f);
+            if(i != 14 && i != 11){
+                FloatControl gainControl = 
+                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-10.0f);
+                if(i==1){
+                    gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                    gainControl.setValue(-20.0f);
+                }
             }
+            clips.add(clip);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void loop() {
-        clip.loop(Clip.LOOP_CONTINUOUSLY); //"this.clip" is null
+        clips.getLast().loop(Clip.LOOP_CONTINUOUSLY); //"this.clip" is null
     }
 
     public void stop() {
-        clip.stop();
+        clips.getLast().stop();
+        clips.remove(clips.size()-1);
     }
 
     public void start() {
-        clip.start();
+        clips.getLast().start();
     }
+
+    public void stopAll(){
+        for(var i = 0; i < clips.size(); i++){
+            clips.get(i).stop();
+        }
+    }
+
+    public void clear(){
+        stopAll();
+        clips.clear();
+    }
+
+    // public void sweep(){
+    //     for(var i = clips.size() - 1; i >= 0; i--){
+    //         if(!clips.get(i).isActive()){
+    //             clips.remove(i);
+    //         }
+    //     }
+    // }
 }
