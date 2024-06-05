@@ -80,7 +80,7 @@ public class ObjectManager {
         for (var object : objects) {
             if(object.minigame_affiliation != 0 && !object.name.equals("Door")){
                 all_activated_hashmap.putIfAbsent(object.minigame_affiliation, true);
-                all_activated_hashmap.put(object.minigame_affiliation, all_activated_hashmap.get(object.minigame_affiliation) && object.tile_activation_counter >= 120);
+                all_activated_hashmap.put(object.minigame_affiliation, all_activated_hashmap.get(object.minigame_affiliation) && (object.tile_activation_counter >= 120 || (!object.name.equals("Plate") && object.tile_activated)));
             }
         }
         all_activated_hashmap.forEach((a, b) -> {
