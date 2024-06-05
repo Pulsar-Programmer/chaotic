@@ -35,19 +35,23 @@ public class TileManager {
     public void getTileImage(){
         tile_sprites = new ArrayList<BufferedImage>(); //variable to change depending on number tile sprites added.
         try {
-            tile_sprites.add(App.res("res/tiles/blue/bricks.png")); //1
-            tile_sprites.add(App.res("res/tiles/blue/paver.png")); //2
-            tile_sprites.add(App.res("res/tiles/blue/mossy_bricks.png")); //3
-            tile_sprites.add(App.res("res/tiles/blue/wall/west.png")); //4
-            tile_sprites.add(App.res("res/tiles/blue/wall/east.png")); //5
-            tile_sprites.add(App.res("res/tiles/blue/wall/south.png")); //6
-            tile_sprites.add(App.res("res/tiles/blue/wall/north.png")); //7
-            tile_sprites.add(App.res("res/tiles/blue/wall/southeast.png")); //8
-            tile_sprites.add(App.res("res/tiles/blue/wall/southwest.png")); //9
-            tile_sprites.add(App.res("res/tiles/blue/wall/northeast.png")); //10
-            tile_sprites.add(App.res("res/tiles/blue/wall/northwest.png")); //11
-            tile_sprites.add(App.res("res/tiles/blue/door/north_closed.png")); //12
-            tile_sprites.add(App.res("res/tiles/blue/door/north_open.png")); //13
+            tile_sprites.add(App.res("res/tiles/blue/bricks.png")); //0
+            tile_sprites.add(App.res("res/tiles/blue/paver.png")); //1
+            tile_sprites.add(App.res("res/tiles/blue/mossy_bricks.png")); //2
+            tile_sprites.add(App.res("res/tiles/blue/wall/west.png")); //3
+            tile_sprites.add(App.res("res/tiles/blue/wall/east.png")); //4
+            tile_sprites.add(App.res("res/tiles/blue/wall/south.png")); //5
+            tile_sprites.add(App.res("res/tiles/blue/wall/north.png")); //6
+            tile_sprites.add(App.res("res/tiles/blue/wall/southeast.png")); //7
+            tile_sprites.add(App.res("res/tiles/blue/wall/southwest.png")); //8
+            tile_sprites.add(App.res("res/tiles/blue/wall/northeast.png")); //9
+            tile_sprites.add(App.res("res/tiles/blue/wall/northwest.png")); //10
+            tile_sprites.add(App.res("res/tiles/blue/door/north_closed.png")); //11
+            tile_sprites.add(App.res("res/tiles/blue/door/north_open.png")); //12
+            tile_sprites.add(App.res("res/tiles/blue/wall/southeast_inner.png")); //13
+            tile_sprites.add(App.res("res/tiles/blue/wall/southwest_inner.png")); //14
+            tile_sprites.add(App.res("res/tiles/blue/wall/northeast_inner.png")); //15
+            tile_sprites.add(App.res("res/tiles/blue/wall/northwest_inner.png")); //16
         } catch (Exception e) {
             e.printStackTrace();
         }

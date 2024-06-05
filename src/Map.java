@@ -151,6 +151,23 @@ public class Map {
         monsters.addAll(layer.monsters);
     }
 
+    // public void boolean_layer_stitch(Map layer){
+    //     layer.tiles.forEach((p, t) ->{
+    //         if(!tiles.containsKey(p)){
+    //             tiles.put(p, t);
+    //         } else {
+    //             var prev = tiles.get(p).sprite;
+    //             if(t.sprite == prev || t.sprite == 0 || t.sprite == 1 || t.sprite == 2){
+    //                 return;
+    //             }
+    //             System.out.println(prev + ":" + t.sprite);
+    //             tiles.remove(p);
+    //         }
+    //     });
+    //     objects.addAll(layer.objects);
+    //     monsters.addAll(layer.monsters);
+    // }
+
     /** Branches the map at a certain location, allowing one to chain map creating operations effectively. 
      * This is a combination of the translate and boolean layer function.
     */
@@ -272,5 +289,70 @@ public class Map {
         translate_map(-max_x, -max_y);
     }
 
+    public Map branch_up(Map branch, Point cut){
+        branch.rebase_y();
+        var branched = branch.branch(branch, cut);
+        branched.five_stitch(Entity.UP, cut);
+        return branched;
+    }
+    public Map branch_down(Map branch, Point cut){
+        var branched = branch.branch(branch, cut);
+        branched.five_stitch(Entity.DOWN, cut);
+        return branched;
+    }
+    public Map branch_down_checked(Map branch, Point cut){
+        branch.rebase_origin();
+        var branched = branch.branch(branch, cut);
+        branched.five_stitch(Entity.DOWN, cut);
+        return branched;
+    }
+    public Map branch_left(Map branch, Point cut){
+        branch.rebase_x();
+        var branched = branch.branch(branch, cut);
+        branched.five_stitch(Entity.LEFT, cut);
+        return branched;
+    }
+    public Map branch_right(Map branch, Point cut){
+        var branched = branch.branch(branch, cut);
+        branched.five_stitch(Entity.RIGHT, cut);
+        return branched;
+    }
+    public Map branch_right_checked(Map branch, Point cut){
+        branch.rebase_origin();
+        var branched = branch.branch(branch, cut);
+        branched.five_stitch(Entity.RIGHT, cut);
+        return branched;
+    }
+
+    public void five_stitch(int direction, Point loc){
+        if(direction == Entity.UP){
+            tiles.put(new Point(loc.x, loc.y), Tile.with_collision(15));
+            tiles.put(new Point(loc.x + 1, loc.y), new Tile(0));
+            tiles.put(new Point(loc.x + 2, loc.y), new Tile(0));
+            tiles.put(new Point(loc.x + 3, loc.y), new Tile(0));
+            tiles.put(new Point(loc.x + 4, loc.y), Tile.with_collision(16));
+        } else
+        if(direction == Entity.DOWN){
+            tiles.put(new Point(loc.x, loc.y), Tile.with_collision(13));
+            tiles.put(new Point(loc.x + 1, loc.y), new Tile(0));
+            tiles.put(new Point(loc.x + 2, loc.y), new Tile(0));
+            tiles.put(new Point(loc.x + 3, loc.y), new Tile(0));
+            tiles.put(new Point(loc.x + 4, loc.y), Tile.with_collision(14));
+        } else 
+        if(direction == Entity.LEFT){
+            tiles.put(new Point(loc.x, loc.y), Tile.with_collision(15));
+            tiles.put(new Point(loc.x, loc.y + 1), new Tile(0));
+            tiles.put(new Point(loc.x, loc.y + 2), new Tile(0));
+            tiles.put(new Point(loc.x, loc.y + 3), new Tile(0));
+            tiles.put(new Point(loc.x, loc.y + 4), Tile.with_collision(13));
+        } else 
+        if(direction == Entity.RIGHT){
+            tiles.put(new Point(loc.x, loc.y), Tile.with_collision(16));
+            tiles.put(new Point(loc.x, loc.y + 1), new Tile(0));
+            tiles.put(new Point(loc.x, loc.y + 2), new Tile(0));
+            tiles.put(new Point(loc.x, loc.y + 3), new Tile(0));
+            tiles.put(new Point(loc.x, loc.y + 4), Tile.with_collision(14));
+        }
+    }
     
 }

@@ -211,9 +211,13 @@ final class MapGenerator {
         var right = MapGenerator.standard_corridor(5, true, 3); //right cut premath
         
         room.branch(top, new Point(5, 0)); //creating the top cut
+        room.five_stitch(Player.UP, new Point(5, 0));
         room.branch(bottom, new Point(5, 10)); //creating the bottom cut
+        room.five_stitch(Player.DOWN, new Point(5, 10));
         room.branch(left, new Point(0, 5)); //creating the left cut
+        room.five_stitch(Player.LEFT, new Point(0, 5));
         room.branch(right, new Point(10, 5)); //creating the right cut
+        room.five_stitch(Player.RIGHT, new Point(10, 5));
         room.rebase_origin();
 
         //------------------------------------------------𝓯𝓻𝓮𝓪𝓴𝔂 section--------------------------------------------------------------------------------

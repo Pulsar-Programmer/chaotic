@@ -58,8 +58,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         // tiles = MapGenerator.procedure().getTiles();
-        var map = MapGenerator.sample_map();
-        map.setTiles(tileManager.tiles);
+        var map = MapGenerator.procedure();
+
+
+        // map.setTiles(tileManager.tiles);
+
         // map.layer(MapGenerator.boss_room(10, 10, 0));
         // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
         // map = MapGenerator.generic_room(10, 10);
