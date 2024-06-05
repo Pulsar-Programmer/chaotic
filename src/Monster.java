@@ -20,6 +20,9 @@ public class Monster extends Entity implements Collider {
     public int hp_counter = 0;
     public int shot_counter = 0;
 
+    public Point patrol_start = new Point(1, 1);
+    public Point patrol_end = new Point(2, 2);
+
     public Monster() {
         world_x = 100;
         world_y = 100;
@@ -33,9 +36,11 @@ public class Monster extends Entity implements Collider {
         mon.name = "Ghost";
         mon.sprite = 0;
         mon.walking.max_sprite_num = 1;
-        mon.speed = 4;
+        mon.speed = 1;
+        mon.offense = 100;
         mon.health = mon.maxHealth;
         return mon;
+
     }
 
     public static Monster turret(){
@@ -126,10 +131,12 @@ public class Monster extends Entity implements Collider {
         vel_y = 0;
 
         if (name.equals("Ghost")) {
-            patrol_behavior(100, 100, 400, 200, 20);
+            // patrol_behavior(100, 100, 400, 200, 20);
+            patrol_behavior(patrol_start.x, patrol_start.y, patrol_end.x, patrol_end.y, 20);
         }
         if (name.equals("Turret")) {
-            patrol_behavior(200, 200, 300, 300, 60);
+            // patrol_behavior(200, 200, 300, 300, 60);
+            patrol_behavior(patrol_start.x, patrol_start.y, patrol_end.x, patrol_end.y, 60);
             if (waiting == 1) {
                 shoot_projectile(gp);
             }
@@ -141,7 +148,8 @@ public class Monster extends Entity implements Collider {
             if (p1.distance(p2) <= GamePanel.TILE_SIZE * 5) {
                 patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 2);
             } else {
-                patrol_behavior(100, 100, 400, 200, 20);
+                // patrol_behavior(100, 100, 400, 200, 20);
+                patrol_behavior(patrol_start.x, patrol_start.y, patrol_end.x, patrol_end.y, 20);
             }
         }
         if(name.equals("Boss")){
@@ -150,13 +158,32 @@ public class Monster extends Entity implements Collider {
             if (p1.distance(p2) <= GamePanel.TILE_SIZE * 10) {
                 patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 2);
             } else {
-                patrol_behavior(100, 100, 400, 200, 20);
+                // patrol_behavior(100, 100, 400, 200, 20);
+                patrol_behavior(patrol_start.x, patrol_start.y, patrol_end.x, patrol_end.y, 20);
             }
             shot_counter += 1;
             if(shot_counter == 40){
                 shoot_projectile(gp);
                 shot_counter = 0;
             }
+        }
+
+        var up = gp.collisionChecker.checkUp(this);
+        var down = gp.collisionChecker.checkDown(this);
+        var left = gp.collisionChecker.checkLeft(this);
+        var right = gp.collisionChecker.checkRight(this);
+
+        if(up){
+            vel_y =  Math.max(0, vel_y);
+        }
+        if(down){
+            vel_y = Math.min(0, vel_y);
+        }
+        if(left){
+            vel_x = Math.max(0, vel_x);
+        }
+        if(right){
+            vel_x = Math.min(0, vel_x);
         }
         
          

@@ -1,7 +1,8 @@
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Optional;
-
+import java.util.Scanner;
+import java.io.File;
 final class MapGenerator {
 
     /** An escape room puzzle. */
@@ -148,7 +149,7 @@ final class MapGenerator {
         return room;
     }
 
-    public static Map enemy_room(Point patrol_start, Point patrol_end, int enemy, int dim_x, int dim_y){
+    public static Map enemy_room(Point patrol_start, Point patrol_end, Monster enemy, int dim_x, int dim_y){
         var room = generic_room(dim_x, dim_y);
         var tiles = room.getTiles();
         for(var i = patrol_start.x; i <= patrol_end.x; i++){
@@ -162,6 +163,48 @@ final class MapGenerator {
         }
         for(var j = patrol_start.y; j <= patrol_end.y; j++){
             tiles.put(new Point(patrol_end.x, j), new Tile(1));
+        }
+        enemy.world_x = patrol_start.x * GamePanel.TILE_SIZE;
+        enemy.world_y = patrol_start.y * GamePanel.TILE_SIZE;
+        enemy.patrol_start.x = patrol_start.x * GamePanel.TILE_SIZE;
+        enemy.patrol_end.x = patrol_end.x * GamePanel.TILE_SIZE;
+        enemy.patrol_start.y = patrol_start.y * GamePanel.TILE_SIZE;
+        enemy.patrol_end.y = patrol_end.y * GamePanel.TILE_SIZE;
+        room.getMonsters().add(enemy);
+        //TODO
+        return room;
+    }
+
+    public static Map arkin_enemy_room(Point patrol_start, Point patrol_end, int dim_x, int dim_y){
+        var room = generic_room(dim_x, dim_y);
+        var tiles = room.getTiles();
+        for(var i = patrol_start.x; i <= patrol_end.x; i++){
+            tiles.put(new Point(i, patrol_start.y), new Tile(1));
+        }
+        for(var i = patrol_start.x; i <= patrol_end.x; i++){
+            tiles.put(new Point(i, patrol_end.y), new Tile(1));
+        }
+        for(var j = patrol_start.y; j <= patrol_end.y; j++){
+            tiles.put(new Point(patrol_start.x, j), new Tile(1));
+        }
+        for(var j = patrol_start.y; j <= patrol_end.y; j++){
+            tiles.put(new Point(patrol_end.x, j), new Tile(1));
+        }
+
+        var enemy = Monster.skeleton();
+        enemy.world_x = patrol_start.x * GamePanel.TILE_SIZE;
+        enemy.world_y = patrol_start.y * GamePanel.TILE_SIZE;
+        var enemy2 = gen_range(2) == 0 ? Monster.turret() : Monster.ghost();
+        enemy2.world_x = patrol_end.x * GamePanel.TILE_SIZE;
+        enemy2.world_y = patrol_end.y * GamePanel.TILE_SIZE;
+        Monster[] array = {Monster.skeleton(), enemy2};
+        for(var i = 0; i < array.length; i++){
+            var enem = array[i];
+            enem.patrol_start.x = patrol_start.x * GamePanel.TILE_SIZE;
+            enem.patrol_end.x = patrol_end.x * GamePanel.TILE_SIZE;
+            enem.patrol_start.y = patrol_start.y * GamePanel.TILE_SIZE;
+            enem.patrol_end.y = patrol_end.y * GamePanel.TILE_SIZE;
+            room.getMonsters().add(enem);
         }
         //TODO
         return room;
@@ -226,9 +269,45 @@ final class MapGenerator {
         return room;
     }
 
-    // public static Map one(){
-    //     //TODO
-    // }
+    public static Map one(){
+        Map map = MapGenerator.generic_room(15, 15);
+        map.setPlayer_spawn(new Point(10, 10));
+        // int counterOfY =0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                var generic_room = MapGenerator.arkin_enemy_room(new Point(7, 7), new Point(10, 10), 15, 15);
+                map.direct_branch(generic_room, new Point(j * 25, i * 25));
+                var generic_hor_corridor = MapGenerator.standard_corridor(10, true, 3);
+                map.direct_branch(generic_hor_corridor, new Point(15 + j * 25, i * 15 + 10));
+                var generic_ver_corridor = MapGenerator.standard_corridor(10, false, 3);
+                map.direct_branch(generic_ver_corridor, new Point(i * 15 + 10, j * 25 + 15));
+                // var ghost = Monster.skeleton();
+                // ghost.world_x = (5 + 25 * j) * GamePanel.TILE_SIZE;
+                // ghost.world_y = 5 + i * 25 * GamePanel.TILE_SIZE;
+                // map.getMonsters().add(ghost);
+            }
+        }
+        var maze = MapGenerator.maze();
+        // maze.rebase_y();
+        // map.branch(maze, new Point(-20, 10));
+
+        map.rebase_origin();
+
+        map.getObjects().add(Object.coin(5 * GamePanel.TILE_SIZE, 8 * GamePanel.TILE_SIZE));
+        var knight = Monster.knight();
+        knight.world_x = 10 * GamePanel.TILE_SIZE;
+        knight.world_y = 9 * GamePanel.TILE_SIZE;
+
+        map.getMonsters().add(knight);
+
+        map.rebase_origin();
+
+        map = maze();
+
+        map.setPlayer_spawn(new Point(6, 5));
+
+        return map;
+    }
 
     // public static Map two(){
     //     //TODO
@@ -239,8 +318,40 @@ final class MapGenerator {
     // }
 
     public static Map maze(){
+        var map = Map.new_map();
+        var tiles = map.getTiles();
+        try {
+            var scanner = new Scanner(new File("res/mazeTwo.txt"));
+            int x = 0;
+            int y = 0;
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+
+                String[] parts = line.split(" ");
+                
+                for (String part : parts) {
+                    var num = Integer.parseInt(part);
+                    var p = new Point(x, y);
+                    if(num >= 3 && num != 12){
+                        tiles.put(p, Tile.with_collision(num));
+                    }
+                    else {
+                        tiles.put(p, new Tile(num));
+                    }
+                    x += 1;
+                }
+                x = 0;
+                y += 1;
+            }
+
+            scanner.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //TODO
-        return Map.new_map();
+        return map;
     }
 
 
@@ -263,6 +374,7 @@ final class MapGenerator {
         monsters.add(boss);
         // var boss = Monster.knight();
         // monsters.add(boss);
+
 
         var objects = map.getObjects();
         var plate = Object.metal_plate(32*10, 32*10);

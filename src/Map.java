@@ -68,6 +68,7 @@ public class Map {
 
     //ETC.
 
+    /** Moves the map by a given Point distance in Tile lengths and makes a clone. */
     public static Map translate(Map map, Point by){
         var translated = new_map();
 
@@ -79,14 +80,23 @@ public class Map {
         map.objects.forEach((obj) -> {
             obj.world_x += by.x * GamePanel.TILE_SIZE;
             obj.world_y += by.y * GamePanel.TILE_SIZE;
+            translated.objects.add(obj);
         });
 
         map.monsters.forEach((mon) -> {
             mon.world_x += by.x * GamePanel.TILE_SIZE;
             mon.world_y += by.y * GamePanel.TILE_SIZE;
+
+            mon.patrol_start.x += by.x * GamePanel.TILE_SIZE;
+            mon.patrol_start.y += by.y * GamePanel.TILE_SIZE;
+            mon.patrol_end.x += by.x * GamePanel.TILE_SIZE;
+            mon.patrol_end.y += by.y * GamePanel.TILE_SIZE;
+            
+            translated.monsters.add(mon);
         });
 
         map.player_spawn.translate(by.x, by.y);
+        translated.player_spawn = map.player_spawn;
 
         return translated;
     }
@@ -118,6 +128,12 @@ public class Map {
     public Map branch(Map branch, Point cut){
         var appendable_branch = Map.translate(branch, cut);
         this.boolean_layer(appendable_branch);
+        return this;
+    }
+
+    public Map direct_branch(Map branch, Point cut){
+        var appendable_branch = Map.translate(branch, cut);
+        this.layer(appendable_branch);
         return this;
     }
 
@@ -246,6 +262,11 @@ public class Map {
             var mon = monsters.get(i);
             mon.world_x += x * GamePanel.TILE_SIZE;
             mon.world_y += y * GamePanel.TILE_SIZE;
+
+            mon.patrol_start.x += x * GamePanel.TILE_SIZE;
+            mon.patrol_start.y += y * GamePanel.TILE_SIZE;
+            mon.patrol_end.x += x * GamePanel.TILE_SIZE;
+            mon.patrol_end.y += y * GamePanel.TILE_SIZE;
         }
         player_spawn.x += x;
         player_spawn.y += y;
