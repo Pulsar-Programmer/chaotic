@@ -185,16 +185,14 @@ public class Map {
     /** Branches the map at a certain location, allowing one to chain map creating operations effectively. 
      * This is a combination of the translate and boolean layer function.
     */
-    public Map branch(Map branch, Point cut){
+    public void branch(Map branch, Point cut){
         var appendable_branch = Map.translate(branch, cut);
         this.boolean_layer(appendable_branch);
-        return this;
     }
 
-    public Map direct_branch(Map branch, Point cut){
+    public void direct_branch(Map branch, Point cut){
         var appendable_branch = Map.translate(branch, cut);
         this.layer(appendable_branch);
-        return this;
     }
 
     /** Moves the map such that, when drawn, it expands in the regular (bottom-right) quadrant. The drawing point can be thought of being moved to the top left of the map. */
@@ -285,39 +283,33 @@ public class Map {
         translate_map(-max_x, -max_y);
     }
 
-    public Map branch_up(Map branch, Point cut){
+    public void branch_up(Map branch, Point cut){
         branch.rebase_y();
-        var branched = branch.branch(branch, cut);
-        branched.five_stitch(Entity.UP, cut);
-        return branched;
+        branch.branch(branch, cut);
+        five_stitch(Entity.UP, (Point)cut.clone());
     }
-    public Map branch_down(Map branch, Point cut){
-        var branched = branch.branch(branch, cut);
-        branched.five_stitch(Entity.DOWN, cut);
-        return branched;
+    public void branch_down(Map branch, Point cut){
+        branch.branch(branch, cut);
+        five_stitch(Entity.DOWN, cut);
     }
-    public Map branch_down_checked(Map branch, Point cut){
+    public void branch_down_checked(Map branch, Point cut){
         branch.rebase_origin();
-        var branched = branch.branch(branch, cut);
-        branched.five_stitch(Entity.DOWN, cut);
-        return branched;
+        branch.branch(branch, cut);
+        five_stitch(Entity.DOWN, cut);
     }
-    public Map branch_left(Map branch, Point cut){
+    public void branch_left(Map branch, Point cut){
         branch.rebase_x();
-        var branched = branch.branch(branch, cut);
-        branched.five_stitch(Entity.LEFT, cut);
-        return branched;
+        branch.branch(branch, cut);
+        five_stitch(Entity.LEFT, cut);
     }
-    public Map branch_right(Map branch, Point cut){
-        var branched = branch.branch(branch, cut);
-        branched.five_stitch(Entity.RIGHT, cut);
-        return branched;
+    public void branch_right(Map branch, Point cut){
+        branch.branch(branch, cut);
+        five_stitch(Entity.RIGHT, (Point)cut.clone());
     }
-    public Map branch_right_checked(Map branch, Point cut){
+    public void branch_right_checked(Map branch, Point cut){
         branch.rebase_origin();
-        var branched = branch.branch(branch, cut);
-        branched.five_stitch(Entity.RIGHT, cut);
-        return branched;
+        branch.branch(branch, cut);
+        five_stitch(Entity.RIGHT, cut);
     }
 
     public void five_stitch(int direction, Point loc){

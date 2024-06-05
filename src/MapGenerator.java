@@ -155,50 +155,105 @@ final class MapGenerator {
         return room;
     }
 
-    public static Map random_puzzle_room(){
+    public static Map random_puzzle_room(int minigame_affiliation, Object door){
+        var tiny_map = Map.new_map();
+
+        tiny_map.getTiles().put(new Point(0, 0), Tile.with_collision(10));
+        tiny_map.getTiles().put(new Point(1, 0), Tile.with_collision(6));
+        tiny_map.getTiles().put(new Point(2, 0), Tile.with_collision(9));
+        tiny_map.getTiles().put(new Point(0, 1), Tile.with_collision(15));
+        tiny_map.getTiles().put(new Point(1, 1), new Tile(0));
+        tiny_map.getTiles().put(new Point(2, 1), Tile.with_collision(16));
+        door.world_x = GamePanel.TILE_SIZE;
+        door.world_y = 0;
+        door.minigame_affiliation = minigame_affiliation;
+        // door.teleporter = Optional.of(new Point(10, 10));
+        tiny_map.getObjects().add(door);
+
         var map = MapGenerator.puzzle_room(12, 12);
+        map.direct_branch(tiny_map, new Point(5, -1));
 
         var amt_minigames = gen_range(4) + 1;
-
+        
         ArrayList<Integer> choices = new ArrayList<Integer>();
         choices.add(1); choices.add(2); choices.add(3); choices.add(4);
         for(var i = 0; i < amt_minigames; i++){
             choices.remove(gen_range(choices.size()));
         }
         if(!choices.contains(1)){
-            map.layer(toll_puzzle());
+            map.layer(toll_puzzle(minigame_affiliation));
         }
         var plate_chosen = !choices.contains(2);
         if(plate_chosen){
-            map.layer(rock_puzzle());
+            map.layer(rock_puzzle(minigame_affiliation));
         }
         if(!choices.contains(3)){
-            map.layer(key_puzzle());
+            System.out.println("Key!");
+            map.branch(key_puzzle(minigame_affiliation), new Point(12, 6));
+            map.five_stitch(Player.RIGHT, new Point(12, 6));
         }
         if(!choices.contains(4)){
-            map.layer(electric_puzzle(!plate_chosen));
+            map.layer(electric_puzzle(minigame_affiliation, !plate_chosen));
         }
         return map;
     }
 
-    public static Map toll_puzzle(){
+    public static Map toll_puzzle(int ma){
         var map = Map.new_map();
-        // map.getObjects().add(Object.)
+        var toll = Object.toll(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 3, 1);
+        toll.minigame_affiliation = ma;
+        map.getObjects().add(toll);
         return map;
     }
-    public static Map rock_puzzle(){
+    public static Map rock_puzzle(int ma){
         var map = Map.new_map();
+        var plate = Object.metal_plate(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 4);
+        var plate_2 = Object.metal_plate(GamePanel.TILE_SIZE * 8, GamePanel.TILE_SIZE * 7);
+        var rock = Object.rock(GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE * 5);
+        var rock_2 = Object.rock(GamePanel.TILE_SIZE * 5, GamePanel.TILE_SIZE * 8);
+        plate.minigame_affiliation = ma;
+        plate_2.minigame_affiliation = ma;
+        map.getObjects().add(plate);
+        map.getObjects().add(plate_2);
+        map.getObjects().add(rock);
+        map.getObjects().add(rock_2);
         return map;
     }
-    public static Map key_puzzle(){
-        var map = Map.new_map();
-        return map;
+    public static Map key_puzzle(int ma){
+
+        var corridor = MapGenerator.standard_corridor(5, true, ma);
+
+        corridor.branch(MapGenerator.maze(), new Point(6, 0));
+        corridor.five_stitch(Player.RIGHT, new Point(6, 0));
+        
+        var key = Object.key(GamePanel.TILE_SIZE * 24, GamePanel.TILE_SIZE * 14);
+        key.minigame_affiliation = ma;
+        corridor.getObjects().add(key);
+
+        corridor.rebase_origin();
+        
+        return corridor;
     }
-    public static Map electric_puzzle(boolean with_chimer){
+    public static Map electric_puzzle(int ma, boolean with_chimer){
         var map = Map.new_map();
         if(with_chimer){
-
+            var chimer = Object.chimer(GamePanel.TILE_SIZE * 8, GamePanel.TILE_SIZE * 7);
+            chimer.minigame_affiliation = ma;
+            map.getObjects().add(chimer);
         }
+        var immovable_wire = Object.wire(GamePanel.TILE_SIZE * 7, GamePanel.TILE_SIZE/2, true);
+        immovable_wire.minigame_affiliation = ma;
+        map.getObjects().add(immovable_wire);
+        for(var i = 0; i < 3; i++){
+            var object = Object.wire(GamePanel.TILE_SIZE * (3 + 2 * i), GamePanel.TILE_SIZE * (5 + 3 * i), true);
+            object.movable = true;
+            object.minigame_affiliation = ma;
+            map.getObjects().add(object);
+        }
+        var object = Object.wire(GamePanel.TILE_SIZE * (3 + 2 * -1), GamePanel.TILE_SIZE * (5 + 3 * -1), false);
+        object.movable = true;
+        object.minigame_affiliation = ma;
+        map.getObjects().add(object);
         return map;
     }
     
