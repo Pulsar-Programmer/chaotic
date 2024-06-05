@@ -325,7 +325,7 @@ final class MapGenerator {
         var map = Map.new_map();
         var tiles = map.getTiles();
         try {
-            var scanner = new Scanner(new File("res/mazeTwo.txt"));
+            var scanner = new Scanner(new File(gen_range(2) == 0 ? "res/mazeTwo.txt" : "res/maze.txt"));
             int x = 0;
             int y = 0;
 
