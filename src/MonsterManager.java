@@ -103,8 +103,14 @@ public class MonsterManager {
                 world_y + GamePanel.TILE_SIZE > gp.player.world_y - gp.player.screen_y &&
                 world_y - GamePanel.TILE_SIZE < gp.player.world_y + gp.player.screen_y
             ){
-                g2d.drawImage(sprite, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+                if(monsta.name.equals("Boss")){
+                    g2d.drawImage(sprite, screen_x, screen_y, GamePanel.TILE_SIZE*4, GamePanel.TILE_SIZE*4, null);
+                } else {
+                    g2d.drawImage(sprite, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
+                }
+                
             }
+        
             
 
 

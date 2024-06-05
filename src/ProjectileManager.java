@@ -87,7 +87,7 @@ public class ProjectileManager {
 
     public void draw(Graphics2D g2d, GamePanel gp){
         for(var elem : projectiles){
-            var sprite = projectile_sprites.get(elem.sprite).get(elem.direction * elem.maxSpriteNum + elem.walking.sprite_num);
+            var sprite = projectile_sprites.get(elem.sprite).get(elem.direction * elem.walking.max_sprite_num + elem.walking.sprite_num);
             gp.screen_draw(sprite, elem.world_x, elem.world_y, g2d);
         }
     }

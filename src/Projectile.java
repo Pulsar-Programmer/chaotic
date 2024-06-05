@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class Projectile extends Entity implements Collider {
     String name;
     int sprite;
-    int maxSpriteNum = 2;
     boolean origin_player;
     
     public Projectile(){
@@ -42,7 +41,7 @@ public class Projectile extends Entity implements Collider {
         var ball = new Projectile();
         ball.name = "Knight";
         ball.sprite = 4;
-        ball.maxSpriteNum = 3;
+        ball.walking.max_sprite_num = 3;
         ball.world_x = world_x;
         ball.world_y = world_y;
         ball.direction = direction;
@@ -63,7 +62,7 @@ public class Projectile extends Entity implements Collider {
         var ball = new Projectile();
         ball.name = "Power Magic";
         ball.sprite = 3;
-        ball.maxSpriteNum = 4;
+        ball.walking.max_sprite_num = 4;
         ball.world_x = world_x;
         ball.world_y = world_y;
         ball.direction = direction;
@@ -74,7 +73,7 @@ public class Projectile extends Entity implements Collider {
         var ball = new Projectile();
         ball.name = "Arrow";
         ball.sprite = 5;
-        ball.maxSpriteNum = 1;
+        ball.walking.max_sprite_num = 1;
         ball.world_x = world_x;
         ball.world_y = world_y;
         ball.direction = direction;
@@ -85,7 +84,7 @@ public class Projectile extends Entity implements Collider {
         var ball = new Projectile();
         ball.name = "Power Arrow";
         ball.sprite = 6;
-        ball.maxSpriteNum = 3;
+        ball.walking.max_sprite_num = 3;
         ball.world_x = world_x;
         ball.world_y = world_y;
         ball.direction = direction;
@@ -139,7 +138,7 @@ public class Projectile extends Entity implements Collider {
         walking.frame_counter += 1;
         if(walking.frame_counter > 10){
             walking.sprite_num += 1;
-            walking.sprite_num %= (maxSpriteNum);
+            walking.sprite_num %= (walking.max_sprite_num);
             walking.frame_counter = 0;
         }
     }
