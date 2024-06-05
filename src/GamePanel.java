@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
         // tiles = MapGenerator.procedure().getTiles();
         var door = Object.door(0, 0);
         door.teleporter = Optional.of(new Point(10, 10));
-        var map = MapGenerator.generate();
+        var map = MapGenerator.one();
         // var map = MapGenerator.random_puzzle_room(1, door);
         // var map = MapGenerator.key_puzzle(1);
         // var map = MapGenerator.sample_map();
@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
         // map.layer(MapGenerator.boss_room(10, 10, 0));
         // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
         // map = MapGenerator.generic_room(10, 10);
-        map.setPlayer_spawn(new Point(5, 5));
+        map.setPlayer_spawn(new Point(6, 5));
         maps[0] = map;
         load_map(0);
     }
@@ -109,7 +109,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-
+      
         // sounds.sweep();
 
         if(gameState == PLAY){
@@ -121,7 +121,9 @@ public class GamePanel extends JPanel implements Runnable {
         else if(gameState == PAUSE){
             
         } else if (gameState == END){
-        
+       
+
+
         }
         else if(gameState==DEATH){
             

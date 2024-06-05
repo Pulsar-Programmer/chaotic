@@ -86,7 +86,7 @@ public class Monster extends Entity implements Collider {
         mon.sprite = 1;
         mon.speed = 3;
         mon.solidArea = new Rectangle(0,0,GamePanel.TILE_SIZE*4,GamePanel.TILE_SIZE*4);
-        mon.maxHealth = 100;
+        mon.maxHealth = 1;
         mon.health = mon.maxHealth;
         return mon;
     }

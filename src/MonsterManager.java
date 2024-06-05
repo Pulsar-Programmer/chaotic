@@ -68,6 +68,9 @@ public class MonsterManager {
         for(var i = 0; i < monsters.size(); i++){
             monsters.get(i).update(gp);
             if(!monsters.get(i).alive){
+                if(monsters.get(i).name.equals("Boss")){
+                    gp.gameState=GamePanel.END;
+                }
                 var dead = monsters.remove(i);
                 if(MapGenerator.gen_range(10) >= 5){
                     gp.objectManager.objects.add(Object.heart(dead.world_x, dead.world_y, dead.offense/2 + 1));
