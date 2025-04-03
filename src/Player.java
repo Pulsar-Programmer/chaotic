@@ -56,6 +56,7 @@ public class Player extends Entity implements Collider {
         attackArea.height = 60;
 
         walking = new Animation();
+        // maxSpeed = 100;
 
         world_x = 100;
         world_y = 100;

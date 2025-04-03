@@ -567,11 +567,11 @@ final class MapGenerator {
 
     public static Map generate(){
         var map = Map.new_map();
-     int x =0;
-     int y=0;
+        int x =0;
+        int y=0;
         map.setPlayer_spawn(new Point(20, 20));
         int[] move = {Player.RIGHT, Player.DOWN};
-        for(var i = 0; i < 20; i++){
+        for(var i = 0; i < 5; i++){
             var to_move = move[gen_range(2)];
 
             Map room = Map.new_map();
@@ -587,33 +587,34 @@ final class MapGenerator {
             } else {
                 room = boss_room(15, 15);
                 if(to_move == Player.RIGHT){
-                    map.rebase_x();
                     map.branch(room, new Point(0, 0));
                 } else{
-                    map.rebase_y();
                     map.branch(room, new Point(0, 0));
                 }
                 break;
             }
             if(to_move == Player.RIGHT){
-                map.rebase_x();
                 map.branch(room, new Point(0, 0));
                 // x=15
+                System.out.println("Here!");
+                map.rebase_x();
                 var corridor = MapGenerator.standard_corridor(10, true, 3);
-                map.branch(corridor, new Point(15, 5));
+                map.branch(corridor, new Point(0, 5));
+                map.five_stitch(Player.UP, new Point(0, 5));
+                map.rebase_x();
             } else{
-                map.rebase_y();
                 map.branch(room, new Point(0, 0));
-
-                var corridor = MapGenerator.standard_corridor(10, true, 3);
+                System.out.println("here!");
+                map.rebase_y();
+                var corridor = MapGenerator.standard_corridor(10, false, 3);
                 map.branch(corridor, new Point(5, 0));
+                map.five_stitch(Player.DOWN, new Point(5, 0));
+                map.rebase_y();
             }
         }
 
-
-
+        map.rebase_origin();
         
-
         
         return map;
     }
