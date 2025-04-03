@@ -1,11 +1,11 @@
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import java.awt.Point;
 
 public class TileManager {
     ArrayList<BufferedImage> tile_sprites;

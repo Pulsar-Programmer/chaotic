@@ -1,7 +1,6 @@
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 public class Monster extends Entity implements Collider {
 
@@ -14,7 +13,11 @@ public class Monster extends Entity implements Collider {
     public int waiting = 0;
     public boolean is_waiting = false;
     // public
-    // public int behavior = 0;
+    // public int behavior = 0;\
+
+    public EnemyChoice choice;
+
+    public long lastCall;
 
     public boolean hp_bar_on = false;
     public int hp_counter = 0;
@@ -29,6 +32,9 @@ public class Monster extends Entity implements Collider {
         sprite = 0;
         name = "";
         walking = new Animation();
+        choice = new EnemyChoice();
+
+        lastCall = System.currentTimeMillis();
     }
 
     public static Monster ghost() {
@@ -135,6 +141,11 @@ public class Monster extends Entity implements Collider {
     }
 
     public void update(GamePanel gp) {
+        if(System.currentTimeMillis() - lastCall > 1000) {
+            choice.periodic(choice);
+            lastCall = System.currentTimeMillis();
+        }
+
         if (dying)
             return;
         vel_x = 0;

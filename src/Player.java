@@ -469,7 +469,7 @@ public class Player extends Entity implements Collider {
 
         var ms = CollisionChecker.check_intersections(this, gp.monsterManager.monsters);
         if(!ms.isEmpty()){
-            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense, class_type == HEALER);
+            gp.monsterManager.monsters.get(ms.get(0)).damage_monster(direction, offense, class_type == HEALER);
         }
 
         world_x = current_world_x;

@@ -1,6 +1,6 @@
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.awt.Point;
 
 public class Map {
     
