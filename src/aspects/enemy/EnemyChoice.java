@@ -24,7 +24,7 @@ public class EnemyChoice implements Environment {
 
 
     /**
-     * Returns outputs from population of neurons
+     * Returns outputs from population of neurons, outputs[0] == attacking (round for true or false), outputs[1] == speed, outputs[2] == direction
      */
     public float[] evaluateFitness(ArrayList<Genome> population, GamePanel gp) {
         float outputs[] = {0, 0, 0};
@@ -67,6 +67,10 @@ public class EnemyChoice implements Environment {
                     direction = Entity.RIGHT;
                 } else if (x_dist < 0) {
                     direction = Entity.LEFT;
+                }
+
+                if(gp.player.attacking) {
+                    speed = 1;
                 }
 
                 expected = new float[] { attacking, speed, direction };
