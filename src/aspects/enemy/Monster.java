@@ -109,7 +109,7 @@ public class Monster extends Entity implements Collider {
         var mon = new Monster(player);
         mon.name = "Learner";
         mon.sprite = 2;
-        mon.speed = 3;
+        mon.speed = 6;
         mon.maxHealth = 10;
         mon.health = mon.maxHealth;
         return mon;
@@ -205,9 +205,43 @@ public class Monster extends Entity implements Collider {
             patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 0);
         }
         if(name.equals("Learner")){
+            var outputs = new float[]{0f, 0f, 0f};
             if(System.currentTimeMillis() - lastCall > 1000) {
-                choice.periodic(choice, gp); // CATCH RETURNED FLOAT ARRAY WITH OUTPUTS FROM NEAT NETWORK
+                outputs = choice.periodic(choice, gp); // CATCH RETURNED FLOAT ARRAY WITH OUTPUTS FROM NEAT NETWORK
                 lastCall = System.currentTimeMillis();
+            }
+
+            // var p1 = new Point(gp.player.world_x, gp.player.world_y);
+            // var p2 = new Point(world_x, world_y);
+            // if (p1.distance(p2) <= GamePanel.TILE_SIZE * 10) {
+            //     var vel = new Point(p2.x - p1.x, p2.y - p1.y);
+
+            // }
+            
+            var is_attacking = Math.round(outputs[0]) == 0 ? false : true;
+            shot_counter += 1;
+            if(shot_counter >= 40 && is_attacking){
+                shoot_projectile(gp);
+                shot_counter = 0;
+            }
+
+            var speed = ((int)outputs[1]);
+            // this.speed = speed;
+            this.speed = 6;
+
+            var direction = Math.min(Math.round(outputs[2]), 3);
+            this.direction = direction;
+            if(direction == UP){
+                vel_y += speed;
+            }
+            if(direction == DOWN){
+                vel_y -= speed;
+            }
+            if(direction == LEFT){
+                vel_x -= speed;
+            }
+            if(direction == RIGHT){
+                vel_x += speed;
             }
         }
         var up = gp.collisionChecker.checkUp(this);

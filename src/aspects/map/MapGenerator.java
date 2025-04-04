@@ -634,7 +634,10 @@ public class MapGenerator {
         // var map = random_puzzle_room(0);
         // map.setPlayer_spawn(new Point(8, 8));
         var map = MapGenerator.generic_room(20, 20);
-        map.getMonsters().add(Monster.learner(player));
+        var learner = Monster.learner(player);
+        learner.world_x += 100;
+        learner.world_y += 100;
+        map.getMonsters().add(learner);
         map.setPlayer_spawn(new Point(5, 5));
         return map;
     }

@@ -50,14 +50,13 @@ public class EnemyChoice implements Environment {
 
             outputs = gene.evaluateNetwork(inputs);
 
+            System.out.println("Outputs: " + Arrays.toString(outputs));
+
             float expected[] = { 0, 0, 0 };
 
             if (Math.hypot(gp.player.world_x - monster.world_x, gp.player.world_y - monster.world_y) < 600) {
                 float x_dist = gp.player.world_x - monster.world_x;
                 float y_dist = gp.player.world_y - monster.world_y;
-
-                System.out.println("y_dist: " + y_dist);
-                System.out.println("x_dist: " + x_dist);
 
                 int speed = 4;
                 int direction = 0;
