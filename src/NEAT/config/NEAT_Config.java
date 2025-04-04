@@ -4,8 +4,10 @@ package NEAT.config;
  * Created by vishnughosh on 01/03/17.
  */
 public class NEAT_Config {
-    public static final int INPUTS = 2;
-    public static final int OUTPUTS = 1;
+    public static final int INPUTS = 21;
+    public static final int OUTPUTS = 3;
+    // public static final int INPUTS = 2;
+    // public static final int OUTPUTS = 1;
     public static final int HIDDEN_NODES = 1000000;
     public static final int POPULATION = 300;
 

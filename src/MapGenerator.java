@@ -289,7 +289,7 @@ final class MapGenerator {
         return room;
     }
 
-    public static Map arkin_enemy_room(Point patrol_start, Point patrol_end, int dim_x, int dim_y) {
+    public static Map arkin_enemy_room(Point patrol_start, Point patrol_end, int dim_x, int dim_y, Player player) {
         var room = generic_room(dim_x, dim_y);
         var tiles = room.getTiles();
         for (var i = patrol_start.x; i <= patrol_end.x; i++) {
@@ -305,13 +305,13 @@ final class MapGenerator {
             tiles.put(new Point(patrol_end.x, j), new Tile(1));
         }
 
-        var enemy = Monster.skeleton();
+        var enemy = Monster.skeleton(player);
         enemy.world_x = patrol_start.x * GamePanel.TILE_SIZE;
         enemy.world_y = patrol_start.y * GamePanel.TILE_SIZE;
-        var enemy2 = gen_range(2) == 0 ? Monster.turret() : Monster.ghost();
+        var enemy2 = gen_range(2) == 0 ? Monster.turret(player) : Monster.ghost(player);
         enemy2.world_x = patrol_end.x * GamePanel.TILE_SIZE;
         enemy2.world_y = patrol_end.y * GamePanel.TILE_SIZE;
-        Monster[] array = { Monster.skeleton(), enemy2 };
+        Monster[] array = { Monster.skeleton(player), enemy2 };
         for (var i = 0; i < array.length; i++) {
             var enem = array[i];
             enem.patrol_start.x = patrol_start.x * GamePanel.TILE_SIZE;
@@ -323,7 +323,7 @@ final class MapGenerator {
         return room;
     }
 
-    public static Map boss_room(int dim_x, int dim_y) {
+    public static Map boss_room(int dim_x, int dim_y, Player player) {
         var room = generic_room(dim_x, dim_y);
         var tiles = room.getTiles();
         for (var i = 1; i < dim_x; i++) {
@@ -339,7 +339,7 @@ final class MapGenerator {
                 tiles.put(new Point(i, j), new Tile(1));
             }
         }
-        var monsta = gen_range(2) == 1 ? Monster.knight() : Monster.boss();
+        var monsta = gen_range(2) == 1 ? Monster.knight(player) : Monster.boss(player);
         monsta.world_x = GamePanel.TILE_SIZE * dim_x / 2;
         monsta.world_y = GamePanel.TILE_SIZE * 2;
         room.getMonsters().add(monsta);
@@ -489,16 +489,16 @@ final class MapGenerator {
         return (int) (Math.random() * (high - low)) + low;
     }
 
-    public static Map sample_map() {
+    public static Map sample_map(Player player) {
         var map = Map.new_map();
         var monsters = map.getMonsters();
-        monsters.add(Monster.ghost());
-        monsters.add(Monster.turret());
-        var othermonsta = Monster.skeleton();
+        monsters.add(Monster.ghost(player));
+        monsters.add(Monster.turret(player));
+        var othermonsta = Monster.skeleton(player);
         monsters.add(othermonsta);
-        var boss = Monster.boss();
+        var boss = Monster.boss(player);
         monsters.add(boss);
-        var man = Monster.knight();
+        var man = Monster.knight(player);
         monsters.add(man);
 
         var objects = map.getObjects();
@@ -570,7 +570,7 @@ final class MapGenerator {
     // monsters.add(Monster.skeleton());
     // }
 
-    public static Map generate() {
+    public static Map generate(Player player) {
         var map = Map.new_map();
         int x = 0;
         int y = 0;
@@ -584,11 +584,11 @@ final class MapGenerator {
             if (prob >= 95) {
                 room = generic_room(15, 15);
             } else if (prob >= 50) {
-                room = arkin_enemy_room(new Point(3, 3), new Point(12, 12), 15, 15);
+                room = arkin_enemy_room(new Point(3, 3), new Point(12, 12), 15, 15, player);
             } else if (prob >= 10) {
                 room = random_puzzle_room(1);
             } else {
-                room = boss_room(15, 15);
+                room = boss_room(15, 15, player);
                 if (to_move == Player.RIGHT) {
                     map.branch(room, new Point(0, 0));
                 } else {

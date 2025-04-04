@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import NEAT.Environment;
 import NEAT.Genome;
@@ -10,26 +11,46 @@ public class EnemyChoice implements Environment {
 
     Genome topGenome;
 
-    public EnemyChoice() {
+    Player player;
+    Monster monster;
+
+    public EnemyChoice(Player player, Monster monster) {
         generation = 0;
         pool = new Pool();
         pool.initializePool();
         topGenome = new Genome();
+        this.player = player;
+        this.monster = monster;
     }
 
     public void evaluateFitness(ArrayList<Genome> population) {
         for (Genome gene: population) {
             float fitness = 0;
             gene.setFitness(0);
-            for (int i = 0; i < 2; i++)
-                for (int j = 0; j < 2; j++) {
-                    float inputs[] = {i, j};
-                    float output[] = gene.evaluateNetwork(inputs);
-                    int expected = i^j;
-                    //                  System.out.println("Inputs are " + inputs[0] +" " + inputs[1] + " output " + output[0] + " Answer : " + (i ^ j));
-                    //if (output[0] == (i ^ j))
-                    fitness +=  (1 - Math.abs(expected - output[0]));
-                }
+
+            float inputs[] = {
+                player.world_x, player.world_y, 
+                player.speed, player.direction, 
+                player.special_counter, player.attacking ? 1 : 0,
+                player.health, player.defense,
+                player.offense, player.invincible ? 1 : 0,
+                player.special_attacking ? 1 : 0, player.class_type,
+                
+                monster.world_x, monster.world_y,
+                monster.speed, monster.direction,
+                monster.health, monster.defense,
+                monster.offense, monster.invincible ? 1 : 0,
+                monster.alive ? 1 : 0
+            };
+
+            // System.out.println(Arrays.toString(inputs));
+            float outputs[] = gene.evaluateNetwork(inputs);
+            float expected[] = {1, 1, 4};
+            
+            for(int i =0; i < outputs.length; i++) {
+                fitness +=  (1 - Math.abs(expected[i] - outputs[i]));
+            }
+
             fitness = fitness * fitness;
 
             gene.setFitness(fitness);
@@ -37,18 +58,27 @@ public class EnemyChoice implements Environment {
     }
     
     public void periodic(EnemyChoice choice) {
-        //pool.evaluateFitness();
         pool.evaluateFitness(choice);
         topGenome = pool.getTopGenome();
         System.out.println("TopFitness : " + topGenome.getPoints());
-//            System.out.println("Population : " + pool.getCurrentPopulation() );
         System.out.println("Generation : " + generation );
-        //           System.out.println("Total number of matches played : "+TicTacToe.matches);
-        //           pool.calculateGenomeAdjustedFitness();
 
         pool.breedNewGeneration();
         generation++;
 
-        System.out.println(topGenome.evaluateNetwork(new float[]{1,0})[0]);
+        System.out.println(Arrays.toString(topGenome.evaluateNetwork(new float[] {
+            player.world_x, player.world_y, 
+            player.speed, player.direction, 
+            player.special_counter, player.attacking ? 1 : 0,
+            player.health, player.defense,
+            player.offense, player.invincible ? 1 : 0,
+            player.special_attacking ? 1 : 0, player.class_type,
+            
+            monster.world_x, monster.world_y,
+            monster.speed, monster.direction,
+            monster.health, monster.defense,
+            monster.offense, monster.invincible ? 1 : 0,
+            monster.alive ? 1 : 0
+        })));
     }
 }

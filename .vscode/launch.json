@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "XOR",
+            "request": "launch",
+            "mainClass": "XOR",
+            "projectName": "chaotic_9ffafad8"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "chaotic_9ffafad8"
+        },
+        {
+            "type": "java",
             "name": "App",
             "request": "launch",
             "mainClass": "App",

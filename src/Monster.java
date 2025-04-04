@@ -3,7 +3,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Monster extends Entity implements Collider {
-
     public String name;
     public int sprite;
     // public int maxSpriteNum = 2;
@@ -16,6 +15,7 @@ public class Monster extends Entity implements Collider {
     // public int behavior = 0;\
 
     public EnemyChoice choice;
+    public Player player;
 
     public long lastCall;
 
@@ -26,19 +26,20 @@ public class Monster extends Entity implements Collider {
     public Point patrol_start = new Point(1, 1);
     public Point patrol_end = new Point(2, 2);
 
-    public Monster() {
+    public Monster(Player player) {
         world_x = 100;
         world_y = 100;
         sprite = 0;
         name = "";
         walking = new Animation();
-        choice = new EnemyChoice();
+        this.player = player;
+        choice = new EnemyChoice(player, this);
 
         lastCall = System.currentTimeMillis();
     }
 
-    public static Monster ghost() {
-        var mon = new Monster();
+    public static Monster ghost(Player player) {
+        var mon = new Monster(player);
         mon.name = "Ghost";
         mon.sprite = 0;
         mon.walking.max_sprite_num = 1;
@@ -49,8 +50,8 @@ public class Monster extends Entity implements Collider {
 
     }
 
-    public static Monster turret(){
-        var mon = new Monster();
+    public static Monster turret(Player player){
+        var mon = new Monster(player);
         mon.name = "Turret";
         mon.sprite = 1;
         mon.speed = 4;
@@ -60,8 +61,8 @@ public class Monster extends Entity implements Collider {
         return mon;
     }
 
-    public static Monster skeleton() {
-        var mon = new Monster();
+    public static Monster skeleton(Player player) {
+        var mon = new Monster(player);
         mon.name = "Skeleton";
         mon.sprite = 1;
         mon.speed = 4;
@@ -69,16 +70,16 @@ public class Monster extends Entity implements Collider {
         return mon;
     }
 
-    public static Monster minion(){
-        var s4 = Monster.skeleton();
+    public static Monster minion(Player player){
+        var s4 = Monster.skeleton(player);
         s4.name = "Minion";
         s4.maxHealth = 2;
         s4.health = s4.maxHealth;
         return s4;
     }
 
-    public static Monster knight() {
-        var mon = new Monster();
+    public static Monster knight(Player player) {
+        var mon = new Monster(player);
         mon.name = "Knight";
         mon.sprite = 2;
         mon.speed = 6;
@@ -86,8 +87,8 @@ public class Monster extends Entity implements Collider {
         mon.health = mon.maxHealth;
         return mon;
     }
-    public static Monster boss() {
-        var mon = new Monster();
+    public static Monster boss(Player player) {
+        var mon = new Monster(player);
         mon.name = "Boss";
         mon.sprite = 1;
         mon.speed = 3;
@@ -145,6 +146,8 @@ public class Monster extends Entity implements Collider {
             choice.periodic(choice);
             lastCall = System.currentTimeMillis();
         }
+
+        System.out.println(player.world_x);
 
         if (dying)
             return;
@@ -209,7 +212,7 @@ public class Monster extends Entity implements Collider {
             vel_x = Math.min(0, vel_x);
         }
         
-         
+        
 
         world_x += vel_x;
         world_y += vel_y;
@@ -288,7 +291,7 @@ public class Monster extends Entity implements Collider {
         // summons 4 skeletons, slight delay between each spawn
         var x = world_x + 1;
         var y = world_y + 1;
-        var s1 = Monster.minion();
+        var s1 = Monster.minion(player);
         s1.world_x = x;
         s1.world_y = y;
 
@@ -296,7 +299,7 @@ public class Monster extends Entity implements Collider {
 
         x = world_x - 1;
         y = world_y + 1;
-        var s2 = Monster.minion();
+        var s2 = Monster.minion(player);
         s2.world_x = x;
         s2.world_y = y;
 
@@ -305,7 +308,7 @@ public class Monster extends Entity implements Collider {
 
         x = world_x + 1;
         y = world_y - 1;
-        var s3 = Monster.minion();
+        var s3 = Monster.minion(player);
         s3.world_x = x;
         s3.world_y = y;
 
@@ -313,7 +316,7 @@ public class Monster extends Entity implements Collider {
 
         x = world_x - 1;
         y = world_y - 1;
-        var s4 = Monster.minion();
+        var s4 = Monster.minion(player);
         s4.world_x = x;
         s4.world_y = y;
 

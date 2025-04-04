@@ -61,9 +61,8 @@ public class GamePanel extends JPanel implements Runnable {
         // tiles = MapGenerator.procedure().getTiles();
         var door = Object.door(0, 0);
         door.teleporter = Optional.of(new Point(10, 10));
-        var map = MapGenerator.generate();
-        map.getMonsters().add(Monster.ghost());
-        System.out.println(map.getMonsters());
+        var map = MapGenerator.generate(player);
+        map.getMonsters().add(Monster.ghost(player));
         assert map.getMonsters() != null;
         // var map = MapGenerator.random_puzzle_room(1, door);
         // var map = MapGenerator.key_puzzle(1);

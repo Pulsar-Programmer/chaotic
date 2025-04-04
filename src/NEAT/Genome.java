@@ -258,7 +258,7 @@ public class Genome implements Comparable {
     }
 
     public float[] evaluateNetwork(float[] inputs) {
-        float output[] = new float[NEAT_Config.OUTPUTS];
+        float outputs[] = new float[NEAT_Config.OUTPUTS];
         generateNetwork();
 
         for (int i = 0; i < NEAT_Config.INPUTS; i++) {
@@ -281,9 +281,9 @@ public class Genome implements Comparable {
         }
 
         for (int i = 0; i < NEAT_Config.OUTPUTS; i++) {
-            output[i] = nodes.get(NEAT_Config.INPUTS + NEAT_Config.HIDDEN_NODES + i).getValue();
+            outputs[i] = nodes.get(NEAT_Config.INPUTS + NEAT_Config.HIDDEN_NODES + i).getValue();
         }
-        return output;
+        return outputs;
     }
 
     private float sigmoid(float x) {
