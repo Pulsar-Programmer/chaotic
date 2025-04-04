@@ -577,7 +577,8 @@ public class MapGenerator {
     // monsters.add(Monster.skeleton());
     // }
 
-    public static Map generate(Player player) {
+    /** Default map preset. */
+    public static Map default_generate(Player player){
         var map = Map.new_map();
         int x = 0;
         int y = 0;
@@ -626,5 +627,10 @@ public class MapGenerator {
         map.rebase_origin();
 
         return map;
+    }
+
+    /** The Map which is generated from the start. */
+    public static Map generate(Player player) {
+        return default_generate(player);
     }
 }
