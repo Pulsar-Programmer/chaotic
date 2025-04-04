@@ -1,6 +1,14 @@
+package aspects.enemy;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+
+import aspects.Animation;
+import aspects.map.MapGenerator;
+import aspects.projectile.Projectile;
+import collision.Collider;
+import main.GamePanel;
+import main.Player;
 
 public class Monster extends Entity implements Collider {
     public String name;

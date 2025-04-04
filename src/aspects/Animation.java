@@ -1,3 +1,4 @@
+package aspects;
 public class Animation {
     public int frame_counter;
     public int sprite_num;

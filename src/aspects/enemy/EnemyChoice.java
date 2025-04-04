@@ -1,9 +1,11 @@
+package aspects.enemy;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import NEAT.Environment;
 import NEAT.Genome;
 import NEAT.Pool;
+import main.Player;
 
 public class EnemyChoice implements Environment {
     int generation;

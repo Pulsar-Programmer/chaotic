@@ -1,8 +1,17 @@
+package main;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import aspects.Animation;
+import aspects.enemy.Entity;
+import aspects.enemy.Monster;
+import aspects.object.Object;
+import aspects.projectile.Projectile;
+import collision.Collider;
+import collision.CollisionChecker;
 
 public class Player extends Entity implements Collider {
     GamePanel gp;
@@ -24,8 +33,8 @@ public class Player extends Entity implements Collider {
     public int special_counter = 0;
     public int special_counter_max = 30;
 
-    double vel_x = 0;
-    double vel_y = 0;
+    public double vel_x = 0;
+    public double vel_y = 0;
 
     public int class_type = 0;
     public static final int WIZARD = 1;

@@ -1,7 +1,13 @@
+package aspects.object;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Optional;
+
+import aspects.Animation;
+import collision.Collider;
+import collision.CollisionChecker;
+import main.GamePanel;
 
 public class Object implements Collider {
     private int image;

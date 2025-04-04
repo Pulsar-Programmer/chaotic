@@ -1,5 +1,9 @@
+package collision;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import aspects.tile.Tile;
+import main.GamePanel;
 
 public class CollisionChecker {
     GamePanel gp;

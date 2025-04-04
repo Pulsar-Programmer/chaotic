@@ -1,9 +1,12 @@
+package aspects.projectile;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+
+import main.GamePanel;
 
 public class ProjectileManager {
     public ArrayList<ArrayList<BufferedImage>> projectile_sprites = new ArrayList<>();

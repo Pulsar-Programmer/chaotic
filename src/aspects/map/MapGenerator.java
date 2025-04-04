@@ -1,3 +1,4 @@
+package aspects.map;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
@@ -5,7 +6,13 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
 
-final class MapGenerator {
+import aspects.enemy.Monster;
+import aspects.object.Object;
+import aspects.tile.Tile;
+import main.GamePanel;
+import main.Player;
+
+public class MapGenerator {
 
     /** An escape room puzzle. */
     public static final int ESCAPE_ROOM = 0; // has a key and some other stuff

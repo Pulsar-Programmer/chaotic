@@ -1,3 +1,4 @@
+package aspects.enemy;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -6,6 +7,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+
+import aspects.map.MapGenerator;
+import aspects.object.Object;
+import main.GamePanel;
 
 /**
  * MonsterManager < Remember how to do doc comments in Java.

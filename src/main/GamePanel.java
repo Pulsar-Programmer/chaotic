@@ -1,3 +1,4 @@
+package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,6 +8,19 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 import javax.swing.JPanel;
+
+import aspects.GUIManager;
+import aspects.KeyHandler;
+import aspects.Sound;
+import aspects.enemy.Monster;
+import aspects.enemy.MonsterManager;
+import aspects.map.Map;
+import aspects.map.MapGenerator;
+import aspects.object.Object;
+import aspects.object.ObjectManager;
+import aspects.projectile.ProjectileManager;
+import aspects.tile.TileManager;
+import collision.CollisionChecker;
 
 public class GamePanel extends JPanel implements Runnable {
     public static final int ORIGINAL_TILE_SIZE = 16;
@@ -19,17 +33,17 @@ public class GamePanel extends JPanel implements Runnable {
     
     public final static int FPS = 60;
 
-    TileManager tileManager = new TileManager();
-    KeyHandler keyH = new KeyHandler();
-    Thread gameThread;
-    Player player = new Player(this);
-    CollisionChecker collisionChecker = new CollisionChecker(this);
-    GUIManager guiManager = new GUIManager(this);
-    ObjectManager objectManager = new ObjectManager();
-    MonsterManager monsterManager = new MonsterManager();
-    ProjectileManager projectileManager = new ProjectileManager();
-    Map[] maps = {Map.new_map(), Map.new_map(), Map.new_map()};
-    Sound sounds = new Sound();
+    public TileManager tileManager = new TileManager();
+    public KeyHandler keyH = new KeyHandler();
+    public Thread gameThread;
+    public Player player = new Player(this);
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public GUIManager guiManager = new GUIManager(this);
+    public ObjectManager objectManager = new ObjectManager();
+    public MonsterManager monsterManager = new MonsterManager();
+    public ProjectileManager projectileManager = new ProjectileManager();
+    public Map[] maps = {Map.new_map(), Map.new_map(), Map.new_map()};
+    public Sound sounds = new Sound();
     public int gameState = TITLE;
     public final static int TITLE = -1;
     public final static int PLAY = 0;

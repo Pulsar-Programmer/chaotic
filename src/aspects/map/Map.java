@@ -1,6 +1,13 @@
+package aspects.map;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import aspects.enemy.Entity;
+import aspects.enemy.Monster;
+import aspects.object.Object;
+import aspects.tile.Tile;
+import main.GamePanel;
 
 public class Map {
     

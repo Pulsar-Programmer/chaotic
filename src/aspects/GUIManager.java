@@ -1,3 +1,4 @@
+package aspects;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +8,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import main.GamePanel;
+import main.App;
+import main.Player;
 
 public class GUIManager {
 
