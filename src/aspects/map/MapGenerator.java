@@ -234,7 +234,7 @@ public class MapGenerator {
 
     public static Map key_puzzle(int ma) {
 
-        var corridor = MapGenerator.standard_corridor(5, true, ma);
+        var corridor = MapGenerator.standard_corridor(5, true, 3);
 
         corridor.branch(MapGenerator.maze(), new Point(6, 0));
         corridor.five_stitch(Player.RIGHT, new Point(6, 0));
@@ -577,7 +577,7 @@ public class MapGenerator {
     // monsters.add(Monster.skeleton());
     // }
 
-    /** Default map preset. */
+    /** Default map preset. It is supposed to generate random maps across the world.*/
     public static Map default_generate(Player player){
         var map = Map.new_map();
         int x = 0;
@@ -631,6 +631,8 @@ public class MapGenerator {
 
     /** The Map which is generated from the start. */
     public static Map generate(Player player) {
-        return default_generate(player);
+        var map = random_puzzle_room(0);
+        map.setPlayer_spawn(new Point(8, 8));
+        return map;
     }
 }
