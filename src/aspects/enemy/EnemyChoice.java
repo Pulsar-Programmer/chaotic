@@ -26,7 +26,7 @@ public class EnemyChoice implements Environment {
     /**
      * Returns outputs from population of neurons, outputs[0] == attacking (round for true or false), outputs[1] == speed, outputs[2] == direction
      */
-    public float[] evaluateFitness(ArrayList<Genome> population, GamePanel gp) {
+    public void evaluateFitness(ArrayList<Genome> population, GamePanel gp) {
         float outputs[] = {0, 0, 0};
 
         for (Genome gene : population) {
@@ -93,10 +93,9 @@ public class EnemyChoice implements Environment {
 
             gene.setFitness(fitness);
         }
-        return outputs;
     }
 
-    public float[] periodic(EnemyChoice choice, GamePanel gp) {
+    public void periodic(EnemyChoice choice, GamePanel gp) {
         pool.evaluateFitness(choice, gp);
         topGenome = pool.getTopGenome();
         System.out.println("TopFitness : " + topGenome.getPoints());
@@ -105,7 +104,7 @@ public class EnemyChoice implements Environment {
         pool.breedNewGeneration();
         generation++;
 
-        return topGenome.evaluateNetwork(new float[] {
+        System.out.println(topGenome.evaluateNetwork(new float[] {
                 gp.player.world_x, gp.player.world_y,
                 gp.player.speed, gp.player.direction,
                 gp.player.special_counter, gp.player.attacking ? 1 : 0,
@@ -118,6 +117,6 @@ public class EnemyChoice implements Environment {
                 monster.health, monster.defense,
                 monster.offense, monster.invincible ? 1 : 0,
                 monster.alive ? 1 : 0
-        });
+        }));
     }
 }

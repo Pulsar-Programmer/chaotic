@@ -10,5 +10,5 @@ import main.GamePanel;
  *
  */
 public interface Environment {
-     float[] evaluateFitness(ArrayList<Genome> population, GamePanel gp);
+     void evaluateFitness(ArrayList<Genome> population, GamePanel gp);
 }

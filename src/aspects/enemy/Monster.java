@@ -1,4 +1,5 @@
 package aspects.enemy;
+
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -58,7 +59,7 @@ public class Monster extends Entity implements Collider {
 
     }
 
-    public static Monster turret(Player player){
+    public static Monster turret(Player player) {
         var mon = new Monster(player);
         mon.name = "Turret";
         mon.sprite = 1;
@@ -78,7 +79,7 @@ public class Monster extends Entity implements Collider {
         return mon;
     }
 
-    public static Monster minion(Player player){
+    public static Monster minion(Player player) {
         var s4 = Monster.skeleton(player);
         s4.name = "Minion";
         s4.maxHealth = 2;
@@ -95,17 +96,19 @@ public class Monster extends Entity implements Collider {
         mon.health = mon.maxHealth;
         return mon;
     }
+
     public static Monster boss(Player player) {
         var mon = new Monster(player);
         mon.name = "Boss";
         mon.sprite = 1;
         mon.speed = 3;
-        mon.solidArea = new Rectangle(0,0,GamePanel.TILE_SIZE*4,GamePanel.TILE_SIZE*4);
+        mon.solidArea = new Rectangle(0, 0, GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE * 4);
         mon.maxHealth = 100;
         mon.health = mon.maxHealth;
         return mon;
     }
-    public static Monster learner(Player player){
+
+    public static Monster learner(Player player) {
         var mon = new Monster(player);
         mon.name = "Learner";
         mon.sprite = 2;
@@ -186,61 +189,77 @@ public class Monster extends Entity implements Collider {
                 patrol_behavior(patrol_start.x, patrol_start.y, patrol_end.x, patrol_end.y, 20);
             }
         }
-        if(name.equals("Boss") || name.equals("Knight")){
+        if (name.equals("Boss") || name.equals("Knight")) {
             var p1 = new Point(gp.player.world_x, gp.player.world_y);
             var p2 = new Point(world_x, world_y);
             if (p1.distance(p2) <= GamePanel.TILE_SIZE * 10) {
                 patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 2);
             }
-            if(MapGenerator.gen_range(1000) == 1){
+            if (MapGenerator.gen_range(1000) == 1) {
                 attack3(gp.monsterManager);
             }
             shot_counter += 1;
-            if(shot_counter == 40){
+            if (shot_counter == 40) {
                 shoot_projectile(gp);
                 shot_counter = 0;
             }
         }
-        if(name.equals("Minion")){
+
+        if (name.equals("Minion")) {
             patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 0);
         }
-        if(name.equals("Learner")){
-            var outputs = new float[]{0f, 0f, 0f};
-            if(System.currentTimeMillis() - lastCall > 1000) {
-                outputs = choice.periodic(choice, gp); // CATCH RETURNED FLOAT ARRAY WITH OUTPUTS FROM NEAT NETWORK
+
+        if (name.equals("Learner")) {
+            if (System.currentTimeMillis() - lastCall > 1000) {
+                choice.periodic(choice, gp);
                 lastCall = System.currentTimeMillis();
             }
+
+            float[] outputs = choice.topGenome.evaluateNetwork(new float[] {
+                gp.player.world_x, gp.player.world_y,
+                gp.player.speed, gp.player.direction,
+                gp.player.special_counter, gp.player.attacking ? 1 : 0,
+                gp.player.health, gp.player.defense,
+                gp.player.offense, gp.player.invincible ? 1 : 0,
+                gp.player.special_attacking ? 1 : 0, gp.player.class_type,
+
+                this.world_x, this.world_y,
+                this.speed, this.direction,
+                this.health, this.defense,
+                this.offense, this.invincible ? 1 : 0,
+                this.alive ? 1 : 0
+            });
 
             // var p1 = new Point(gp.player.world_x, gp.player.world_y);
             // var p2 = new Point(world_x, world_y);
             // if (p1.distance(p2) <= GamePanel.TILE_SIZE * 10) {
-            //     var vel = new Point(p2.x - p1.x, p2.y - p1.y);
+            // var vel = new Point(p2.x - p1.x, p2.y - p1.y);
 
             // }
-            
+
             var is_attacking = Math.round(outputs[0]) == 0 ? false : true;
             shot_counter += 1;
-            if(shot_counter >= 40 && is_attacking){
+            if (shot_counter >= 40 && is_attacking) {
                 shoot_projectile(gp);
                 shot_counter = 0;
             }
 
-            var speed = ((int)outputs[1]);
+            var speed = ((int) outputs[1]);
             // this.speed = speed;
             this.speed = 6;
 
             var direction = Math.min(Math.round(outputs[2]), 3);
             this.direction = direction;
-            if(direction == UP){
+            if (direction == UP) {
                 vel_y += speed;
             }
-            if(direction == DOWN){
+            if (direction == DOWN) {
                 vel_y -= speed;
             }
-            if(direction == LEFT){
+            if (direction == LEFT) {
                 vel_x -= speed;
             }
-            if(direction == RIGHT){
+            if (direction == RIGHT) {
                 vel_x += speed;
             }
         }
@@ -249,20 +268,18 @@ public class Monster extends Entity implements Collider {
         var left = gp.collisionChecker.checkLeft(this);
         var right = gp.collisionChecker.checkRight(this);
 
-        if(up){
-            vel_y =  Math.max(0, vel_y);
+        if (up) {
+            vel_y = Math.max(0, vel_y);
         }
-        if(down){
+        if (down) {
             vel_y = Math.min(0, vel_y);
         }
-        if(left){
+        if (left) {
             vel_x = Math.max(0, vel_x);
         }
-        if(right){
+        if (right) {
             vel_x = Math.min(0, vel_x);
         }
-        
-        
 
         world_x += vel_x;
         world_y += vel_y;
@@ -327,8 +344,7 @@ public class Monster extends Entity implements Collider {
             var turret = Projectile.turret(world_x, world_y, direction);
             turret.offense = offense;
             gp.projectileManager.projectiles.add(turret);
-        } else 
-        if (name.equals("Boss") || name.equals("Knight")) {
+        } else if (name.equals("Boss") || name.equals("Knight")) {
             var turret = Projectile.knight(world_x, world_y, direction);
             turret.offense = offense;
             turret.speed = 12;
@@ -355,7 +371,6 @@ public class Monster extends Entity implements Collider {
 
         monsterManager.monsters.add(s2);
 
-
         x = world_x + 1;
         y = world_y - 1;
         var s3 = Monster.minion(player);
@@ -372,7 +387,6 @@ public class Monster extends Entity implements Collider {
 
         monsterManager.monsters.add(s4);
 
-        
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
