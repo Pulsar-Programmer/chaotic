@@ -236,6 +236,8 @@ public class Monster extends Entity implements Collider {
             // var vel = new Point(p2.x - p1.x, p2.y - p1.y);
 
             // }
+
+            var is_attacking = Math.round(outputs[0]) == 0 ? false : true;
             
             var is_attacking = Math.round(outputs[0]) == 0 ? false : true;
             shot_counter += 1;
