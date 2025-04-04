@@ -1,4 +1,5 @@
 package aspects.enemy;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,59 +22,91 @@ public class EnemyChoice implements Environment {
         this.monster = monster;
     }
 
-    public void evaluateFitness(ArrayList<Genome> population, GamePanel gp) {
-        for (Genome gene: population) {
+
+    /**
+     * Returns outputs from population of neurons
+     */
+    public float[] evaluateFitness(ArrayList<Genome> population, GamePanel gp) {
+        float outputs[] = {0, 0, 0};
+
+        for (Genome gene : population) {
             float fitness = 0;
             gene.setFitness(0);
 
             float inputs[] = {
-                gp.player.world_x, gp.player.world_y, 
-                gp.player.speed, gp.player.direction, 
-                gp.player.special_counter, gp.player.attacking ? 1 : 0,
-                gp.player.health, gp.player.defense,
-                gp.player.offense, gp.player.invincible ? 1 : 0,
-                gp.player.special_attacking ? 1 : 0, gp.player.class_type,
-                
-                monster.world_x, monster.world_y,
-                monster.speed, monster.direction,
-                monster.health, monster.defense,
-                monster.offense, monster.invincible ? 1 : 0,
-                monster.alive ? 1 : 0
+                    gp.player.world_x, gp.player.world_y,
+                    gp.player.speed, gp.player.direction,
+                    gp.player.special_counter, gp.player.attacking ? 1 : 0,
+                    gp.player.health, gp.player.defense,
+                    gp.player.offense, gp.player.invincible ? 1 : 0,
+                    gp.player.special_attacking ? 1 : 0, gp.player.class_type,
+
+                    monster.world_x, monster.world_y,
+                    monster.speed, monster.direction,
+                    monster.health, monster.defense,
+                    monster.offense, monster.invincible ? 1 : 0,
+                    monster.alive ? 1 : 0
             };
-            float outputs[] = gene.evaluateNetwork(inputs);
-            float expected[] = {1, 1, 4};
-            for(int i =0; i < outputs.length; i++) {
-                fitness +=  (1 - Math.abs(expected[i] - outputs[i]));
+            outputs = gene.evaluateNetwork(inputs);
+
+            float expected[] = { 0, 0, 0 };
+
+            if (Math.hypot(gp.player.world_x - monster.world_x, gp.player.world_y - monster.world_y) < 5) {
+                float x_dist = gp.player.world_x - monster.world_x;
+                float y_dist = gp.player.world_y - monster.world_y;
+
+                int speed = 4;
+                int direction = 0;
+                int attacking = 1;
+
+                if (y_dist > 0) {
+                    direction = Entity.DOWN;
+                } else if (y_dist < 0) {
+                    direction = Entity.UP;
+                } else if (x_dist > 0) {
+                    direction = Entity.RIGHT;
+                } else if (x_dist < 0) {
+                    direction = Entity.LEFT;
+                }
+
+                expected = new float[] { attacking, speed, direction };
+            } else {
+                expected = new float[] { 0, 0, 0 };
+            }
+
+            for (int i = 0; i < outputs.length; i++) {
+                fitness += (1 - Math.abs(expected[i] - outputs[i]));
             }
 
             fitness = fitness * fitness;
 
             gene.setFitness(fitness);
         }
+        return outputs;
     }
-    
+
     public void periodic(EnemyChoice choice, GamePanel gp) {
         pool.evaluateFitness(choice, gp);
         topGenome = pool.getTopGenome();
         System.out.println("TopFitness : " + topGenome.getPoints());
-        System.out.println("Generation : " + generation );
+        System.out.println("Generation : " + generation);
 
         pool.breedNewGeneration();
         generation++;
 
         System.out.println(Arrays.toString(topGenome.evaluateNetwork(new float[] {
-            gp.player.world_x, gp.player.world_y, 
-            gp.player.speed, gp.player.direction, 
-            gp.player.special_counter, gp.player.attacking ? 1 : 0,
-            gp.player.health, gp.player.defense,
-            gp.player.offense, gp.player.invincible ? 1 : 0,
-            gp.player.special_attacking ? 1 : 0, gp.player.class_type,
-            
-            monster.world_x, monster.world_y,
-            monster.speed, monster.direction,
-            monster.health, monster.defense,
-            monster.offense, monster.invincible ? 1 : 0,
-            monster.alive ? 1 : 0
+                gp.player.world_x, gp.player.world_y,
+                gp.player.speed, gp.player.direction,
+                gp.player.special_counter, gp.player.attacking ? 1 : 0,
+                gp.player.health, gp.player.defense,
+                gp.player.offense, gp.player.invincible ? 1 : 0,
+                gp.player.special_attacking ? 1 : 0, gp.player.class_type,
+
+                monster.world_x, monster.world_y,
+                monster.speed, monster.direction,
+                monster.health, monster.defense,
+                monster.offense, monster.invincible ? 1 : 0,
+                monster.alive ? 1 : 0
         })));
     }
 }

@@ -6,7 +6,7 @@ package NEAT.config;
 public class NEAT_Config {
     public static final int INPUTS = 21;
     public static final int OUTPUTS = 3;
-    public static final int HIDDEN_NODES = 10_000_000;
+    public static final int HIDDEN_NODES = 1_000_000;
     public static final int POPULATION = 300;
 
     public static final float COMPATIBILITY_THRESHOLD = 1;

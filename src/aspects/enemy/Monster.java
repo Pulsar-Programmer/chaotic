@@ -150,10 +150,10 @@ public class Monster extends Entity implements Collider {
     }
 
     public void update(GamePanel gp) {
-        // if(System.currentTimeMillis() - lastCall > 1000) {
+        if(System.currentTimeMillis() - lastCall > 1000) {
             choice.periodic(choice, gp);
             lastCall = System.currentTimeMillis();
-        // }
+        }
 
         if (dying)
             return;
