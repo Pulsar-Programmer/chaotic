@@ -244,21 +244,26 @@ public class Monster extends Entity implements Collider {
                 shot_counter = 0;
             }
 
-            var speed = ((int) outputs[1]);
-            // this.speed = speed;
-            this.speed = 6;
+            // var speed = outputs[1];
+            var speed = 3;
+            this.speed = speed;
 
             var direction = Math.max(Math.min(Math.round(outputs[2]), 3), 0);
             this.direction = direction;
             if (direction == UP) {
-                vel_y += speed;
-            } else if(direction == DOWN){
                 vel_y -= speed;
-            } else if(direction == LEFT){
+            }
+            if (direction == DOWN) {
+                vel_y += speed;
+            }
+            if (direction == LEFT) {
                 vel_x -= speed;
-            } else if(direction == RIGHT){
+            }
+            if (direction == RIGHT) {
                 vel_x += speed;
             }
+            System.out.println(vel_x);
+            System.out.println(vel_y);
         }
         var up = gp.collisionChecker.checkUp(this);
         var down = gp.collisionChecker.checkDown(this);
