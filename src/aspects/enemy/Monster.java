@@ -236,7 +236,7 @@ public class Monster extends Entity implements Collider {
             // var vel = new Point(p2.x - p1.x, p2.y - p1.y);
 
             // }
-
+            
             var is_attacking = Math.round(outputs[0]) == 0 ? false : true;
             shot_counter += 1;
             if (shot_counter >= 40 && is_attacking) {
@@ -248,10 +248,11 @@ public class Monster extends Entity implements Collider {
             // this.speed = speed;
             this.speed = 6;
 
-            var direction = Math.min(Math.round(outputs[2]), 3);
+            var direction = Math.max(Math.min(Math.round(outputs[2]), 3), 0);
             this.direction = direction;
             if (direction == UP) {
                 vel_y += speed;
+<<<<<<< HEAD
             }
             if (direction == DOWN) {
                 vel_y -= speed;
@@ -260,6 +261,13 @@ public class Monster extends Entity implements Collider {
                 vel_x -= speed;
             }
             if (direction == RIGHT) {
+=======
+            } else if(direction == DOWN){
+                vel_y -= speed;
+            } else if(direction == LEFT){
+                vel_x -= speed;
+            } else if(direction == RIGHT){
+>>>>>>> 663a5ef (Fix Shooting)
                 vel_x += speed;
             }
         }
@@ -344,7 +352,12 @@ public class Monster extends Entity implements Collider {
             var turret = Projectile.turret(world_x, world_y, direction);
             turret.offense = offense;
             gp.projectileManager.projectiles.add(turret);
+<<<<<<< HEAD
         } else if (name.equals("Boss") || name.equals("Knight")) {
+=======
+        } else 
+        if (name.equals("Boss") || name.equals("Knight") || name.equals("Learner")) {
+>>>>>>> 663a5ef (Fix Shooting)
             var turret = Projectile.knight(world_x, world_y, direction);
             turret.offense = offense;
             turret.speed = 12;
