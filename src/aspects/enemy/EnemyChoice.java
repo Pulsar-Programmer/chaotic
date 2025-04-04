@@ -58,8 +58,8 @@ public class EnemyChoice implements Environment {
                 float x_dist = gp.player.world_x - monster.world_x;
                 float y_dist = gp.player.world_y - monster.world_y;
 
-                int speed = 4;
-                int direction = 0;
+                float speed = 1;
+                float direction = 0;
                 int attacking = 1;
 
                 if (y_dist > 0) {
@@ -75,10 +75,10 @@ public class EnemyChoice implements Environment {
                     direction = Entity.LEFT;
                 }
                 if(gp.player.attacking) {
-                    speed = 1;
+                    speed = 0.25f;
                 }
 
-                expected = new float[] { attacking, speed, direction };
+                expected = new float[] { attacking, speed, direction / 4 };
             } else {
                 expected = new float[] { 0, 0, 0 };
             }
@@ -86,7 +86,7 @@ public class EnemyChoice implements Environment {
             System.out.println("Expected: " + Arrays.toString(expected));
 
             for (int i = 0; i < outputs.length; i++) {
-                fitness += (1 - Math.abs(expected[i] - outputs[i]));
+                fitness += (2 - Math.abs(expected[i] - outputs[i]));
             }
 
             fitness = fitness * fitness;

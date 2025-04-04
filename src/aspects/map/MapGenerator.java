@@ -251,7 +251,7 @@ public class MapGenerator {
     public static Map electric_puzzle(int ma, boolean with_chimer) {
         var map = Map.new_map();
         if (with_chimer) {
-            var chimer = Object.chimer(GamePanel.TILE_SIZE * 8, GamePanel.TILE_SIZE * 7);
+            var chimer = Object.chimer(GamePanel.TILE_SIZE * 10, GamePanel.TILE_SIZE * 7);
             chimer.minigame_affiliation = ma;
             map.getObjects().add(chimer);
         }
@@ -629,10 +629,7 @@ public class MapGenerator {
         return map;
     }
 
-    /** The Map which is generated from the start. */
-    public static Map generate(Player player) {
-        // var map = random_puzzle_room(0);
-        // map.setPlayer_spawn(new Point(8, 8));
+    public static Map learners_map(Player player){
         var map = MapGenerator.generic_room(20, 20);
         var learner = Monster.learner(player);
         learner.world_x += 100;
@@ -640,5 +637,41 @@ public class MapGenerator {
         map.getMonsters().add(learner);
         map.setPlayer_spawn(new Point(5, 5));
         return map;
+    }
+
+    /** The Map which is generated from the start. */
+    public static Map generate(Player player) {
+        var learner = MapGenerator.learners_map(player);
+
+        var electric = MapGenerator.electric_puzzle(0, true);
+        var key = MapGenerator.key_puzzle(1);
+        var toll = MapGenerator.toll_puzzle(2);
+        var rock = MapGenerator.rock_puzzle(3);
+        
+        var enemy = MapGenerator.enemy_room(new Point(2, 2), new Point(8, 8), Monster.turret(player), 10, 10);
+        var arkin = MapGenerator.arkin_enemy_room(new Point(2, 2), new Point(13, 13), 15, 15, player);
+        var boss = MapGenerator.boss_room(10, 10, player);
+
+        var generic = MapGenerator.generic_room(10, 10);
+        var puzzle_room = MapGenerator.puzzle_room(20, 20);
+
+        // var maze = MapGenerator.maze();
+        
+        // electric.branch_right(key, new Point(0, 0));
+        // learner.branch_right(electric, new Point(0,0));
+        // learner.rebase_origin();
+
+        puzzle_room.layer(electric);
+        puzzle_room.layer(rock);
+        arkin.layer(toll);
+        arkin.getMonsters().addAll(enemy.getMonsters());
+        arkin.layer(electric);
+        arkin.layer(rock);
+
+        var door = Object.door(GamePanel.TILE_SIZE * 5, GamePanel.TILE_SIZE * 0 + 5);
+        // door.teleporter = Optional.of(new Point(5, 10));
+        door.tile_activated = true;
+        arkin.getObjects().add(door);
+        return arkin;
     }
 }

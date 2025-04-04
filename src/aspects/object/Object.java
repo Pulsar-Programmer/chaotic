@@ -175,9 +175,9 @@ public class Object implements Collider {
                 electric.sprite_num %= electric.max_sprite_num;
             }
         }
-        if(name.equals("")){
-
-        }
+        // if(name.equals("Toll")){
+            
+        // }
     }
 
     public void update_rock(GamePanel gp){

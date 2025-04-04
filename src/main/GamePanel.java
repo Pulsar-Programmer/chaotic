@@ -73,11 +73,18 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         var map = MapGenerator.generate(player);
+        // var tmap = aspects.map.Map.new_map();
+        // var tm = new TileManager();
+        // tm.loadMap();
+        // tmap.setTiles(tm.tiles);
         maps[0] = map;
+        maps[1] = MapGenerator.learners_map(player);
+        maps[2] = MapGenerator.puzzle_room(15, 15);
         load_map(0);
     }
 
     public void load_map(int map){
+        mapNum = map;
         Map tempMap = maps[map];
         tileManager.tiles = tempMap.getTiles();
         objectManager.objects = tempMap.getObjects();

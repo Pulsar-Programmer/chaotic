@@ -137,7 +137,7 @@ public class Player extends Entity implements Collider {
         player.health = player.maxHealth;
         player.offense = 5;
         player.defense = 5;
-        player.special_counter_max = 500;
+        player.special_counter_max = 200;
         player.class_type = WIZARD;
         return player;
     }
@@ -145,6 +145,7 @@ public class Player extends Entity implements Collider {
     public static Player knight(GamePanel gp){
         var player = new Player(gp);
         player.maxHealth = 12;
+        player.health = player.maxHealth;
         player.offense = 6;
         player.defense = 10;
         player.class_type = KNIGHT;
@@ -155,6 +156,7 @@ public class Player extends Entity implements Collider {
     public static Player archer(GamePanel gp){
         var player = new Player(gp);
         player.maxHealth = 12;
+        player.health = player.maxHealth;
         player.offense = 5;
         player.defense = 10;
         player.special_counter_max = 200;
@@ -164,7 +166,8 @@ public class Player extends Entity implements Collider {
 
     public static Player healer(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 20;
+        player.maxHealth = 30;
+        player.health = player.maxHealth;
         player.offense = 5;
         player.defense = 5;
         player.class_type = HEALER;
@@ -336,6 +339,8 @@ public class Player extends Entity implements Collider {
             if(obj.teleporter.isPresent()){
                 var p = obj.teleporter.get();
                 gp.player.teleport_player(p.x, p.y);
+            } else{
+                gp.load_map(gp.mapNum + 1);
             }
         } else
         if(obj.name.equals("Heart")){
@@ -348,6 +353,7 @@ public class Player extends Entity implements Collider {
         } else
         if(obj.name.equals("Toll") && obj.toll_amount <= coin_count){
             gp.objectManager.objects.remove(obj);
+            gp.objectManager.objects.add(Object.trophe(obj.world_x+64, obj.world_y+64));
             coin_count -= obj.toll_amount;
         } else
         if(obj.name.equals("Wire") && obj.tile_activated){

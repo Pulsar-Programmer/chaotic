@@ -26,7 +26,7 @@ public class Map {
         tiles = new HashMap<>();
         objects = new ArrayList<>();
         monsters = new ArrayList<>();
-        player_spawn = new Point(0, 0);
+        player_spawn = new Point(2, 2);
     }
 
     /** Creates a new map safely. */
@@ -318,7 +318,7 @@ public class Map {
         branch.branch(branch, cut);
         five_stitch(Entity.RIGHT, cut);
     }
-
+    
     public void five_stitch(int direction, Point loc){
         if(direction == Entity.UP){
             tiles.put(new Point(loc.x, loc.y), Tile.with_collision(15));
