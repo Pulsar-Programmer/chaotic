@@ -78,6 +78,8 @@ public class EnemyChoice implements Environment {
                 expected = new float[] { 0, 0, 0 };
             }
 
+            System.out.println("Expected: " + Arrays.toString(expected));
+
             for (int i = 0; i < outputs.length; i++) {
                 fitness += (1 - Math.abs(expected[i] - outputs[i]));
             }

@@ -105,6 +105,15 @@ public class Monster extends Entity implements Collider {
         mon.health = mon.maxHealth;
         return mon;
     }
+    public static Monster learner(Player player){
+        var mon = new Monster(player);
+        mon.name = "Learner";
+        mon.sprite = 2;
+        mon.speed = 3;
+        mon.maxHealth = 10;
+        mon.health = mon.maxHealth;
+        return mon;
+    }
 
     // we need a patrol behavior
     public void patrol_behavior(int low_x, int low_y, int high_x, int high_y, int wait_time) {
@@ -150,10 +159,7 @@ public class Monster extends Entity implements Collider {
     }
 
     public void update(GamePanel gp) {
-        if(System.currentTimeMillis() - lastCall > 1000) {
-            choice.periodic(choice, gp);
-            lastCall = System.currentTimeMillis();
-        }
+        
 
         if (dying)
             return;
@@ -199,6 +205,12 @@ public class Monster extends Entity implements Collider {
         }
         if(name.equals("Minion")){
             patrol_behavior(gp.player.world_x, gp.player.world_y, gp.player.world_x, gp.player.world_y, 0);
+        }
+        if(name.equals("Learner")){
+            if(System.currentTimeMillis() - lastCall > 1000) {
+                choice.periodic(choice, gp);
+                lastCall = System.currentTimeMillis();
+            }
         }
         var up = gp.collisionChecker.checkUp(this);
         var down = gp.collisionChecker.checkDown(this);
