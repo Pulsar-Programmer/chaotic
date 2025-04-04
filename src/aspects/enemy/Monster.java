@@ -159,8 +159,6 @@ public class Monster extends Entity implements Collider {
     }
 
     public void update(GamePanel gp) {
-        
-
         if (dying)
             return;
         vel_x = 0;
@@ -208,7 +206,7 @@ public class Monster extends Entity implements Collider {
         }
         if(name.equals("Learner")){
             if(System.currentTimeMillis() - lastCall > 1000) {
-                choice.periodic(choice, gp);
+                choice.periodic(choice, gp); // CATCH RETURNED FLOAT ARRAY WITH OUTPUTS FROM NEAT NETWORK
                 lastCall = System.currentTimeMillis();
             }
         }

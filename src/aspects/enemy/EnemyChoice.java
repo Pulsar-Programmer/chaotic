@@ -47,13 +47,17 @@ public class EnemyChoice implements Environment {
                     monster.offense, monster.invincible ? 1 : 0,
                     monster.alive ? 1 : 0
             };
+
             outputs = gene.evaluateNetwork(inputs);
 
             float expected[] = { 0, 0, 0 };
 
-            if (Math.hypot(gp.player.world_x - monster.world_x, gp.player.world_y - monster.world_y) < 5) {
+            if (Math.hypot(gp.player.world_x - monster.world_x, gp.player.world_y - monster.world_y) < 600) {
                 float x_dist = gp.player.world_x - monster.world_x;
                 float y_dist = gp.player.world_y - monster.world_y;
+
+                System.out.println("y_dist: " + y_dist);
+                System.out.println("x_dist: " + x_dist);
 
                 int speed = 4;
                 int direction = 0;
@@ -61,14 +65,16 @@ public class EnemyChoice implements Environment {
 
                 if (y_dist > 0) {
                     direction = Entity.DOWN;
-                } else if (y_dist < 0) {
+                } 
+                if (y_dist < 0) {
                     direction = Entity.UP;
-                } else if (x_dist > 0) {
+                } 
+                if (x_dist > 0) {
                     direction = Entity.RIGHT;
-                } else if (x_dist < 0) {
+                } 
+                if (x_dist < 0) {
                     direction = Entity.LEFT;
                 }
-
                 if(gp.player.attacking) {
                     speed = 1;
                 }
@@ -91,7 +97,7 @@ public class EnemyChoice implements Environment {
         return outputs;
     }
 
-    public void periodic(EnemyChoice choice, GamePanel gp) {
+    public float[] periodic(EnemyChoice choice, GamePanel gp) {
         pool.evaluateFitness(choice, gp);
         topGenome = pool.getTopGenome();
         System.out.println("TopFitness : " + topGenome.getPoints());
@@ -100,7 +106,7 @@ public class EnemyChoice implements Environment {
         pool.breedNewGeneration();
         generation++;
 
-        System.out.println(Arrays.toString(topGenome.evaluateNetwork(new float[] {
+        return topGenome.evaluateNetwork(new float[] {
                 gp.player.world_x, gp.player.world_y,
                 gp.player.speed, gp.player.direction,
                 gp.player.special_counter, gp.player.attacking ? 1 : 0,
@@ -113,6 +119,6 @@ public class EnemyChoice implements Environment {
                 monster.health, monster.defense,
                 monster.offense, monster.invincible ? 1 : 0,
                 monster.alive ? 1 : 0
-        })));
+        });
     }
 }
