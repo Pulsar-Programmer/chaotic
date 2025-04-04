@@ -41,7 +41,7 @@ public class Monster extends Entity implements Collider {
         name = "";
         walking = new Animation();
         this.player = player;
-        choice = new EnemyChoice(player, this);
+        choice = new EnemyChoice(this);
 
         lastCall = System.currentTimeMillis();
     }
@@ -150,12 +150,10 @@ public class Monster extends Entity implements Collider {
     }
 
     public void update(GamePanel gp) {
-        if(System.currentTimeMillis() - lastCall > 1000) {
-            choice.periodic(choice);
+        // if(System.currentTimeMillis() - lastCall > 1000) {
+            choice.periodic(choice, gp);
             lastCall = System.currentTimeMillis();
-        }
-
-        System.out.println("PlayerWorldX: " + player.world_x + "\n PlayerWorldXGame: " + gp.player.world_x);
+        // }
 
         if (dying)
             return;

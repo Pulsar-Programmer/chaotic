@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import NEAT.config.NEAT_Config;
+import main.GamePanel;
 
 public class Pool {
     private ArrayList<Species> species = new ArrayList<>();
@@ -64,7 +65,7 @@ public class Pool {
         rankGlobally();
     }
 
-    public void evaluateFitness(Environment environment) {
+    public void evaluateFitness(Environment environment, GamePanel gp) {
 
         ArrayList<Genome> allGenome = new ArrayList<>();
 
@@ -86,7 +87,7 @@ public class Pool {
          * }
          */
 
-        environment.evaluateFitness(allGenome);
+        environment.evaluateFitness(allGenome, gp);
         rankGlobally();
     }
 
@@ -176,7 +177,6 @@ public class Pool {
     }
 
     public ArrayList<Genome> breedNewGeneration() {
-
         calculateGenomeAdjustedFitness();
         ArrayList<Species> survived = new ArrayList<>();
 
