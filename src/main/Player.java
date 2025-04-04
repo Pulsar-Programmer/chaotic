@@ -323,23 +323,7 @@ public class Player extends Entity implements Collider {
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }
-        // if(attacking){
-        //     if(direction == UP){
-        //         g2.drawImage(image, screen_x, screen_y - GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
-        //     }
-        //     if(direction == LEFT){
-        //         g2.drawImage(image, screen_x - GamePanel.TILE_SIZE, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
-        //     }
-        //     if(direction == RIGHT){
-        //         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
-        //     }
-        //     if(direction == DOWN){
-        //         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
-        //     }
-        // }
-        // else{
-            g2.drawImage(image, screen_x, screen_y, image.getWidth() * GamePanel.SCALE, image.getHeight() * GamePanel.SCALE, null);
-        // }
+        g2.drawImage(image, screen_x, screen_y, image.getWidth() * GamePanel.SCALE, image.getHeight() * GamePanel.SCALE, null);
         
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }

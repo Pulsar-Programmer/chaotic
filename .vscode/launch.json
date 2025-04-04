@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "main.App",
+            "projectName": "chaotic_287cadf8"
+        },
+        {
+            "type": "java",
             "name": "XOR",
             "request": "launch",
             "mainClass": "XOR",

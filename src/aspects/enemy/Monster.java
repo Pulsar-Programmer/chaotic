@@ -155,7 +155,7 @@ public class Monster extends Entity implements Collider {
             lastCall = System.currentTimeMillis();
         }
 
-        System.out.println(player.world_x);
+        System.out.println("PlayerWorldX: " + player.world_x + "\n PlayerWorldXGame: " + gp.player.world_x);
 
         if (dying)
             return;
