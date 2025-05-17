@@ -1,3 +1,4 @@
+package collision;
 import java.awt.Rectangle;
 
 public interface Collider {

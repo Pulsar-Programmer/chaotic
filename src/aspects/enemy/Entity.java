@@ -1,4 +1,8 @@
+package aspects.enemy;
 import java.awt.Rectangle;
+
+import aspects.Animation;
+import main.GamePanel;
 
 public abstract class Entity {
    // public Entity linkedEntity;

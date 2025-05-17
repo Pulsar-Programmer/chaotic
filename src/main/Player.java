@@ -1,8 +1,17 @@
+package main;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import aspects.Animation;
+import aspects.enemy.Entity;
+import aspects.enemy.Monster;
+import aspects.object.Object;
+import aspects.projectile.Projectile;
+import collision.Collider;
+import collision.CollisionChecker;
 
 public class Player extends Entity implements Collider {
     GamePanel gp;
@@ -24,8 +33,8 @@ public class Player extends Entity implements Collider {
     public int special_counter = 0;
     public int special_counter_max = 30;
 
-    double vel_x = 0;
-    double vel_y = 0;
+    public double vel_x = 0;
+    public double vel_y = 0;
 
     public int class_type = 0;
     public static final int WIZARD = 1;
@@ -128,7 +137,7 @@ public class Player extends Entity implements Collider {
         player.health = player.maxHealth;
         player.offense = 5;
         player.defense = 5;
-        player.special_counter_max = 500;
+        player.special_counter_max = 200;
         player.class_type = WIZARD;
         return player;
     }
@@ -136,6 +145,7 @@ public class Player extends Entity implements Collider {
     public static Player knight(GamePanel gp){
         var player = new Player(gp);
         player.maxHealth = 12;
+        player.health = player.maxHealth;
         player.offense = 6;
         player.defense = 10;
         player.class_type = KNIGHT;
@@ -146,6 +156,7 @@ public class Player extends Entity implements Collider {
     public static Player archer(GamePanel gp){
         var player = new Player(gp);
         player.maxHealth = 12;
+        player.health = player.maxHealth;
         player.offense = 5;
         player.defense = 10;
         player.special_counter_max = 200;
@@ -155,7 +166,8 @@ public class Player extends Entity implements Collider {
 
     public static Player healer(GamePanel gp){
         var player = new Player(gp);
-        player.maxHealth = 20;
+        player.maxHealth = 30;
+        player.health = player.maxHealth;
         player.offense = 5;
         player.defense = 5;
         player.class_type = HEALER;
@@ -314,23 +326,7 @@ public class Player extends Entity implements Collider {
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         }
-        // if(attacking){
-        //     if(direction == UP){
-        //         g2.drawImage(image, screen_x, screen_y - GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
-        //     }
-        //     if(direction == LEFT){
-        //         g2.drawImage(image, screen_x - GamePanel.TILE_SIZE, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
-        //     }
-        //     if(direction == RIGHT){
-        //         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE, null);
-        //     }
-        //     if(direction == DOWN){
-        //         g2.drawImage(image, screen_x, screen_y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2, null);
-        //     }
-        // }
-        // else{
-            g2.drawImage(image, screen_x, screen_y, image.getWidth() * GamePanel.SCALE, image.getHeight() * GamePanel.SCALE, null);
-        // }
+        g2.drawImage(image, screen_x, screen_y, image.getWidth() * GamePanel.SCALE, image.getHeight() * GamePanel.SCALE, null);
         
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
@@ -343,6 +339,8 @@ public class Player extends Entity implements Collider {
             if(obj.teleporter.isPresent()){
                 var p = obj.teleporter.get();
                 gp.player.teleport_player(p.x, p.y);
+            } else{
+                gp.load_map(gp.mapNum + 1);
             }
         } else
         if(obj.name.equals("Heart")){
@@ -355,6 +353,7 @@ public class Player extends Entity implements Collider {
         } else
         if(obj.name.equals("Toll") && obj.toll_amount <= coin_count){
             gp.objectManager.objects.remove(obj);
+            gp.objectManager.objects.add(Object.trophe(obj.world_x+64, obj.world_y+64));
             coin_count -= obj.toll_amount;
         } else
         if(obj.name.equals("Wire") && obj.tile_activated){
@@ -469,7 +468,7 @@ public class Player extends Entity implements Collider {
 
         var ms = CollisionChecker.check_intersections(this, gp.monsterManager.monsters);
         if(!ms.isEmpty()){
-            gp.monsterManager.monsters.get(ms.getFirst()).damage_monster(direction, offense, class_type == HEALER);
+            gp.monsterManager.monsters.get(ms.get(0)).damage_monster(direction, offense, class_type == HEALER);
         }
 
         world_x = current_world_x;

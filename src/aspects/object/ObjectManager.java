@@ -1,11 +1,15 @@
+package aspects.object;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import main.App;
+import main.GamePanel;
+
 public class ObjectManager {
-    ArrayList<ArrayList<BufferedImage>> sprites;
-    ArrayList<Object> objects;
+    public ArrayList<ArrayList<BufferedImage>> sprites;
+    public ArrayList<Object> objects;
 
     public ObjectManager(){
         setupSprites();

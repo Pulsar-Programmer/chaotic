@@ -1,7 +1,13 @@
+package aspects.object;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Optional;
+
+import aspects.Animation;
+import collision.Collider;
+import collision.CollisionChecker;
+import main.GamePanel;
 
 public class Object implements Collider {
     private int image;
@@ -169,9 +175,9 @@ public class Object implements Collider {
                 electric.sprite_num %= electric.max_sprite_num;
             }
         }
-        if(name.equals("")){
-
-        }
+        // if(name.equals("Toll")){
+            
+        // }
     }
 
     public void update_rock(GamePanel gp){

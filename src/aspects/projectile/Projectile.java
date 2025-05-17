@@ -1,10 +1,17 @@
+package aspects.projectile;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import aspects.Animation;
+import aspects.enemy.Entity;
+import collision.Collider;
+import collision.CollisionChecker;
+import main.GamePanel;
 
 public class Projectile extends Entity implements Collider {
     String name;
     int sprite;
-    boolean origin_player;
+    public boolean origin_player;
     
     public Projectile(){
         name = "";

@@ -1,15 +1,20 @@
+package aspects.tile;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import java.awt.Point;
+
+import main.App;
+import main.GamePanel;
+import main.Player;
 
 public class TileManager {
-    ArrayList<BufferedImage> tile_sprites;
-    HashMap<Point, Tile> tiles;
+    public ArrayList<BufferedImage> tile_sprites;
+    public HashMap<Point, Tile> tiles;
 
     public TileManager(){
         tiles = new HashMap<Point, Tile>();

@@ -1,3 +1,4 @@
+package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,6 +8,19 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 import javax.swing.JPanel;
+
+import aspects.GUIManager;
+import aspects.KeyHandler;
+import aspects.Sound;
+import aspects.enemy.Monster;
+import aspects.enemy.MonsterManager;
+import aspects.map.Map;
+import aspects.map.MapGenerator;
+import aspects.object.Object;
+import aspects.object.ObjectManager;
+import aspects.projectile.ProjectileManager;
+import aspects.tile.TileManager;
+import collision.CollisionChecker;
 
 public class GamePanel extends JPanel implements Runnable {
     public static final int ORIGINAL_TILE_SIZE = 16;
@@ -19,17 +33,17 @@ public class GamePanel extends JPanel implements Runnable {
     
     public final static int FPS = 60;
 
-    TileManager tileManager = new TileManager();
-    KeyHandler keyH = new KeyHandler();
-    Thread gameThread;
-    Player player = new Player(this);
-    CollisionChecker collisionChecker = new CollisionChecker(this);
-    GUIManager guiManager = new GUIManager(this);
-    ObjectManager objectManager = new ObjectManager();
-    MonsterManager monsterManager = new MonsterManager();
-    ProjectileManager projectileManager = new ProjectileManager();
-    Map[] maps = {Map.new_map(), Map.new_map(), Map.new_map()};
-    Sound sounds = new Sound();
+    public TileManager tileManager = new TileManager();
+    public KeyHandler keyH = new KeyHandler();
+    public Thread gameThread;
+    public Player player = new Player(this);
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public GUIManager guiManager = new GUIManager(this);
+    public ObjectManager objectManager = new ObjectManager();
+    public MonsterManager monsterManager = new MonsterManager();
+    public ProjectileManager projectileManager = new ProjectileManager();
+    public Map[] maps = {Map.new_map(), Map.new_map(), Map.new_map()};
+    public Sound sounds = new Sound();
     public int gameState = TITLE;
     public final static int TITLE = -1;
     public final static int PLAY = 0;
@@ -58,26 +72,19 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame(){
-        // tiles = MapGenerator.procedure().getTiles();
-        var door = Object.door(0, 0);
-        door.teleporter = Optional.of(new Point(10, 10));
-        var map = MapGenerator.generate();
-        // var map = MapGenerator.random_puzzle_room(1, door);
-        // var map = MapGenerator.key_puzzle(1);
-        // var map = MapGenerator.sample_map();
-        map.rebase_origin();
-        // map.setTiles(tileManager.tiles);
-
-        
-        // map.layer(MapGenerator.boss_room(10, 10, 0));
-        // map.branch(MapGenerator.standard_corridor(20, true, 3), new Point(10, 5)); 
-        // map = MapGenerator.generic_room(10, 10);
-        map.setPlayer_spawn(new Point(5, 5));
+        var map = MapGenerator.generate(player);
+        // var tmap = aspects.map.Map.new_map();
+        // var tm = new TileManager();
+        // tm.loadMap();
+        // tmap.setTiles(tm.tiles);
         maps[0] = map;
+        maps[1] = MapGenerator.learners_map(player);
+        maps[2] = MapGenerator.puzzle_room(15, 15);
         load_map(0);
     }
 
     public void load_map(int map){
+        mapNum = map;
         Map tempMap = maps[map];
         tileManager.tiles = tempMap.getTiles();
         objectManager.objects = tempMap.getObjects();
@@ -109,7 +116,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-
         // sounds.sweep();
 
         if(gameState == PLAY){

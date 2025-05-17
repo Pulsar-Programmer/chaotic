@@ -8,6 +8,34 @@
             "type": "java",
             "name": "App",
             "request": "launch",
+            "mainClass": "main.App",
+            "projectName": "chaotic_519bfeb2"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "main.App",
+            "projectName": "chaotic_287cadf8"
+        },
+        {
+            "type": "java",
+            "name": "XOR",
+            "request": "launch",
+            "mainClass": "XOR",
+            "projectName": "chaotic_9ffafad8"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "chaotic_9ffafad8"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
             "mainClass": "App",
             "projectName": "chaotic_287cadf8"
         },
